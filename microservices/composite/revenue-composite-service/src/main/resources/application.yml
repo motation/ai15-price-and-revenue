@@ -20,7 +20,7 @@ eureka:
 logging:
   level:
     root: WARN
-    se.callista: INFO
+    de.hawhamburg: INFO
 
 ---
 # For deployment in Docker containers

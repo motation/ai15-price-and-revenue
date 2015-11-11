@@ -1,5 +1,6 @@
 package de.hawhamburg.microservices.api.price.controller;
 
+import de.hawhamburg.microservices.composite.revenue.model.CalculatedRevenue;
 import de.hawhamburg.microservices.core.price.jpa.domain.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -15,6 +16,7 @@ import javax.ws.rs.Produces;
 
 import java.net.URI;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -87,4 +89,12 @@ public class PriceApiController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+
+    @RequestMapping(value="/revenue/{flightId}")
+    public ResponseEntity<String> getRevenue(@PathVariable final UUID flightID){
+        URI uri = loadBalancer.choose("revenuecomposite").getUri();
+        String url = uri.toString() + "/revenue/" + flightID;
+        return utils.createResponse(restTemplate.getForEntity(url,String.class));
+    }
+
 }

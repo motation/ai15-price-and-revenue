@@ -56,7 +56,9 @@ public class CalculatedRevenue {
         return revenue;
     }
 
+    public CalculatedRevenue(){
 
+    }
 
     public CalculatedRevenue(CalculatedPrice price){
         this.basicPrice = price.getBasicPrice();

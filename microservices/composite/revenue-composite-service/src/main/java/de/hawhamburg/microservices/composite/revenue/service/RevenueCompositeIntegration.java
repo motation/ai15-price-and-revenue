@@ -32,8 +32,7 @@ public class RevenueCompositeIntegration {
         //OF TODO use this later
         URI uri = utils.getServiceUrl("pricecomposite");
         String url = uri.toString() + "/price/" + flightID;
-        ResponseEntity<String> resultStr = restTemplate.getForEntity(url,String.class);
-        CalculatedPrice calcPrice = ResponseHelper.response2Revenue(resultStr);
-        return utils.createOkResponse(calcPrice);
+        ResponseEntity<CalculatedPrice> resultStr = restTemplate.getForEntity(url,CalculatedPrice.class);
+        return utils.createOkResponse(resultStr.getBody());
     }
 }

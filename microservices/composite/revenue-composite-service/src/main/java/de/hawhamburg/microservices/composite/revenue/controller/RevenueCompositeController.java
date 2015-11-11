@@ -34,9 +34,6 @@ public class RevenueCompositeController {
     @RequestMapping(value = "/revenue/{flightId}", method = RequestMethod.GET)
     public ResponseEntity<CalculatedRevenue> getRevenue(@PathVariable final UUID flightId){
         ResponseEntity<CalculatedPrice> priceResult = revenueCompositeIntegration.getCalculatedPrice(flightId);
-        if(!priceResult.getStatusCode().is2xxSuccessful()){
-            return utils.createResponse(null,priceResult.getStatusCode());
-        }
         return utils.createOkResponse(new CalculatedRevenue(priceResult.getBody()));
     }
 

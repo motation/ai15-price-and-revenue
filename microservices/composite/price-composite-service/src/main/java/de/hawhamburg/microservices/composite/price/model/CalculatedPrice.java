@@ -26,6 +26,10 @@ public class CalculatedPrice {
         buildPrices();
     }
 
+    public CalculatedPrice(){
+
+    }
+
     private void calculatePriceFirstClassByInternet(){
         this.firstClassPriceByInternet = (basicPrice + FIRST) * INTERNET;
     }

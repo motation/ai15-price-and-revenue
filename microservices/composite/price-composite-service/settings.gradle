@@ -1,0 +1,10 @@
+/*
+Include utils
+ */
+
+include ":util"
+project(":util").projectDir = file("../../../util")
+
+
+include ":price-service"
+project(":price-service").projectDir = file("../../core/price-service")

@@ -1,0 +1,36 @@
+/*
+Include utils
+ */
+
+include ":util"
+project(":util").projectDir = file("../../../util")
+
+
+//Inlcude Core Service
+
+include ":price-service"
+project(":price-service").projectDir = file("../../core/price-service")
+
+
+//Include Composite Service
+
+include ":price-composite-service"
+project(":price-composite-service").projectDir = file("../../composite/price-composite-service")
+
+
+//Include Support Services
+
+include ":auth-server"
+project(":auth-server").projectDir = file("../../support/auth-server")
+
+include ":discovery-server"
+project(":discovery-server").projectDir = file("../../support/discovery-server")
+
+include ":edge-server"
+project(":edge-server").projectDir = file("../../support/edge-server")
+
+include ":monitor-dashboard"
+project(":monitor-dashboard").projectDir = file("../../support/monitor-dashboard")
+
+include ":turbine"
+project(":turbine").projectDir = file("../../support/turbine")

@@ -330,58 +330,36 @@ task stopPriceServiceContainer(type: DockerStopContainer) {
 }
 
 
-///**
-// * Start and Stop Tasks for Recommendation-Server
-// */
-//task createRecommendationServiceContainer(type: DockerCreateContainer, dependsOn: [startPriceServiceContainer]) {
-//    imageId = "recommendation-service"
-//    containerName = "rec"
-//    links = ["discovery:discovery"]
-//}
-//
-//task startRecommendationServiceContainer(type: DockerStartContainer, dependsOn: [createRecommendationServiceContainer]) {
-//    targetContainerId { createRecommendationServiceContainer.getContainerId() }
-//}
-//
-//task removeRecommendationServiceContainer(type: DockerRemoveContainer) {
-//    targetContainerId { createRecommendationServiceContainer.getContainerId() }
-//    finalizedBy stopProductServiceContainer
-//}
-//
-//task stopRecommendationServiceContainer(type: DockerStopContainer) {
-//    targetContainerId { createRecommendationServiceContainer.getContainerId() }
-//    finalizedBy removeRecommendationServiceContainer
-//}
-//
-///**
-// * Start and Stop Tasks for Review-Server
-// */
-//task createReviewServiceContainer(type: DockerCreateContainer, dependsOn: [startRecommendationServiceContainer]) {
-//    imageId = "review-service"
-//    containerName = "rev"
-//    links = ["discovery:discovery"]
-//}
-//
-//task startReviewServiceContainer(type: DockerStartContainer, dependsOn: [createReviewServiceContainer]) {
-//    targetContainerId { createReviewServiceContainer.getContainerId() }
-//}
-//
-//task removeReviewServiceContainer(type: DockerRemoveContainer) {
-//    targetContainerId { createReviewServiceContainer.getContainerId() }
-//    finalizedBy stopRecommendationServiceContainer
-//}
-//
-//task stopReviewServiceContainer(type: DockerStopContainer) {
-//    targetContainerId { createReviewServiceContainer.getContainerId() }
-//    finalizedBy removeReviewServiceContainer
-//}
+/**
+ * Start and Stop Tasks for RevenueComposite-Server
+ */
+task createRevenueCompositeServiceContainer(type:DockerCreateContainer, dependsOn: [startPriceServiceContainer]){
+    imageId = "revenue-composite"
+    containerName = "revenue-composite"
+    links = ["discovery:discovery","rabbitmq:rabbitmq"]
+}
+
+task startRevenueCompositeServiceContainer(type: DockerStartContainer, dependsOn: [createRevenueCompositeServiceContainer]) {
+    targetContainerId { createRevenueCompositeServiceContainer.getContainerId() }
+}
+
+task removeRevenueCompositeServiceContainer(type: DockerRemoveContainer) {
+    targetContainerId { createRevenueCompositeServiceContainer.getContainerId() }
+    finalizedBy stopPriceServiceContainer
+}
+
+task stopRevenueCompositeServiceContainer(type: DockerStopContainer) {
+    targetContainerId { createRevenueCompositeServiceContainer.getContainerId() }
+    finalizedBy removeRevenueCompositeServiceContainer
+}
+
 
 /**
  * Start and Stop Tasks for PriceComposite-Server
  */
-task createPriceCompositeServiceContainer(type: DockerCreateContainer, dependsOn: [startPriceServiceContainer]) {
+task createPriceCompositeServiceContainer(type: DockerCreateContainer, dependsOn: [startRevenueCompositeServiceContainer]) {
     imageId = "price-composite"
-    containerName = "composite"
+    containerName = "price-composite"
     links = ["discovery:discovery","rabbitmq:rabbitmq"]
 }
 
@@ -391,7 +369,7 @@ task startPriceCompositeServiceContainer(type: DockerStartContainer, dependsOn: 
 
 task removePriceCompositeServiceContainer(type: DockerRemoveContainer) {
     targetContainerId { createPriceCompositeServiceContainer.getContainerId() }
-    finalizedBy stopPriceServiceContainer
+    finalizedBy stopRevenueCompositeServiceContainer
 }
 
 task stopPriceCompositeServiceContainer(type: DockerStopContainer) {
@@ -452,7 +430,7 @@ task createMonitorDashboardServiceContainer(type: DockerCreateContainer, depends
     imageId = "monitor-dashboard"
     portBindings = ["7979:7979"]
     containerName = "monitor"
-    links = ["api:api","composite:composite", "turbine:turbine"]
+    links = ["api:api","price-composite:price-composite","revenue-composite:revenue-composite", "turbine:turbine"]
 }
 
 task startMonitorDashboardServiceContainer(type: DockerStartContainer, dependsOn: [createMonitorDashboardServiceContainer]) {

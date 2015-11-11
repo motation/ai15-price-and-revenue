@@ -26,19 +26,13 @@ apply plugin: 'com.bmuschko.docker-remote-api'
 
 
 // imports for DockerTasks
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer
-
-
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 /**
  * Define the name and version of the resulting jar file
  */
 jar {
-    baseName = 'price-composite-service'
+    baseName = 'revenue-composite-service'
     version = '0.0.1-SNAPSHOT'
 }
 
@@ -49,7 +43,7 @@ jar {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 group = 'hawai'
-mainClassName = 'de.hawhamburg.microservices.composite.price.PriceCompositeServiceApplication'
+mainClassName = 'de.hawhamburg.microservices.composite.revenue.RevenueCompositeServiceApplication'
 
 /**
  * Setup library repositories
@@ -81,12 +75,18 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compile("org.springframework.cloud:spring-cloud-starter-hystrix:1.0.0.RELEASE")
     compile("org.springframework.cloud:spring-cloud-starter-eureka:1.0.0.RELEASE")
+
     compile("org.springframework.cloud:spring-cloud-starter-bus-amqp:1.0.0.RELEASE")
     compile("org.springframework.cloud:spring-cloud-netflix-hystrix-amqp:1.0.0.RELEASE")
 
-    compile(project(":price-service")){
-        transitive = false
+    compile (project(":price-service")){
+        transitive=false
     }
+
+    compile (project(":price-composite-service")){
+        transitive=false
+    }
+
     compile (project(":util")){
         transitive = false
     }
@@ -171,7 +171,7 @@ task createDockerfile(type: Dockerfile, dependsOn: [copyDist]) {
     maintainer 'Sven-Ole Fedders "sven-ole.fedders@haw-hamburg.de"'
     environmentVariable('JAVA_OPTS', '-Dspring.profiles.active=docker')
     exposePort(8080)
-    entryPoint("/price-composite-service/bin/price-composite-service")
+    entryPoint("/revenue-composite-service/bin/revenue-composite-service")
     addFile({
         jar.baseName + '.tar'
     }, {
@@ -186,7 +186,7 @@ task createDockerfile(type: Dockerfile, dependsOn: [copyDist]) {
  */
 task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile]) {
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'price-composite'
+    tag = 'revenue-composite'
 }
 
 

@@ -1,4 +1,4 @@
-package de.hawhamburg.microservices.composite.price;
+package de.hawhamburg.microservices.composite.revenue;
 
 import com.netflix.hystrix.strategy.HystrixPlugins;
 import org.slf4j.Logger;
@@ -20,10 +20,10 @@ import se.callista.microservices.util.MDCHystrixConcurrencyStrategy;
 @EnableCircuitBreaker
 @EnableDiscoveryClient
 @SpringBootApplication
-@ComponentScan({"de.hawhamburg.microservices.composite.price", "se.callista.microservices.util"})
-public class PriceCompositeServiceApplication {
+@ComponentScan({"de.hawhamburg.microservices.composite.revenue", "se.callista.microservices.util"})
+public class RevenueCompositeServiceApplication {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PriceCompositeServiceApplication.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RevenueCompositeServiceApplication.class);
 
     @Value("${app.rabbitmq.host:localhost}")
     String rabbitMqHost;
@@ -35,9 +35,10 @@ public class PriceCompositeServiceApplication {
         return connectionFactory;
     }
 
+
     public static void main(String[] args) {
         LOG.info("Register MDCHystrixConcurrencyStrategy");
         HystrixPlugins.getInstance().registerConcurrencyStrategy(new MDCHystrixConcurrencyStrategy());
-        SpringApplication.run(PriceCompositeServiceApplication.class,args);
+        SpringApplication.run(RevenueCompositeServiceApplication.class,args);
     }
 }

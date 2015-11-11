@@ -12,11 +12,13 @@ include ":price-service"
 project(":price-service").projectDir = file("../../core/price-service")
 
 
-//Include Composite Service
+//Include Composite Services
 
 include ":price-composite-service"
 project(":price-composite-service").projectDir = file("../../composite/price-composite-service")
 
+include ":revenue-composite-service"
+project(":revenue-composite-service").projectDir = file("../../composite/revenue-composite-service")
 
 //Include Support Services
 

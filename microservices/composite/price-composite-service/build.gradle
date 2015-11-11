@@ -87,9 +87,9 @@ dependencies {
     compile(project(":price-service")){
         transitive = false
     }
-    compile (project(":util")){
-        transitive = false
-    }
+    compile project(":util")
+
+
 
 
     //SOF TODO in live system activate this

@@ -3,7 +3,6 @@ server:
 
 info:
   component: Revenue Composite Service
-spring:
 
 eureka:
   instance:

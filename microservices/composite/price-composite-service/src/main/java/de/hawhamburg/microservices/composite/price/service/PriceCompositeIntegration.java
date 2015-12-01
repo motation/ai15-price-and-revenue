@@ -1,7 +1,7 @@
 package de.hawhamburg.microservices.composite.price.service;
 
+import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.util.ResponseHelper;
-import de.hawhamburg.microservices.core.price.jpa.domain.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;

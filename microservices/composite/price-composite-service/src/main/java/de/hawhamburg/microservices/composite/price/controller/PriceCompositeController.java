@@ -1,8 +1,8 @@
 package de.hawhamburg.microservices.composite.price.controller;
 
 import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
+import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegration;
-import de.hawhamburg.microservices.core.price.jpa.domain.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

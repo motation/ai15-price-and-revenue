@@ -1,6 +1,6 @@
 package de.hawhamburg.microservices.composite.revenue.controller;
 
-import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
+import de.hawhamburg.microservices.composite.revenue.model.CalculatedPrice;
 import de.hawhamburg.microservices.composite.revenue.model.CalculatedRevenue;
 import de.hawhamburg.microservices.composite.revenue.service.RevenueCompositeIntegration;
 import org.springframework.beans.factory.annotation.Autowired;

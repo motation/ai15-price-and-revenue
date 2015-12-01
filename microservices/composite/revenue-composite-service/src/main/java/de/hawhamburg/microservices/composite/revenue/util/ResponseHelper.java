@@ -2,7 +2,7 @@ package de.hawhamburg.microservices.composite.revenue.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
+import de.hawhamburg.microservices.composite.revenue.model.CalculatedPrice;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;

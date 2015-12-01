@@ -128,6 +128,7 @@ docker {
         url = 'https://192.168.99.100:2376'
         // set path to the certificate directory on your machine
         certPath = new File(System.properties['user.home'],'/.docker/machine/certs')
+        println certPath.toString()
     }
     if(System.properties['os.name'].toString().toLowerCase().contains('linux')){
         url = 'https://127.0.0.1:2376'

@@ -11,6 +11,9 @@ project(":util").projectDir = file("../../../util")
 include ":price-service"
 project(":price-service").projectDir = file("../../core/price-service")
 
+include ":revenue-service"
+project(":revenue-service").projectDir = file("../../core/revenue-service")
+
 
 //Include Composite Services
 

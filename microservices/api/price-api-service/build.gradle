@@ -323,11 +323,34 @@ task stopPriceServiceContainer(type: DockerStopContainer) {
     finalizedBy removePriceServiceContainer
 }
 
+/**
+ * Start and Stop Tasks for Revenue Core Server
+ */
+task createRevenueServiceContainer(type: DockerCreateContainer, dependsOn: [startPriceServiceContainer]) {
+    imageId = "revenue-service"
+    containerName = "revenue"
+    links = ["discovery:discovery", "mysql:mysql"]
+}
+
+task startRevenueServiceContainer(type: DockerStartContainer, dependsOn: [createRevenueServiceContainer]) {
+    targetContainerId { createRevenueServiceContainer.getContainerId() }
+}
+
+task removeRevenueServiceContainer(type: DockerRemoveContainer) {
+    targetContainerId { createRevenueServiceContainer.getContainerId() }
+    finalizedBy stopPriceServiceContainer
+}
+
+task stopRevenueServiceContainer(type: DockerStopContainer) {
+    targetContainerId { createRevenueServiceContainer.getContainerId() }
+    finalizedBy removeRevenueServiceContainer
+}
+
 
 /**
  * Start and Stop Tasks for RevenueComposite-Server
  */
-task createRevenueCompositeServiceContainer(type:DockerCreateContainer, dependsOn: [startPriceServiceContainer]){
+task createRevenueCompositeServiceContainer(type:DockerCreateContainer, dependsOn: [startRevenueServiceContainer]){
     imageId = "revenue-composite"
     containerName = "revenue-composite"
     links = ["discovery:discovery","rabbitmq:rabbitmq"]
@@ -339,7 +362,7 @@ task startRevenueCompositeServiceContainer(type: DockerStartContainer, dependsOn
 
 task removeRevenueCompositeServiceContainer(type: DockerRemoveContainer) {
     targetContainerId { createRevenueCompositeServiceContainer.getContainerId() }
-    finalizedBy stopPriceServiceContainer
+    finalizedBy stopRevenueServiceContainer
 }
 
 task stopRevenueCompositeServiceContainer(type: DockerStopContainer) {

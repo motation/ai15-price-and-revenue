@@ -63,12 +63,12 @@ eureka:
     instanceInfoReplicationIntervalSeconds: 5
     initialInstanceInfoReplicationIntervalSeconds: 5
 
-logging:
-  level:
-    root: WARN
-    se.callista: INFO
-    # Set DEBUG level on Hystrix to get an error message when a fallback method is used.
-    com.netflix.hystrix: DEBUG
+#logging:
+#  level:
+#    root: WARN
+#    se.callista: INFO
+#    # Set DEBUG level on Hystrix to get an error message when a fallback method is used.
+#    com.netflix.hystrix: DEBUG
 
 ---
 # For deployment in Docker containers

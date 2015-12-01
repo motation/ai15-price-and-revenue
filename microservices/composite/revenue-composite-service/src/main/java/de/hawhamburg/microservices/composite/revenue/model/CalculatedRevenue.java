@@ -1,7 +1,5 @@
 package de.hawhamburg.microservices.composite.revenue.model;
 
-import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
-
 import java.util.UUID;
 
 /**

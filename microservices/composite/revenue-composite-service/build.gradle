@@ -51,10 +51,6 @@ mainClassName = 'de.hawhamburg.microservices.composite.revenue.RevenueCompositeS
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        // Can't find spring-cloud-build in maven central...
-        url 'http://maven.springframework.org/release'
-    }
 }
 
 
@@ -78,14 +74,6 @@ dependencies {
 
     compile("org.springframework.cloud:spring-cloud-starter-bus-amqp:1.0.0.RELEASE")
     compile("org.springframework.cloud:spring-cloud-netflix-hystrix-amqp:1.0.0.RELEASE")
-
-    compile (project(":price-service")){
-        transitive=false
-    }
-
-    compile (project(":price-composite-service")){
-        transitive=false
-    }
 
     compile project(":util")
 

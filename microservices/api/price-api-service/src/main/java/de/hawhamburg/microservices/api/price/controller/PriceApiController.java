@@ -1,7 +1,6 @@
 package de.hawhamburg.microservices.api.price.controller;
 
-import de.hawhamburg.microservices.composite.revenue.model.CalculatedRevenue;
-import de.hawhamburg.microservices.core.price.jpa.domain.Price;
+import de.hawhamburg.microservices.api.price.model.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +12,8 @@ import se.callista.microservices.util.ServiceUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-
 import java.net.URI;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;

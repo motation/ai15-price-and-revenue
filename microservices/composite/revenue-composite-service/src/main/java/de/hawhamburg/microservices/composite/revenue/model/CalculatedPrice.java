@@ -1,11 +1,9 @@
-package de.hawhamburg.microservices.composite.price.model;
-
+package de.hawhamburg.microservices.composite.revenue.model;
 
 /**
- * Created by Ole on 07.11.2015.
+ * Created by Ole on 01.12.2015.
  */
 public class CalculatedPrice {
-
     private final double FIRST = 50;
     private final double ECONOMY = 20;
     private final double INTERNET = 1.0;

@@ -1,7 +1,6 @@
 package de.hawhamburg.microservices.composite.revenue.service;
 
-import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
-import de.hawhamburg.microservices.composite.revenue.util.ResponseHelper;
+import de.hawhamburg.microservices.composite.revenue.model.CalculatedPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;

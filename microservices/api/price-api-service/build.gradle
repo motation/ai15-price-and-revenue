@@ -59,10 +59,6 @@ mainClassName = 'de.hawhamburg.microservices.api.price.PriceApiServiceApplicatio
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        // Can't find spring-cloud-build in maven central...
-        url 'http://maven.springframework.org/release'
-    }
 }
 
 sourceSets {
@@ -110,15 +106,6 @@ dependencies {
     compile("org.apache.httpcomponents:fluent-hc:4.2.1")
 
     compile project(":util")
-
-
-    compile(project(":price-service")){
-        transitive = false
-    }
-
-    compile(project(":revenue-composite-service")){
-        transitive = false
-    }
 
     testCompile 'org.mockito:mockito-all:2.0.2-beta'
     testCompile 'org.assertj:assertj-core:3.1.0'

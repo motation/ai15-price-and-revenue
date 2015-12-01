@@ -114,7 +114,7 @@ public class PriceApiController {
 //        return utils.createResponse(restTemplate.getForEntity(url, String.class));
 //    }
 
-    @RequestMapping(value = "/{flightId}/1", method = RequestMethod.GET)
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ResponseEntity<String> test(@PathVariable final UUID flightID,
                                               @RequestHeader(value = "Authorization") String authorizationHeader,
                                               Principal currentUser) {

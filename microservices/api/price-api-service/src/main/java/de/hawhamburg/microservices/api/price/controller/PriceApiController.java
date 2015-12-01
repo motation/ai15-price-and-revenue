@@ -115,11 +115,9 @@ public class PriceApiController {
 //    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseEntity<String> test(@PathVariable final UUID flightID,
-                                              @RequestHeader(value = "Authorization") String authorizationHeader,
-                                              Principal currentUser) {
-        LOG.debug("D: got a request to revenue + flight id:: " + flightID);
-        LOG.info("I: got a request to revenue + flight id:: " + flightID);
+    public ResponseEntity<String> test(@RequestHeader(value = "Authorization") String authorizationHeader,Principal currentUser) {
+        LOG.debug("D: got a request to revenue + flight id:: ");
+        LOG.info("I: got a request to revenue + flight id:: ");
 //        URI uri = loadBalancer.choose("revenuecomposite").getUri();
 //        String url = uri.toString() + "/revenue/" + flightID;
 //        return utils.createResponse(restTemplate.getForEntity(url, String.class));

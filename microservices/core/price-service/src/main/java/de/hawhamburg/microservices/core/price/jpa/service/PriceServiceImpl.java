@@ -31,6 +31,11 @@ public class PriceServiceImpl implements PriceService {
                 priceRepository.save(price);
             }
         }
+        Price price = new Price.PriceBuilder()
+                .withValue(2000.0)
+                .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
+                .build();
+        priceRepository.save(price);
     }
 
     @Override

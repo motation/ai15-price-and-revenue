@@ -1,5 +1,8 @@
 package de.hawhamburg.microservices.api.price.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hawhamburg.microservices.api.price.model.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -25,6 +28,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Produces(APPLICATION_JSON)
 @RestController
 public class PriceApiController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PriceApiController.class);
 
     @Autowired
     private ServiceUtils utils;
@@ -89,6 +94,8 @@ public class PriceApiController {
 
     @RequestMapping(value="/revenue/{flightId}")
     public ResponseEntity<String> getRevenue(@PathVariable final UUID flightID){
+        LOG.debug("D: got a request to revenue + flight id:: " + flightID);
+        LOG.info("I: got a request to revenue + flight id:: " + flightID);
         URI uri = loadBalancer.choose("revenuecomposite").getUri();
         String url = uri.toString() + "/revenue/" + flightID;
         return utils.createResponse(restTemplate.getForEntity(url,String.class));

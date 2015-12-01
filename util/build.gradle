@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'war'
 
 jar {
     baseName = 'util'
@@ -16,6 +17,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compile.exclude module: "spring-boot-starter-tomcat"
+}
+
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:1.2.2.RELEASE")
     compile("org.springframework.cloud:spring-cloud-starter-hystrix:1.0.0.RELEASE")
@@ -24,6 +29,8 @@ dependencies {
     compile("org.springframework.security:spring-security-core:3.2.6.RELEASE")
 
     compile("net.logstash.logback:logstash-logback-encoder:4.3")
+
+    providedCompile("javax.servlet:servlet-api:2.5")
 
     testCompile 'org.mockito:mockito-all:2.0.2-beta'
     testCompile 'org.assertj:assertj-core:3.1.0'

@@ -93,35 +93,14 @@ public class PriceApiController {
     }
 
     @RequestMapping(value = "/revenue/{flightId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getRevenue(@PathVariable final UUID flightID,
+    public ResponseEntity<String> getRevenue(@PathVariable final UUID flightId,
                 @RequestHeader(value = "Authorization") String authorizationHeader,
                 Principal currentUser) {
-        LOG.debug("D: got a request to revenue + flight id:: " + flightID);
-        LOG.info("I: got a request to revenue + flight id:: " + flightID);
+        LOG.debug("D: got a request to revenue + flight id:: " + flightId);
+        LOG.info("I: got a request to revenue + flight id:: " + flightId);
         URI uri = loadBalancer.choose("revenuecomposite").getUri();
-        String url = uri.toString() + "/revenue/" + flightID;
+        String url = uri.toString() + "/revenue/" + flightId;
         return utils.createResponse(restTemplate.getForEntity(url, String.class));
-    }
-
-//    @RequestMapping(value = "/{flightId}/1", method = RequestMethod.GET)
-//    public ResponseEntity<String> getsRevenue(@PathVariable final UUID flightID,
-//                                             @RequestHeader(value = "Authorization") String authorizationHeader,
-//                                             Principal currentUser) {
-//        LOG.debug("D: got a request to revenue + flight id:: " + flightID);
-//        LOG.info("I: got a request to revenue + flight id:: " + flightID);
-//        URI uri = loadBalancer.choose("revenuecomposite").getUri();
-//        String url = uri.toString() + "/revenue/" + flightID;
-//        return utils.createResponse(restTemplate.getForEntity(url, String.class));
-//    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseEntity<String> test(@RequestHeader(value = "Authorization") String authorizationHeader,Principal currentUser) {
-        LOG.debug("D: got a request to revenue + flight id:: ");
-        LOG.info("I: got a request to revenue + flight id:: ");
-//        URI uri = loadBalancer.choose("revenuecomposite").getUri();
-//        String url = uri.toString() + "/revenue/" + flightID;
-//        return utils.createResponse(restTemplate.getForEntity(url, String.class));
-        return utils.createOkResponse("hello");
     }
 
 }

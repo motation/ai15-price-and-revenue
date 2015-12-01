@@ -1,6 +1,7 @@
 package de.hawhamburg.microservices.composite.revenue.service;
 
 import de.hawhamburg.microservices.composite.revenue.model.CalculatedPrice;
+import de.hawhamburg.microservices.composite.revenue.model.Revenue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,14 @@ public class RevenueCompositeIntegration {
         URI uri = utils.getServiceUrl("pricecomposite");
         String url = uri.toString() + "/price/" + flightID;
         ResponseEntity<CalculatedPrice> resultStr = restTemplate.getForEntity(url,CalculatedPrice.class);
+        return utils.createOkResponse(resultStr.getBody());
+    }
+
+    public ResponseEntity<Revenue> getRevenue(UUID flightID){
+        //OF TODO use this later
+        URI uri = utils.getServiceUrl("revenue");
+        String url = uri.toString() + "/revenue/" + flightID;
+        ResponseEntity<Revenue> resultStr = restTemplate.getForEntity(url, Revenue.class);
         return utils.createOkResponse(resultStr.getBody());
     }
 }

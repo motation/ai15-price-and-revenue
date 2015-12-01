@@ -37,6 +37,18 @@ public class RevenueServiceImpl implements RevenueService {
                 revenueRepository.save(revenue);
             }
         }
+
+        Revenue revenueSame = new Revenue.RevenueBuilder()
+                .withValue(200)
+                .withSoldTicketsFirstClassInternet(50)
+                .withSoldTicketsEconomyClassInternet(80)
+                .withSoldTicketsFirstClassTravelOffice(90)
+                .withSoldTicketsEconomyClassTravelOffice(100)
+                .withSoldTicketsFirstClassCounter(500)
+                .withSoldTicketsEconomyClassCounter(100)
+                .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
+                .build();
+        revenueRepository.save(revenueSame);
     }
 
     @Override

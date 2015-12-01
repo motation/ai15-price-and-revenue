@@ -19,34 +19,34 @@ public class CalculatedRevenue {
 
 
     private double revenue;
-    private int soldTicketsFirstClassInternet = 10;
-    private int soldTicketsEconomyClassInternet = 20;
-    private int soldTicketsFirstClassTravelOffice = 5;
-    private int soldTicketsEconomyClassTravelOffice = 30;
-    private int soldTicketsFirstClassCounter = 2;
-    private int soldTicketsEconomyClassCounter = 6;
+    private double soldTicketsFirstClassInternet = 10;
+    private double soldTicketsEconomyClassInternet = 20;
+    private double soldTicketsFirstClassTravelOffice = 5;
+    private double soldTicketsEconomyClassTravelOffice = 30;
+    private double soldTicketsFirstClassCounter = 2;
+    private double soldTicketsEconomyClassCounter = 6;
 
-    public int getSoldTicketsEconomyClassCounter() {
+    public double getSoldTicketsEconomyClassCounter() {
         return soldTicketsEconomyClassCounter;
     }
 
-    public int getSoldTicketsFirstClassCounter() {
+    public double getSoldTicketsFirstClassCounter() {
         return soldTicketsFirstClassCounter;
     }
 
-    public int getSoldTicketsEconomyClassTravelOffice() {
+    public double getSoldTicketsEconomyClassTravelOffice() {
         return soldTicketsEconomyClassTravelOffice;
     }
 
-    public int getSoldTicketsFirstClassTravelOffice() {
+    public double getSoldTicketsFirstClassTravelOffice() {
         return soldTicketsFirstClassTravelOffice;
     }
 
-    public int getSoldTicketsEconomyClassInternet() {
+    public double getSoldTicketsEconomyClassInternet() {
         return soldTicketsEconomyClassInternet;
     }
 
-    public int getSoldTicketsFirstClassInternet() {
+    public double getSoldTicketsFirstClassInternet() {
         return soldTicketsFirstClassInternet;
     }
 
@@ -58,7 +58,7 @@ public class CalculatedRevenue {
 
     }
 
-    public CalculatedRevenue(CalculatedPrice price){
+    public CalculatedRevenue(CalculatedPrice price, Revenue revenue){
         this.basicPrice = price.getBasicPrice();
         this.firstClassPriceByInternet = price.getFirstClassPriceByInternet();
         this.economyClassPriceByInternet = price.getEconomyClassPriceByInternet();
@@ -66,9 +66,15 @@ public class CalculatedRevenue {
         this.economyClassPriceByCounter = price.getEconomyClassPriceByCounter();
         this.firstClassPriceByTravelOffice = price.getFirstClassPriceByTravelOffice();
         this.economyClassPriceByTravelOffice = price.getEconomyClassPriceByTravelOffice();
+
+        this.soldTicketsFirstClassInternet = revenue.getSoldTicketsFirstClassInternet();
+        this.soldTicketsFirstClassTravelOffice = revenue.getSoldTicketsFirstClassTravelOffice();
+        this.soldTicketsFirstClassCounter = revenue.getSoldTicketsFirstClassCounter();
+        this.soldTicketsEconomyClassInternet = revenue.getSoldTicketsEconomyClassInternet();
+        this.soldTicketsEconomyClassTravelOffice = revenue.getSoldTicketsEconomyClassTravelOffice();
+        this.soldTicketsEconomyClassCounter = revenue.getSoldTicketsEconomyClassCounter();
         buildRevenue();
     }
-
     private void buildRevenue() {
         double revenueForInternet = firstClassPriceByInternet * soldTicketsFirstClassInternet + economyClassPriceByInternet * soldTicketsEconomyClassInternet;
         double revenueForCounter = firstClassPriceByCounter * soldTicketsFirstClassCounter + economyClassPriceByCounter * soldTicketsEconomyClassCounter;

@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-//import org.junit.BeforeClass;
-//import org.junit.Test;
 
 /**
  * Created by Michael B. on 18.11.2015.
@@ -47,15 +45,12 @@ public class PriceServiceUnitTests {
 
         //Objekte & Methoden mocken
         setup();
-        Mockito.when(priceService.createPrice(price)).thenReturn(price);
-        Mockito.when(priceService.createPrice(price2)).thenReturn(price2);
-        Mockito.when(priceService.createPrice(price3)).thenReturn(price3);
         Mockito.when(priceService.priceForFlight(id)).thenReturn(price);
         Mockito.when(priceService.priceForFlight(id2)).thenReturn(price2);
         Mockito.when(priceService.priceForFlight(id3)).thenReturn(price3);
 
         //Tests
-        Assert.assertEquals(100.0, priceService.priceForFlight(id).getValue());
+        Assert.assertEquals(price.getValue(), priceService.priceForFlight(id).getValue());
         Assert.assertEquals(100.0, priceService.priceForFlight(id2).getValue());
         Assert.assertEquals(200.0, priceService.priceForFlight(id3).getValue());
     }

@@ -103,15 +103,27 @@ public class PriceApiController {
         return utils.createResponse(restTemplate.getForEntity(url, String.class));
     }
 
+//    @RequestMapping(value = "/{flightId}/1", method = RequestMethod.GET)
+//    public ResponseEntity<String> getsRevenue(@PathVariable final UUID flightID,
+//                                             @RequestHeader(value = "Authorization") String authorizationHeader,
+//                                             Principal currentUser) {
+//        LOG.debug("D: got a request to revenue + flight id:: " + flightID);
+//        LOG.info("I: got a request to revenue + flight id:: " + flightID);
+//        URI uri = loadBalancer.choose("revenuecomposite").getUri();
+//        String url = uri.toString() + "/revenue/" + flightID;
+//        return utils.createResponse(restTemplate.getForEntity(url, String.class));
+//    }
+
     @RequestMapping(value = "/{flightId}/1", method = RequestMethod.GET)
-    public ResponseEntity<String> getsRevenue(@PathVariable final UUID flightID,
-                                             @RequestHeader(value = "Authorization") String authorizationHeader,
-                                             Principal currentUser) {
+    public ResponseEntity<String> test(@PathVariable final UUID flightID,
+                                              @RequestHeader(value = "Authorization") String authorizationHeader,
+                                              Principal currentUser) {
         LOG.debug("D: got a request to revenue + flight id:: " + flightID);
         LOG.info("I: got a request to revenue + flight id:: " + flightID);
-        URI uri = loadBalancer.choose("revenuecomposite").getUri();
-        String url = uri.toString() + "/revenue/" + flightID;
-        return utils.createResponse(restTemplate.getForEntity(url, String.class));
+//        URI uri = loadBalancer.choose("revenuecomposite").getUri();
+//        String url = uri.toString() + "/revenue/" + flightID;
+//        return utils.createResponse(restTemplate.getForEntity(url, String.class));
+        return utils.createOkResponse("hello");
     }
 
 }

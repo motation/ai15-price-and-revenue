@@ -109,10 +109,23 @@ public class PriceServiceUnitTests {
 
     }
 
-//    @Test
-//    public void TestRemovePrice(UUID flightId) {
-//    }
-//
+    @Test
+    public void TestRemovePrice() {
+
+        //UUID anlegen
+        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+
+        //Preisobjekt mit einer UUID anlegen
+        Price price = new Price.PriceBuilder().withFlightId(id).withValue(500.0).build();
+
+        //Objekte & Methoden mocken
+        setup();
+        Mockito.doCallRealMethod().when(priceService).removePrice(id);    //Preis mit id löschen
+
+        //Tests
+        Assert.assertNull(priceService.priceForFlight(id));
+    }
+
     @Test
     public void TestUpdatePrice() {
         //UUID anlegen

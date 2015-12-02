@@ -91,10 +91,22 @@ public class RevenueServiceUnitTests {
         Assert.assertEquals(id, revenueService.createRevenue(revenue).getFlightId());
     }
 
-//    @Test
-//    public void TestRemoveRevenue(UUID flightId) {
-//
-//    }
+    @Test
+    public void TestRemoveRevenue() {
+
+        //UUID anlegen
+        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+
+        //Preisobjekt mit einer UUID anlegen
+        Revenue price = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+
+        //Objekte & Methoden mocken
+        setup();
+        Mockito.doCallRealMethod().when(revenueService).removeRevenue(id);    //Preis mit id löschen
+
+        //Tests
+        org.testng.Assert.assertNull(revenueService.revenueForFlight(id));
+    }
 //
 //    @Test
 //    public void TestUpdateRevenue(Revenue price) {

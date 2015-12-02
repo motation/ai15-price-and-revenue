@@ -30,10 +30,6 @@ public class Price {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public UUID getFlightId() {
         return flightId;
     }
@@ -52,6 +48,11 @@ public class Price {
 
         public PriceBuilder withFlightId(UUID flightId){
             this.price.flightId = flightId;
+            return this;
+        }
+
+        public PriceBuilder withId(long id){
+            this.price.id = id;
             return this;
         }
 

@@ -25,7 +25,6 @@ public class PriceServiceUnitTests {
         this.priceService = new PriceServiceImpl();
     }
 
-    @Before
     public void setup() {
         priceService = Mockito.mock(PriceServiceImpl.class);
     }
@@ -136,10 +135,10 @@ public class PriceServiceUnitTests {
 
         //Objekte & Methoden mocken
         setup();
-        Mockito.when(priceService.priceForFlight(id)).thenReturn(price);
-        Mockito.doCallRealMethod().when(priceService).updatePrice(id,200.0);    //Preis von 500.0 auf 200.0 setzen
+        Mockito.when(priceService.updatePrice(id, 300.0)).thenReturn(true);
+        //Mockito.doNothing().when(priceService).updatePrice(id,200.0);    //Preis von 500.0 auf 200.0 setzen
 
         //Tests
-        Assert.assertEquals(price.getValue(), priceService.priceForFlight(id).getValue());
+        Assert.assertTrue(priceService.updatePrice(id, 300.0));
     }
 }

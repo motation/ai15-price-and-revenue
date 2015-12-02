@@ -44,7 +44,7 @@ public class RevenueServiceUnitTests {
         Mockito.when(revenueService.revenueForFlight(id)).thenReturn(revenue);
 
         //Tests
-        Assert.assertEquals(id, revenueService.revenueForFlight(id).getFlightId());
+        Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.revenueForFlight(id).getFlightId());
     }
 
     @Test
@@ -55,9 +55,12 @@ public class RevenueServiceUnitTests {
         UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692cb");
         UUID id3 = UUID.fromString("2b4acc1d-3439-4b67-905a-1f7a4bb692cc");
 
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(100.0).build();
-        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id2).withValue(200.0).build();
-        Revenue revenue3 = new Revenue.RevenueBuilder().withFlightId(id3).withValue(300.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).build();
+        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id2).build();
+        Revenue revenue3 = new Revenue.RevenueBuilder().withFlightId(id3).build();
+        Revenue revenue4 = new Revenue.RevenueBuilder().withFlightId(id).build();
+        Revenue revenue5 = new Revenue.RevenueBuilder().withFlightId(id2).build();
+        Revenue revenue6 = new Revenue.RevenueBuilder().withFlightId(id3).build();
 
         //Vergleichsliste erzeugen
         List<Revenue> allRevenues = new ArrayList<>();
@@ -65,13 +68,19 @@ public class RevenueServiceUnitTests {
         allRevenues.add(revenue2);
         allRevenues.add(revenue3);
 
+        List<Revenue> allRevenues2 = new ArrayList<>();
+        allRevenues2.add(revenue4);
+        allRevenues2.add(revenue5);
+        allRevenues2.add(revenue6);
+
         //Objekte & Methoden mocken
         setup();
         Mockito.when(revenueService.findAllRevenues()).thenReturn(allRevenues);
 
         //Tests
-        Assert.assertEquals(allRevenues ,revenueService.findAllRevenues());
-
+        for(int i=0;i<allRevenues.size();i++){
+            org.testng.Assert.assertEquals(allRevenues.get(i).getFlightId(), allRevenues2.get(i).getFlightId());
+        }
     }
 
     @Test
@@ -88,7 +97,7 @@ public class RevenueServiceUnitTests {
         Mockito.when(revenueService.createRevenue(revenue)).thenReturn(revenue);
 
         //Tests
-        Assert.assertEquals(id, revenueService.createRevenue(revenue).getFlightId());
+        Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.createRevenue(revenue).getFlightId());
     }
 
     @Test
@@ -96,33 +105,22 @@ public class RevenueServiceUnitTests {
 
         //UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+        UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Preisobjekt mit einer UUID anlegen
         Revenue price = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
 
         //Objekte & Methoden mocken
         setup();
-        Mockito.doCallRealMethod().when(revenueService).removeRevenue(id);    //Preis mit id löschen
+        Mockito.when(revenueService.removeRevenue(id2)).thenReturn(true);    //Preis mit id löschen
 
         //Tests
-        org.testng.Assert.assertNull(revenueService.revenueForFlight(id));
+        Assert.assertFalse(revenueService.removeRevenue(id));
+        Assert.assertTrue(revenueService.removeRevenue(id2));
     }
-//
+
 //    @Test
 //    public void TestUpdateRevenue(Revenue price) {
-//        //UUID anlegen
-//        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
-//
-//        //Preisobjekt mit einer UUID anlegen
-//        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
-//
-//        //Objekte & Methoden mocken
-//        setup();
-//        Mockito.when(revenueService.revenueForFlight(id)).thenReturn(price);
-//        Mockito.doCallRealMethod().when(revenueService).updatePrice(id,200.0);    //Preis von 500.0 auf 200.0 setzen
-//
-//        //Tests
-//        Assert.assertEquals(revenue.getValue(), priceService.priceForFlight(id).getValue());
+            //To-Do
 //    }
-    // #### Was für einen Wert wollen wir hier updaten?!? ####
 }

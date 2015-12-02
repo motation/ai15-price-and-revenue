@@ -63,7 +63,7 @@ public class PriceController {
     @RequestMapping(value="/price/{flightId}", method = RequestMethod.PUT)
     public void deletePrice(@RequestBody final Price price, HttpServletResponse response) throws IOException {
         try {
-            priceService.updatePrice(price);
+            //priceService.updatePrice(price);                  #### Warum hier updatePrice? ####
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

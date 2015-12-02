@@ -17,6 +17,6 @@ public interface PriceService {
 
     void removePrice(UUID flightId);
 
-    void updatePrice(Price price);
+    void updatePrice(UUID flightId, double value);
 
 }

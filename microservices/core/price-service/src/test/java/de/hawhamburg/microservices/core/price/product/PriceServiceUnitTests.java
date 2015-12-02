@@ -113,24 +113,20 @@ public class PriceServiceUnitTests {
 //    public void TestRemovePrice(UUID flightId) {
 //    }
 //
-//    @Test
-//    public void TestUpdatePrice(Price price)
-//        //UUID anlegen
-//        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
-//        //UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692cb");
-//
-//        //Preisobjekt mit einer UUID anlegen
-//        Price price = new Price.PriceBuilder().withFlightId(id).withValue(500.0).build();
-//        Price priceForUpdate = price;
-//        //Objekte & Methoden mocken
-//        setup();
-//        Mockito.doCallRealMethod().when(priceService).updatePrice(priceForUpdate);
-//
-//        //Preis ändern der die gleiche UUID hat
-//        priceService.updatePrice(priceForUpdate);
-//
-//        //Tests
-//        Assert.assertEquals(priceForUpdate.getValue(), priceService.updatePrice(priceForUpdate));
-//        Assert.assertNotEquals(priceForUpdate.getValue(), );
-//    }
+    @Test
+    public void TestUpdatePrice() {
+        //UUID anlegen
+        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+
+        //Preisobjekt mit einer UUID anlegen
+        Price price = new Price.PriceBuilder().withFlightId(id).withValue(500.0).build();
+
+        //Objekte & Methoden mocken
+        setup();
+        Mockito.when(priceService.priceForFlight(id)).thenReturn(price);
+        Mockito.doCallRealMethod().when(priceService).updatePrice(id,200.0);    //Preis von 500.0 auf 200.0 setzen
+
+        //Tests
+        Assert.assertEquals(price.getValue(), priceService.priceForFlight(id).getValue());
+    }
 }

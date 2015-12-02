@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,8 +62,9 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public void updatePrice(Price price) {
-        priceRepository.save(price);
+    public void updatePrice(UUID flightId, double value) {
+        Price temp = priceRepository.findByFlightId(flightId);
+        temp.setValue(value);
     }
 
 

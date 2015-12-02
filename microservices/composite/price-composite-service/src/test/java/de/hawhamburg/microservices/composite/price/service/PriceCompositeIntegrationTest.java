@@ -41,17 +41,21 @@ public class PriceCompositeIntegrationTest {
 
     @Test
     public void testGetPrice() throws URISyntaxException {
-        UUID uuid = UUID.randomUUID();
-        Price price = new Price.PriceBuilder().withFlightId(uuid).withValue(200.0).build();
+        UUID flightId = UUID.randomUUID();
+        Price price = new Price.PriceBuilder().withFlightId(flightId).withValue(200.0).build();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         String priceJson = gson.toJson(price);
-        ResponseEntity<String> resultStr = new ResponseEntity<String>(priceJson, HttpStatus.OK);
-        String url = "http://localhost:8080/price/"+uuid;
+
+        ResponseEntity<String> priceResponseEntity = new ResponseEntity<String>(priceJson, HttpStatus.OK);
+
+        String url = "http://localhost:8080/price/"+flightId;
+
         Mockito.when(utils.getServiceUrl("price")).thenReturn(new URI("http://localhost:8080"));
-        Mockito.when(restTemplate.getForEntity(url,String.class)).thenReturn(resultStr);
+        Mockito.when(restTemplate.getForEntity(url,String.class)).thenReturn(priceResponseEntity);
         Mockito.when(utils.createOkResponse(price)).thenReturn(new ResponseEntity<Price>(price,HttpStatus.OK));
-        ResponseEntity<Price> responseEntity = priceCompositeIntegration.getPrice(uuid);
+        
+        ResponseEntity<Price> responseEntity = priceCompositeIntegration.getPrice(flightId);
         Price priceToCheck = responseEntity.getBody();
 
         Assert.assertEquals(priceToCheck.getValue(),200.0);

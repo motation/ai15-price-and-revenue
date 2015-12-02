@@ -59,6 +59,7 @@ public class PriceServiceImpl implements PriceService {
     public boolean removePrice(UUID flightId){
         try{
             Price price = priceRepository.findByFlightId(flightId);
+            if(price == null) return false;
             priceRepository.delete(price);
         } catch (Exception e){
             return false;

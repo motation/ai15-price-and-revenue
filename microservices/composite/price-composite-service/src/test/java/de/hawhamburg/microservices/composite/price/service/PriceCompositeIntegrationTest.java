@@ -37,7 +37,6 @@ public class PriceCompositeIntegrationTest {
     @BeforeMethod
     public void initMocks(){
         MockitoAnnotations.initMocks(this);
-        System.out.println("done");
     }
 
     @Test

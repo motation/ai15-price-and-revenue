@@ -98,6 +98,19 @@ public class RevenueServiceUnitTests {
 //
 //    @Test
 //    public void TestUpdateRevenue(Revenue price) {
+//        //UUID anlegen
+//        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 //
+//        //Preisobjekt mit einer UUID anlegen
+//        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+//
+//        //Objekte & Methoden mocken
+//        setup();
+//        Mockito.when(revenueService.revenueForFlight(id)).thenReturn(price);
+//        Mockito.doCallRealMethod().when(revenueService).updatePrice(id,200.0);    //Preis von 500.0 auf 200.0 setzen
+//
+//        //Tests
+//        Assert.assertEquals(revenue.getValue(), priceService.priceForFlight(id).getValue());
 //    }
+    // #### Was für einen Wert wollen wir hier updaten?!? ####
 }

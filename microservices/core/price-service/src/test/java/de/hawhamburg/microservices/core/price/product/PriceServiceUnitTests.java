@@ -49,7 +49,7 @@ public class PriceServiceUnitTests {
         Mockito.when(priceService.priceForFlight(id3)).thenReturn(price3);
 
         //Tests
-        Assert.assertEquals(price.getValue(), priceService.priceForFlight(id).getValue());
+        Assert.assertEquals(100.0, priceService.priceForFlight(id).getValue());
         Assert.assertEquals(100.0, priceService.priceForFlight(id2).getValue());
         Assert.assertEquals(200.0, priceService.priceForFlight(id3).getValue());
     }
@@ -73,12 +73,24 @@ public class PriceServiceUnitTests {
         allPrices.add(price2);
         allPrices.add(price3);
 
+
+        List<Price> priceList2 = new ArrayList<>();
+        Price price4 = new Price.PriceBuilder().withFlightId(id).withValue(100.0).build();
+        Price price5 = new Price.PriceBuilder().withFlightId(id2).withValue(100.0).build();
+        Price price6 = new Price.PriceBuilder().withFlightId(id3).withValue(200.0).build();
+        priceList2.add(price4);
+        priceList2.add(price5);
+        priceList2.add(price6);
+
+
         //Objekte & Methoden mocken
         setup();
         Mockito.when(priceService.findAllPrices()).thenReturn(allPrices);
 
         //Tests
-        Assert.assertEquals(allPrices ,priceService.findAllPrices());
+        for(int i=0;i<allPrices.size();i++){
+            Assert.assertEquals(allPrices.get(i).getValue(),priceList2.get(i).getValue());
+        }
 
     }
 
@@ -102,8 +114,8 @@ public class PriceServiceUnitTests {
         Mockito.when(priceService.createPrice(price3)).thenReturn(price3);
 
         //Tests
-        Assert.assertEquals(price.getValue(), priceService.createPrice(price).getValue());
-        Assert.assertEquals(price2.getValue(), priceService.createPrice(price2).getValue());
+        Assert.assertEquals(100.0, priceService.createPrice(price).getValue());
+        Assert.assertEquals(100.0, priceService.createPrice(price2).getValue());
         Assert.assertEquals(200.0, priceService.createPrice(price3).getValue());
 
     }
@@ -113,16 +125,19 @@ public class PriceServiceUnitTests {
 
         //UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+        UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Preisobjekt mit einer UUID anlegen
         Price price = new Price.PriceBuilder().withFlightId(id).withValue(500.0).build();
 
+
         //Objekte & Methoden mocken
         setup();
-        Mockito.doCallRealMethod().when(priceService).removePrice(id);    //Preis mit id löschen
+        Mockito.when(priceService.removePrice(id2)).thenReturn(true);
 
         //Tests
-        Assert.assertNull(priceService.priceForFlight(id));
+        Assert.assertFalse(priceService.removePrice(id));
+        Assert.assertTrue(priceService.removePrice(id2));
     }
 
     @Test

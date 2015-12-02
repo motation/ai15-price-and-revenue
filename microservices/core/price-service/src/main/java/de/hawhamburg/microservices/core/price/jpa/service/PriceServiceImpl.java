@@ -56,9 +56,14 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public void removePrice(UUID flightId){
-        Price price = priceRepository.findByFlightId(flightId);
-        priceRepository.delete(price);
+    public boolean removePrice(UUID flightId){
+        try{
+            Price price = priceRepository.findByFlightId(flightId);
+            priceRepository.delete(price);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override

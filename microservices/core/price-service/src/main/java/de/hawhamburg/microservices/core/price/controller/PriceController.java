@@ -60,16 +60,14 @@ public class PriceController {
         }
     }
 
-    @RequestMapping(value="/price/{flightId}", method = RequestMethod.PUT)
-    public void deletePrice(@RequestBody final Price price, HttpServletResponse response) throws IOException {
-        try {
-            //priceService.updatePrice(price);                  #### Warum hier updatePrice? ####
-            response.setStatus(HttpServletResponse.SC_OK);
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
+    @RequestMapping(value="/price/{flightId}/{value}", method = RequestMethod.PUT)
+    public void updatePrice(@PathVariable final UUID flightId, @PathVariable final double value, HttpServletResponse response) throws IOException {
+            if(priceService.updatePrice(flightId,value)) {
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
     }
-
 
 
     public static void main(String[] args) throws IOException {

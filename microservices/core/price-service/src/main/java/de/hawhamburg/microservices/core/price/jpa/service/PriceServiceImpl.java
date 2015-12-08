@@ -56,16 +56,26 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public void removePrice(UUID flightId){
-        Price price = priceRepository.findByFlightId(flightId);
-        priceRepository.delete(price);
+    public boolean removePrice(UUID flightId){
+        try{
+            Price price = priceRepository.findByFlightId(flightId);
+            if(price == null) return false;
+            priceRepository.delete(price);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void updatePrice(UUID flightId, double value) {
+    public boolean updatePrice(UUID flightId, double value) {
         Price temp = priceRepository.findByFlightId(flightId);
-        temp.setValue(value);
+        Price priceToUpdate = new Price.PriceBuilder()
+                .withFlightId(flightId)
+                .withId(temp.getId())
+                .withValue(value)
+                .build();
+        Price savePrice = priceRepository.save(priceToUpdate);
+        return ((savePrice.getValue() == value) && (savePrice.getFlightId() == flightId) && (savePrice.getId() == temp.getId()));
     }
-
-
 }

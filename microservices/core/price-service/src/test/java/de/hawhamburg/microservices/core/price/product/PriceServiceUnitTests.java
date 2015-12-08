@@ -1,11 +1,18 @@
 package de.hawhamburg.microservices.core.price.product;
 
 import de.hawhamburg.microservices.core.price.jpa.domain.Price;
+import de.hawhamburg.microservices.core.price.jpa.repository.PriceRepository;
 import de.hawhamburg.microservices.core.price.jpa.service.PriceService;
 import de.hawhamburg.microservices.core.price.jpa.service.PriceServiceImpl;
 import org.junit.Before;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,16 +25,15 @@ import java.util.UUID;
  */
 public class PriceServiceUnitTests {
 
-    private PriceService priceService;
+    @InjectMocks
+    private PriceService priceService = new PriceServiceImpl();
 
-    @Before
+    @Mock
+    private PriceRepository priceRepository;
+
+    @BeforeMethod
     public void init(){
-        this.priceService = new PriceServiceImpl();
-    }
-
-    @Before
-    public void setup() {
-        priceService = Mockito.mock(PriceServiceImpl.class);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
@@ -39,18 +45,28 @@ public class PriceServiceUnitTests {
         UUID id3 = UUID.fromString("2b4acc1d-3439-4b67-905a-1f7a4bb692cc");
 
         //Preisobjekt mit einer UUID anlegen
-        Price price = new Price.PriceBuilder().withFlightId(id).withValue(100.0).build();
-        Price price2 = new Price.PriceBuilder().withFlightId(id2).withValue(100.0).build();
-        Price price3 = new Price.PriceBuilder().withFlightId(id3).withValue(200.0).build();
+        Price price = new Price.PriceBuilder()
+                .withId(1)
+                .withFlightId(id)
+                .withValue(100.0)
+                .build();
+        Price price2 = new Price.PriceBuilder()
+                .withId(2)
+                .withFlightId(id2)
+                .withValue(100.0)
+                .build();
+        Price price3 = new Price.PriceBuilder()
+                .withId(3)
+                .withFlightId(id3)
+                .withValue(200.0).build();
 
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(priceService.priceForFlight(id)).thenReturn(price);
-        Mockito.when(priceService.priceForFlight(id2)).thenReturn(price2);
-        Mockito.when(priceService.priceForFlight(id3)).thenReturn(price3);
+        Mockito.when(priceRepository.findByFlightId(id)).thenReturn(price);
+        Mockito.when(priceRepository.findByFlightId(id2)).thenReturn(price2);
+        Mockito.when(priceRepository.findByFlightId(id3)).thenReturn(price3);
 
         //Tests
-        Assert.assertEquals(price.getValue(), priceService.priceForFlight(id).getValue());
+        Assert.assertEquals(100.0, priceService.priceForFlight(id).getValue());
         Assert.assertEquals(100.0, priceService.priceForFlight(id2).getValue());
         Assert.assertEquals(200.0, priceService.priceForFlight(id3).getValue());
     }
@@ -74,13 +90,15 @@ public class PriceServiceUnitTests {
         allPrices.add(price2);
         allPrices.add(price3);
 
+
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(priceService.findAllPrices()).thenReturn(allPrices);
+        Mockito.when(priceRepository.findAll()).thenReturn(allPrices);
+        List<Price> priceList2 = priceService.findAllPrices();
 
         //Tests
-        Assert.assertEquals(allPrices ,priceService.findAllPrices());
-
+        Assert.assertEquals(100.0,priceList2.get(0).getValue());
+        Assert.assertEquals(100.0,priceList2.get(1).getValue());
+        Assert.assertEquals(200.0,priceList2.get(2).getValue());
     }
 
     @Test
@@ -97,14 +115,14 @@ public class PriceServiceUnitTests {
         Price price3 = new Price.PriceBuilder().withFlightId(id3).withValue(200.0).build();
 
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(priceService.createPrice(price)).thenReturn(price);
-        Mockito.when(priceService.createPrice(price2)).thenReturn(price2);
-        Mockito.when(priceService.createPrice(price3)).thenReturn(price3);
+
+        Mockito.when(priceRepository.save(price)).thenReturn(price);
+        Mockito.when(priceRepository.save(price2)).thenReturn(price2);
+        Mockito.when(priceRepository.save(price3)).thenReturn(price3);
 
         //Tests
-        Assert.assertEquals(price.getValue(), priceService.createPrice(price).getValue());
-        Assert.assertEquals(price2.getValue(), priceService.createPrice(price2).getValue());
+        Assert.assertEquals(100.0, priceService.createPrice(price).getValue());
+        Assert.assertEquals(100.0, priceService.createPrice(price2).getValue());
         Assert.assertEquals(200.0, priceService.createPrice(price3).getValue());
 
     }
@@ -112,34 +130,52 @@ public class PriceServiceUnitTests {
     @Test
     public void TestRemovePrice() {
 
-        //UUID anlegen
+        // UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+        UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+        UUID id3 = UUID.fromString("1c4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
-        //Preisobjekt mit einer UUID anlegen
+        // Preisobjekt mit einer UUID anlegen
         Price price = new Price.PriceBuilder().withFlightId(id).withValue(500.0).build();
+        Price price2 = new Price.PriceBuilder().withFlightId(id).withValue(600.0).build();
+        Price price3 = new Price.PriceBuilder().withFlightId(id).withValue(600.0).build();
 
-        //Objekte & Methoden mocken
-        setup();
-        Mockito.doCallRealMethod().when(priceService).removePrice(id);    //Preis mit id löschen
+        // Objekte & Methoden mocken
+        Mockito.when(priceRepository.findByFlightId(id)).thenReturn(price);
+        Mockito.when(priceRepository.findByFlightId(id2)).thenReturn(price2);
+        Mockito.doNothing().when(priceRepository).delete(price);
+        Mockito.doNothing().when(priceRepository).delete(price2);
 
-        //Tests
-        Assert.assertNull(priceService.priceForFlight(id));
+        // Tests
+        Assert.assertTrue(priceService.removePrice(id));
+        Assert.assertTrue(priceService.removePrice(id2));
+        Assert.assertFalse(priceService.removePrice(id3));
     }
 
     @Test
     public void TestUpdatePrice() {
-        //UUID anlegen
+        // UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Preisobjekt mit einer UUID anlegen
-        Price price = new Price.PriceBuilder().withFlightId(id).withValue(500.0).build();
+        Price price = new Price.PriceBuilder()
+                .withFlightId(id)
+                .withId(1)
+                .withValue(500.0)
+                .build();
+
+        Price price2 = new Price.PriceBuilder()
+                .withFlightId(id)
+                .withValue(300.0)
+                .withId(1)
+                .build();
 
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(priceService.priceForFlight(id)).thenReturn(price);
-        Mockito.doCallRealMethod().when(priceService).updatePrice(id,200.0);    //Preis von 500.0 auf 200.0 setzen
+        Mockito.when(priceRepository.findByFlightId(id)).thenReturn(price);
+        //OF we have to use price to because update will change the value
+        Mockito.when(priceRepository.save(price2)).thenReturn(price2);
 
         //Tests
-        Assert.assertEquals(price.getValue(), priceService.priceForFlight(id).getValue());
+        Assert.assertTrue(priceService.updatePrice(id, 300.0));
     }
 }

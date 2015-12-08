@@ -1,0 +1,103 @@
+/**
+ *
+ *
+ * File created and maintained by:
+ * Christian Hüning - christian.huening@haw-hamburg.de
+ */
+
+
+/**
+ * Define general parameters, dependencies and repositories for the build script
+ */
+buildscript {
+    ext {
+        springBootVersion = '1.2.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+/**
+ * Load several plugins, consult the gradle documentation for more info
+ */
+apply plugin: 'java'
+
+/**
+ * Define the name and version of the resulting jar file
+ */
+jar {
+    baseName = 'ExtTestContainer_for_api'
+    version = '0.0.1-SNAPSHOT'
+}
+
+
+/**
+ * Define source and target java version compatibility
+ */
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+group = 'hawai'
+//mainClassName = 'de.haw.hamburg.hawai.cdt.ProductApiServiceApplication'
+
+/**
+ * Setup library repositories
+ */
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        // Can't find spring-cloud-build in maven central...
+        url 'http://maven.springframework.org/release'
+    }
+}
+
+
+dependencies {
+    testCompile 'com.google.code.gson:gson:2.5'
+    testCompile 'org.mockito:mockito-all:2.0.2-beta'
+    testCompile 'org.assertj:assertj-core:3.1.0'
+    testCompile 'org.testng:testng:6.9.6'
+    testCompile 'com.jayway.restassured:rest-assured:2.5.0'
+
+    testRuntime 'org.mockito:mockito-all:2.0.2-beta'
+    testRuntime 'org.assertj:assertj-core:3.1.0'
+    testRuntime 'org.testng:testng:6.9.6'
+    testRuntime 'com.jayway.restassured:rest-assured:2.5.0'
+}
+
+
+/**
+ * Setup Tests
+ */
+
+test {
+    // enable TestNG support (default is JUnit)
+    useTestNG()
+}
+
+
+
+
+
+/**
+ * Define tasks
+ */
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.7'
+}
+
+
+
+tasks.withType(Test) {
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat 'full'
+    }
+}

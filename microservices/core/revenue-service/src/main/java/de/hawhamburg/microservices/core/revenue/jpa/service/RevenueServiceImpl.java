@@ -70,9 +70,14 @@ public class RevenueServiceImpl implements RevenueService {
     }
 
     @Override
-    public void removeRevenue(UUID flightId){
-        Revenue revenue = revenueRepository.findByFlightId(flightId);
-        revenueRepository.delete(revenue);
+    public boolean removeRevenue(UUID flightId){
+        try{
+            Revenue revenue = revenueRepository.findByFlightId(flightId);
+            revenueRepository.delete(revenue);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override

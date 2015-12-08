@@ -40,7 +40,8 @@ public class PriceCompositeIntegration {
 
         ResponseEntity<String> resultStr = restTemplate.getForEntity(url,String.class);
         Price price = ResponseHelper.response2Price(resultStr);
-        return utils.createOkResponse(price);
+        ResponseEntity<Price> response = utils.createOkResponse(price);
+        return response;
     }
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")

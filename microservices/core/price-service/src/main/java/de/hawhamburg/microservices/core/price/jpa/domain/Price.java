@@ -30,12 +30,32 @@ public class Price {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public UUID getFlightId() {
         return flightId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Price price = (Price) o;
+
+        if (Double.compare(price.value, value) != 0) return false;
+        if (id != null ? !id.equals(price.id) : price.id != null) return false;
+        return !(flightId != null ? !flightId.equals(price.flightId) : price.flightId != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id != null ? id.hashCode() : 0;
+        temp = Double.doubleToLongBits(value);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (flightId != null ? flightId.hashCode() : 0);
+        return result;
     }
 
     public static class PriceBuilder{
@@ -52,6 +72,11 @@ public class Price {
 
         public PriceBuilder withFlightId(UUID flightId){
             this.price.flightId = flightId;
+            return this;
+        }
+
+        public PriceBuilder withId(long id){
+            this.price.id = id;
             return this;
         }
 

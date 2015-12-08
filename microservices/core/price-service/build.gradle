@@ -129,7 +129,6 @@ docker {
 test {
     // enable TestNG support (default is JUnit)
     useTestNG()
-
     reports.html.destination = file("$reports.html.destination/unit")
     reports.junitXml.destination = file("$reports.junitXml.destination/unit")
 }
@@ -208,31 +207,3 @@ tasks.withType(Test) {
         exceptionFormat 'full'
     }
 }
-
-// price and mysql service
-
-
-//task createMysqlContainer(type: DockerCreateContainer) {
-//    imageId = "mysql:latest"
-//    portBindings = ["3306:3306"]
-//    containerName = "mysql"
-//}
-
-//task startMysql(type: DockerStartContainer, dependsOn: [createMysqlContainer]) {
-//    targetContainerId { createMysql.getContainerId() }
-//}
-//
-//task createPrice(type: DockerCreateContainer, dependsOn: [startMysql]) {
-//    imageId = "price"
-//    containerName = "price-service"
-//    portBindings = ["8080:8080"]
-//    links = ["mysql:mysql"]
-//}
-//
-//task startPrice(type: DockerStartContainer, dependsOn: [createPrice]) {
-//    targetContainerId { createPrice.getContainerId() }
-//}
-//
-//task startCoreServiceWithMysql(dependsOn: [startPrice]){
-//
-//}

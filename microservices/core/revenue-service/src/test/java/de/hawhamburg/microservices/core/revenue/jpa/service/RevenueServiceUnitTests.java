@@ -1,8 +1,6 @@
-package de.hawhamburg.microservices.core.revenue.product;
+package de.hawhamburg.microservices.core.revenue.jpa.service;
 
 import de.hawhamburg.microservices.core.revenue.jpa.domain.Revenue;
-import de.hawhamburg.microservices.core.revenue.jpa.service.RevenueService;
-import de.hawhamburg.microservices.core.revenue.jpa.service.RevenueServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.mockito.Mockito;

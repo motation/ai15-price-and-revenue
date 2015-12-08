@@ -1,4 +1,4 @@
-package de.hawhamburg.microservices.core.price.product;
+package de.hawhamburg.microservices.core.price.jpa.service;
 
 import de.hawhamburg.microservices.core.price.jpa.domain.Price;
 import de.hawhamburg.microservices.core.price.jpa.repository.PriceRepository;

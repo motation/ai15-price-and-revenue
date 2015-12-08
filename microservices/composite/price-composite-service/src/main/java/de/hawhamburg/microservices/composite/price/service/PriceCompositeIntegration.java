@@ -58,7 +58,7 @@ public class PriceCompositeIntegration {
     }
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")
-    public void deletePrice(UUID flightId){
+    public boolean deletePrice(UUID flightId){
         //OF TODO implement
         //OF TODO use this later
 //        URI uri = utils.getServiceUrl("price");
@@ -67,11 +67,16 @@ public class PriceCompositeIntegration {
         //OF TODO remove this later!
         String urlToPriceService = "http://localhost:8080";
         String url =urlToPriceService + "/price/"+flightId;
-        restTemplate.delete(url);
+        try{
+            restTemplate.delete(url);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")
-    public void putPrice(Price price){
+    public boolean putPrice(Price price){
         //OF TODO use this later
 //        URI uri = utils.getServiceUrl("price");
 //        String url = uri.toString() + "/price";
@@ -79,7 +84,12 @@ public class PriceCompositeIntegration {
         //OF TODO remove this later!
         String urlToPriceService = "http://localhost:8080";
         String url =urlToPriceService + "/price";
-        restTemplate.put(url,price);
+        try{
+            restTemplate.put(url,price);
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
 

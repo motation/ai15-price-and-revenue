@@ -60,4 +60,45 @@ public class PriceCompositeIntegrationTest {
 
         Assert.assertEquals(priceToCheck.getValue(),200.0);
     }
+
+    @Test
+    public void testCreatePrice() throws URISyntaxException {
+        UUID uuid = UUID.randomUUID();
+        Price price = new Price.PriceBuilder().withFlightId(uuid).withValue(200.0).build();
+        String urlToPriceService = "http://localhost:8080";
+        String url =urlToPriceService + "/price";
+        ResponseEntity<Price> resultStr = new ResponseEntity<>(price, HttpStatus.OK);
+        Mockito.when(restTemplate.postForEntity(url, price, Price.class)).thenReturn(resultStr);
+        Mockito.when(utils.createOkResponse(price)).thenReturn(new ResponseEntity<>(price,HttpStatus.OK));
+        ResponseEntity<Price> responseEntity = priceCompositeIntegration.createPrice(price);
+        Price priceToCheck = responseEntity.getBody();
+
+        Assert.assertEquals(priceToCheck.getValue(),200.0);
+    }
+
+    @Test
+    public void testDeletePrice() throws URISyntaxException {
+        UUID uuid = UUID.randomUUID();
+        Price price = new Price.PriceBuilder().withFlightId(uuid).withValue(200.0).build();
+
+        String urlToPriceService = "http://localhost:8080";
+        String url =urlToPriceService + "/price";
+        ResponseEntity<Price> resultStr = new ResponseEntity<Price>(price, HttpStatus.OK);
+        Mockito.when(restTemplate.postForEntity(url,price,Price.class)).thenReturn(resultStr);
+        Mockito.when(utils.createOkResponse(price)).thenReturn(new ResponseEntity<>(price,HttpStatus.OK));
+        priceCompositeIntegration.createPrice(price);
+
+        Boolean response = priceCompositeIntegration.deletePrice(uuid);
+        Assert.assertTrue(response);
+    }
+
+    @Test
+    public void testPutPrice() throws URISyntaxException {
+        UUID uuid = UUID.randomUUID();
+        Price price = new Price.PriceBuilder().withFlightId(uuid).withValue(200.0).build();
+
+        Boolean response = priceCompositeIntegration.putPrice(price);
+        Assert.assertTrue(response);
+
+    }
 }

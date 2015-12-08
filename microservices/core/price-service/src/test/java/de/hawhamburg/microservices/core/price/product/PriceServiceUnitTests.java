@@ -4,13 +4,10 @@ import de.hawhamburg.microservices.core.price.jpa.domain.Price;
 import de.hawhamburg.microservices.core.price.jpa.repository.PriceRepository;
 import de.hawhamburg.microservices.core.price.jpa.service.PriceService;
 import de.hawhamburg.microservices.core.price.jpa.service.PriceServiceImpl;
-import org.junit.Before;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -96,8 +93,8 @@ public class PriceServiceUnitTests {
         List<Price> priceList2 = priceService.findAllPrices();
 
         //Tests
-        Assert.assertEquals(100.0,priceList2.get(0).getValue());
-        Assert.assertEquals(100.0,priceList2.get(1).getValue());
+        Assert.assertEquals(100.0, priceList2.get(0).getValue());
+        Assert.assertEquals(100.0, priceList2.get(1).getValue());
         Assert.assertEquals(200.0,priceList2.get(2).getValue());
     }
 
@@ -172,7 +169,7 @@ public class PriceServiceUnitTests {
 
         //Objekte & Methoden mocken
         Mockito.when(priceRepository.findByFlightId(id)).thenReturn(price);
-        //OF we have to use price to because update will change the value
+        //OF we have to use price2 to because update will change the value
         Mockito.when(priceRepository.save(price2)).thenReturn(price2);
 
         //Tests

@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import java.util.UUID;
 
 import static com.jayway.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
@@ -49,9 +50,14 @@ public class PriceApiServiceTests {
     @Test
     public void TestPriceRestGet() {
         UUID flightId = UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39");
-        given().
-                auth().oauth2(token).
-                when().get("https://" + baseAddress + "/api/price/" + flightId).
-                then().body("basicPrice", equalTo(2000.0));
+        given()
+                .auth()
+                .oauth2(token)
+                .when()
+                .get("https://" + baseAddress + "/api/price/" + flightId)
+                .then()
+                //OF TODO https://github.com/jayway/rest-assured/wiki/Usage#note-on-floats-and-doubles
+                //OF we have to compare with float instead of double
+                .body("basicPrice",equalTo(2000.0f));
     }
 }

@@ -204,15 +204,17 @@ task createDockerfile(type: Dockerfile, dependsOn: [copyDist]) {
  * created Dockerfile from the ./build/docker folder and applying a talking tag
  * to the image
  */
-task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile,pullMysql]) {
-    inputDir = createDockerfile.destFile.parentFile
-    tag = 'price-api-service'
-}
 
 task pullMysql(type:DockerPullImage){
     repository = 'mysql'
     tag = 'latest'
 }
+
+task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile,pullMysql]) {
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'price-api-service'
+}
+
 
 task createMysqlContainer(type: DockerCreateContainer) {
     imageId = "mysql:latest"

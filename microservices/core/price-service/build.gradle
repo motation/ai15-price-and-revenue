@@ -196,7 +196,7 @@ task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile]) {
 /**
  * Will be run on the CI Server (bamboo)
  */
-task buildAll(dependsOn: [buildImage,createMysqlImage]) {
+task buildAll(dependsOn: [buildImage]) {
 
 }
 

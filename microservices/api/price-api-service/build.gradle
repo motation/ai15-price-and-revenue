@@ -209,16 +209,16 @@ task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile]) {
     tag = 'price-api-service'
 }
 
-//task pullMysql(type:DockerPullImage){
-//    repository = 'mysql'
-//    tag = 'latest'
-//}
+task pullMysql(type:DockerPullImage){
+    repository = 'mysql'
+    tag = 'latest'
+}
 
 task createMysqlContainer(type: DockerCreateContainer) {
     imageId = "mysql:latest"
     portBindings = ["3306:3306"]
     containerName = "mysql"
-//    env = ['MYSQL_ROOT_PASSWORD=root',"MYSQL_DATABASE=pricerevenue","MYSQL_USER=admin","MYSQL_PASSWORD=root"]
+    env = ['MYSQL_ROOT_PASSWORD=root',"MYSQL_DATABASE=pricerevenue","MYSQL_USER=admin","MYSQL_PASSWORD=root"]
 }
 
 task startMysqlContainer(type:DockerStartContainer, dependsOn:[createMysqlContainer]){

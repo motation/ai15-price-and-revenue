@@ -73,6 +73,7 @@ public class RevenueServiceImpl implements RevenueService {
     public boolean removeRevenue(UUID flightId){
         try{
             Revenue revenue = revenueRepository.findByFlightId(flightId);
+            if(revenue == null) return false;
             revenueRepository.delete(revenue);
         } catch (Exception e){
             return false;
@@ -81,8 +82,9 @@ public class RevenueServiceImpl implements RevenueService {
     }
 
     @Override
-    public void updateRevenue(Revenue revenue) {
+    public boolean updateRevenue(Revenue revenue) {
         revenueRepository.save(revenue);
+        return true;
     }
 
 

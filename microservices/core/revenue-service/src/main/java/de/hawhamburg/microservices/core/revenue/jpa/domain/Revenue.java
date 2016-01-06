@@ -37,6 +37,10 @@ public class Revenue {
         return flightId;
     }
 
+    public double getValue() {
+        return value;
+    }
+
     public double getSoldTicketsFirstClassInternet() {
         return soldTicketsFirstClassInternet;
     }
@@ -71,7 +75,7 @@ public class Revenue {
         }
 
         public RevenueBuilder withValue(double value){
-            this.revenue.soldTicketsFirstClassInternet = value;
+            this.revenue.value = value;
             return this;
         }
 

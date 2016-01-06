@@ -51,6 +51,10 @@ public class Revenue {
         return soldTicketsEconomyClassCounter;
     }
 
+    public double getValue() {
+        return this.value;
+    }
+
 
 
     public static class RevenueBuilder{
@@ -61,7 +65,7 @@ public class Revenue {
         }
 
         public RevenueBuilder withValue(double value){
-            this.revenue.soldTicketsFirstClassInternet = value;
+            revenue.value = value;
             return this;
         }
 

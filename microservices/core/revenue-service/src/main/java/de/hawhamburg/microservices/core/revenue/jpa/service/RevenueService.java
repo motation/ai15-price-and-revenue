@@ -17,6 +17,6 @@ public interface RevenueService {
 
     boolean removeRevenue(UUID flightId);
 
-    void updateRevenue(Revenue price);
+    boolean updateRevenue(Revenue price);
 
 }

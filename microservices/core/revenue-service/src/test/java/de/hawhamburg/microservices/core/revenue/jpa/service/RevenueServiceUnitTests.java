@@ -1,32 +1,33 @@
 package de.hawhamburg.microservices.core.revenue.jpa.service;
 
 import de.hawhamburg.microservices.core.revenue.jpa.domain.Revenue;
+import de.hawhamburg.microservices.core.revenue.jpa.repository.RevenueRepository;
 import org.junit.Assert;
-import org.junit.Before;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Michael B. on 18.11.2015.
- */
+
 public class RevenueServiceUnitTests {
 
-    private RevenueService revenueService;
+    @InjectMocks
+    private RevenueService revenueService = new RevenueServiceImpl();
+    private float delta = (float) 0.000000001;
 
-    @Before
-    public void init(){
-        this.revenueService = new RevenueServiceImpl();
+    @Mock
+    private RevenueRepository revenueRepository;
+
+    @BeforeMethod
+    public void init() {
+        MockitoAnnotations.initMocks(this);
     }
-
-    @Before
-    public void setup() {
-        revenueService = Mockito.mock(RevenueServiceImpl.class);
-    }
-
 
     @Test
     public void TestRevenueForFlight() {
@@ -38,11 +39,15 @@ public class RevenueServiceUnitTests {
         Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(100.0).build();
 
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(revenueService.revenueForFlight(id)).thenReturn(revenue);
+
+        Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);
+
 
         //Tests
         Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.revenueForFlight(id).getFlightId());
+        Assert.assertEquals(100.0, revenueService.revenueForFlight(id).getValue(), delta);
+
+
     }
 
     @Test
@@ -53,36 +58,41 @@ public class RevenueServiceUnitTests {
         UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692cb");
         UUID id3 = UUID.fromString("2b4acc1d-3439-4b67-905a-1f7a4bb692cc");
 
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).build();
-        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id2).build();
-        Revenue revenue3 = new Revenue.RevenueBuilder().withFlightId(id3).build();
-        Revenue revenue4 = new Revenue.RevenueBuilder().withFlightId(id).build();
-        Revenue revenue5 = new Revenue.RevenueBuilder().withFlightId(id2).build();
-        Revenue revenue6 = new Revenue.RevenueBuilder().withFlightId(id3).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(200.0).build();
+        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id2).withValue(300.0).build();
+        Revenue revenue3 = new Revenue.RevenueBuilder().withFlightId(id3).withValue(400.0).build();
+        Revenue revenue4 = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+        Revenue revenue5 = new Revenue.RevenueBuilder().withFlightId(id2).withValue(600.0).build();
+        Revenue revenue6 = new Revenue.RevenueBuilder().withFlightId(id3).withValue(100.0).build();
 
         //Vergleichsliste erzeugen
         List<Revenue> allRevenues = new ArrayList<>();
         allRevenues.add(revenue);
         allRevenues.add(revenue2);
         allRevenues.add(revenue3);
-
-        List<Revenue> allRevenues2 = new ArrayList<>();
-        allRevenues2.add(revenue4);
-        allRevenues2.add(revenue5);
-        allRevenues2.add(revenue6);
+        allRevenues.add(revenue4);
+        allRevenues.add(revenue5);
+        allRevenues.add(revenue6);
 
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(revenueService.findAllRevenues()).thenReturn(allRevenues);
+        Mockito.when(revenueRepository.findAll()).thenReturn(allRevenues);
+        List<Revenue> revenueList = revenueService.findAllRevenues();
 
         //Tests
-        for(int i=0;i<allRevenues.size();i++){
-            org.testng.Assert.assertEquals(allRevenues.get(i).getFlightId(), allRevenues2.get(i).getFlightId());
-        }
+        Assert.assertEquals(200.0, revenueList.get(0).getValue(), delta);
+        Assert.assertEquals(300.0, revenueList.get(1).getValue(), delta);
+        Assert.assertEquals(400.0, revenueList.get(2).getValue(), delta);
+        Assert.assertEquals(500.0, revenueList.get(3).getValue(), delta);
+        Assert.assertEquals(600.0, revenueList.get(4).getValue(), delta);
+        Assert.assertNotSame(700.0, revenueList.get(5).getValue());
+        Assert.assertEquals(100.0, revenueList.get(5).getValue(), delta);
     }
+
 
     @Test
     public void TestCreateRevenue() {
+
+
 
         //UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
@@ -91,11 +101,12 @@ public class RevenueServiceUnitTests {
         Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(100.0).build();
 
         //Objekte & Methoden mocken
-        setup();
         Mockito.when(revenueService.createRevenue(revenue)).thenReturn(revenue);
 
         //Tests
         Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.createRevenue(revenue).getFlightId());
+        Assert.assertEquals(100.0, revenueService.createRevenue(revenue).getValue(), delta);
+
     }
 
     @Test
@@ -104,21 +115,38 @@ public class RevenueServiceUnitTests {
         //UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
         UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+        UUID id3 = UUID.fromString("1c4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
-        //Preisobjekt mit einer UUID anlegen
-        Revenue price = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+        //Revenueobjekt mit einer UUID anlegen
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id).withValue(600.0).build();
 
         //Objekte & Methoden mocken
-        setup();
-        Mockito.when(revenueService.removeRevenue(id2)).thenReturn(true);    //Preis mit id löschen
+        Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);
+        Mockito.when(revenueRepository.findByFlightId(id2)).thenReturn(revenue2);
+        Mockito.doNothing().when(revenueRepository).delete(revenue);
+        Mockito.doNothing().when(revenueRepository).delete(revenue2);
 
         //Tests
-        Assert.assertFalse(revenueService.removeRevenue(id));
+
         Assert.assertTrue(revenueService.removeRevenue(id2));
+        Assert.assertTrue(revenueService.removeRevenue(id));
+        Assert.assertFalse(revenueService.removeRevenue(id3));
     }
 
-//    @Test
-//    public void TestUpdateRevenue(Revenue price) {
-            //To-Do
-//    }
+    @Test
+    public void TestUpdateRevenue(Revenue price) {
+
+        //UUID anlegen
+        UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
+
+        //Revenueobjekt mit einer UUID anlegen
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+
+        //Objekte & Methoden mocken
+        Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);
+
+        //Tests
+        Assert.assertTrue(revenueService.updateRevenue(revenue));
+    }
 }

@@ -515,6 +515,16 @@ task serviceTest(type: Test, dependsOn: [setupApplicationLandscape]) {
     finalizedBy stopNetflixEdgeContainer
 }
 
+task serviceTestSetupUp(type: Test) {
+    useTestNG()
+    testClassesDir = sourceSets.serviceTest.output.classesDir
+    classpath = sourceSets.serviceTest.runtimeClasspath
+
+    reports.html.destination = file("$reports.html.destination/service")
+    reports.junitXml.destination = file("$reports.junitXml.destination/service")
+    finalizedBy stopNetflixEdgeContainer
+}
+
 
 task createContainerForCDT(type: DockerCreateContainer, dependsOn: [serviceTest]){
     imageId = 'artifactory.mars.haw-hamburg.de:5002/exttestcontainer_for_api'

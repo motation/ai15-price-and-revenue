@@ -522,7 +522,6 @@ task serviceTestSetupUp(type: Test) {
 
     reports.html.destination = file("$reports.html.destination/service")
     reports.junitXml.destination = file("$reports.junitXml.destination/service")
-    finalizedBy stopNetflixEdgeContainer
 }
 
 

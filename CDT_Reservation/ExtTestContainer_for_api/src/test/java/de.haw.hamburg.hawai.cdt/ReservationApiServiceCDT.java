@@ -74,7 +74,9 @@ public class ProductApiServiceCDT {
         JsonArray arr = parser.parse(json).getAsJsonArray();
         JsonElement jsonElement = arr.get(0);
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        UUID testId = UUID.fromString(jsonObject.get("flightId").getAsString());
+
+//      TODO - ggf ist die flightID bei Reservation als long hinterlegt!
+        UUID testId = UUID.fromString(jsonObject.get("flightID").getAsString());
 
 
 //      TODO - Für welche FlightId sollen die Reservierungen angefragt werden??

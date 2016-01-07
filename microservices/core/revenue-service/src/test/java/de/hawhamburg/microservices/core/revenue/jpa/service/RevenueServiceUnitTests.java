@@ -135,7 +135,7 @@ public class RevenueServiceUnitTests {
     }
 
     @Test
-    public void TestUpdateRevenue(Revenue price) {
+    public void TestUpdateRevenue() {
 
         //UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");

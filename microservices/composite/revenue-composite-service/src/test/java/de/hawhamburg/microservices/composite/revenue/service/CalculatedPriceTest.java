@@ -1,7 +1,7 @@
 package de.hawhamburg.microservices.composite.revenue.service;
 
-import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
-import de.hawhamburg.microservices.composite.price.model.Price;
+import de.hawhamburg.microservices.composite.revenue.model.CalculatedPrice;
+import de.hawhamburg.microservices.composite.revenue.model.Price;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

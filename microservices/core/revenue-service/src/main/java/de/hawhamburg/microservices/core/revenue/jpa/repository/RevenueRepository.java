@@ -1,5 +1,6 @@
 package de.hawhamburg.microservices.core.revenue.jpa.repository;
 
+
 import de.hawhamburg.microservices.core.revenue.jpa.domain.Revenue;
 import org.springframework.data.repository.CrudRepository;
 

@@ -127,7 +127,7 @@ public class RevenueCompositeController {
                         }
                     }
                 }
-//          TODO - Speicherung des einzelnen CalcRevenue
+//          TODO - Speicherung des einzelnen Revenue
                 Revenue newRevenue = new Revenue.RevenueBuilder()
                         .withFlightId(tempId)
                         .withsoldTicketsBusinessClassCounter(soldTicketsBusinessClassCounter)
@@ -149,5 +149,7 @@ public class RevenueCompositeController {
         }
 //        TODO - eigentlicher return-Wert???
     }
+
+
 
 }

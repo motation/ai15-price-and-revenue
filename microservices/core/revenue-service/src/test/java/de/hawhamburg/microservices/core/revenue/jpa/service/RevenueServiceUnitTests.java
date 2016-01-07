@@ -49,7 +49,7 @@ public class RevenueServiceUnitTests {
 
         //Tests
         Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.revenueForFlight(id).getFlightId());
-        Assert.assertEquals(120.0, revenueService.revenueForFlight(id).getSoldTicketsBusinessClassInternet(), delta);
+        Assert.assertEquals(120.0, revenueService.revenueForFlight(id).getSoldTicketsBusinessClassStaff(), delta);
 
 
     }
@@ -98,9 +98,8 @@ public class RevenueServiceUnitTests {
         Assert.assertEquals(200.0, revenueList.get(0).getSoldTicketsBusinessClassCounter(), delta);
         Assert.assertEquals(300.0, revenueList.get(1).getSoldTicketsBusinessClassInternet(), delta);
         Assert.assertEquals(400.0, revenueList.get(2).getSoldTicketsBusinessClassStaff(), delta);
-        Assert.assertEquals(500.0, revenueList.get(3).getSoldTicketsBusinessClassStaff(), delta);
         Assert.assertNotSame(700.0, revenueList.get(5).getSoldTicketsEconomyClassCounter());
-        Assert.assertEquals(100.0, revenueList.get(5).getSoldTicketsEconomyClassCounter(), delta);
+        Assert.assertEquals(100.0, revenueList.get(5).getSoldTicketsEconomyClassInternet(), delta);
     }
 
 

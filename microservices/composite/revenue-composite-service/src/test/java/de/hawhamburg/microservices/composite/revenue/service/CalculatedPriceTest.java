@@ -45,7 +45,7 @@ public class CalculatedPriceTest {
         CalculatedPrice calculatedPrice;
         calculatedPrice = new CalculatedPrice(basicPrice);
 
-        double firstClassPriceByTravelOffice = 150.0 * 1.2;
+        double firstClassPriceByTravelOffice = 150.0 * 1.1;
         Assert.assertEquals(firstClassPriceByTravelOffice,calculatedPrice.getFirstClassPriceByTravelOffice());
 
     }
@@ -58,7 +58,7 @@ public class CalculatedPriceTest {
         CalculatedPrice calculatedPrice;
         calculatedPrice = new CalculatedPrice(basicPrice);
 
-        double economyPriceByTravelOffice = 120.0 * 1.2;
+        double economyPriceByTravelOffice = 120.0 * 1.1;
         Assert.assertEquals(economyPriceByTravelOffice,calculatedPrice.getEconomyClassPriceByTravelOffice());
 
     }

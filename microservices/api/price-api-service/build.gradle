@@ -225,6 +225,8 @@ task createMysqlContainer(type: DockerCreateContainer) {
 
 task startMysqlContainer(type:DockerStartContainer, dependsOn:[createMysqlContainer]){
     targetContainerId { createMysqlContainer.getContainerId() }
+    println("Waiting for MYSQL to start up...")
+    sleep(60 * 1000)
 }
 
 

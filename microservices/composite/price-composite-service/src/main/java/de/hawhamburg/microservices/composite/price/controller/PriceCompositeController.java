@@ -110,7 +110,7 @@ public class PriceCompositeController {
                 });
 
 
-        String baseAddress = "";
+        String baseAddress = "127.0.0.1";
         String token;
         RestAssured.useRelaxedHTTPSValidation();
         // Register JSON Parser for plain text responses

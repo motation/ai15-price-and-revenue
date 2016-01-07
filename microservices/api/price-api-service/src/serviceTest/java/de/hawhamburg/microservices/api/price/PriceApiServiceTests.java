@@ -2,9 +2,21 @@ package de.hawhamburg.microservices.api.price;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.parsing.Parser;
+import org.springframework.http.*;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.AccessTokenRequest;
+import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static com.jayway.restassured.RestAssured.*;
@@ -21,6 +33,7 @@ public class PriceApiServiceTests {
 
     @BeforeClass
     public void setupSecurityToken() {
+        helper();
         setupSystemIpConfig();
         // Define relaxed SSL Auth, since we use self-signed certificates
         RestAssured.useRelaxedHTTPSValidation();
@@ -45,6 +58,20 @@ public class PriceApiServiceTests {
         } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
             baseAddress = "127.0.0.1";
         }
+        baseAddress = "192.168.178.22";
+    }
+
+    private void helper() {
+        javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+                new javax.net.ssl.HostnameVerifier() {
+                    public boolean verify(String hostname,
+                                          javax.net.ssl.SSLSession sslSession) {
+                        if (hostname.equals("192.168.178.22")) {
+                            return true;
+                        }
+                        return true;
+                    }
+                });
     }
 
     @Test
@@ -58,6 +85,20 @@ public class PriceApiServiceTests {
                 .then()
                 //OF TODO https://github.com/jayway/rest-assured/wiki/Usage#note-on-floats-and-doubles
                 //OF we have to compare with float instead of double
-                .body("basicPrice",equalTo(2000.0f));
+                .body("basicPrice", equalTo(2000.0f));
+    }
+
+    @Test
+    public void testPriceToken() {
+        //OF DONT REMOVE
+//        UUID flightId = UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39");
+//        String uri = "https://" + baseAddress + "/api/price/" + flightId;
+//        RestTemplate rest = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "Bearer " + token);
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//        ResponseEntity<String> resp = rest.exchange(uri, HttpMethod.GET, entity, String.class);
+//        System.out.println("hallo");
+//        System.out.println(resp.toString());
     }
 }

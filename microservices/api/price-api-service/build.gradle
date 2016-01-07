@@ -225,8 +225,6 @@ task createMysqlContainer(type: DockerCreateContainer) {
 
 task startMysqlContainer(type:DockerStartContainer, dependsOn:[createMysqlContainer]){
     targetContainerId { createMysqlContainer.getContainerId() }
-    println("Waiting for MYSQL to start up...")
-    sleep(60 * 1000)
 }
 
 
@@ -242,6 +240,8 @@ task createRabbitMQContainer(type: DockerCreateContainer, dependsOn: [pullRabbit
     imageId = "rabbitmq:3-management"
     portBindings = ["5672:5672","15672:15672"]
     containerName = "rabbitmq"
+    println("Waiting for MYSQL to start up...")
+    sleep(60 * 1000)
 }
 
 task startRabbitMQContainer(type: DockerStartContainer, dependsOn: [createRabbitMQContainer]) {

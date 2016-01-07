@@ -515,14 +515,14 @@ task serviceTest(type: Test, dependsOn: [setupApplicationLandscape]) {
     finalizedBy stopNetflixEdgeContainer
 }
 
-task serviceTestSetupUp(type: Test) {
-    useTestNG()
-    testClassesDir = sourceSets.serviceTest.output.classesDir
-    classpath = sourceSets.serviceTest.runtimeClasspath
-
-    reports.html.destination = file("$reports.html.destination/service")
-    reports.junitXml.destination = file("$reports.junitXml.destination/service")
-}
+//task serviceTestSetupUp(type: Test) {
+//    useTestNG()
+//    testClassesDir = sourceSets.serviceTest.output.classesDir
+//    classpath = sourceSets.serviceTest.runtimeClasspath
+//
+//    reports.html.destination = file("$reports.html.destination/service")
+//    reports.junitXml.destination = file("$reports.junitXml.destination/service")
+//}
 
 
 task createContainerForCDT(type: DockerCreateContainer, dependsOn: [serviceTest]){

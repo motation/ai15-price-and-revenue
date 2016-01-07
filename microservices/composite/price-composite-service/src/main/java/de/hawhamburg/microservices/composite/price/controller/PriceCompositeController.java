@@ -6,12 +6,14 @@ import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegra
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import java.net.URI;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -29,6 +31,9 @@ public class PriceCompositeController {
 
     @Autowired
     private ServiceUtils utils;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @RequestMapping(value = "/price/{flightId}", method = RequestMethod.GET)
     public ResponseEntity<CalculatedPrice> getPrice(@PathVariable final UUID flightId){
@@ -67,5 +72,20 @@ public class PriceCompositeController {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    @RequestMapping(value="/testPrice/{flightId}" , method = RequestMethod.GET)
+    public CalculatedPrice calc(@PathVariable final UUID flightId){
+        CalculatedPrice price = null;
+        URI uri = utils.getServiceUrl("priceapi");
+        String url = uri.toString() + "/" + flightId;
+
+        //OF TODO remove this later!
+//        String urlToPriceService = "http://localhost:8080";
+//        String url =urlToPriceService + "/price/" + flightID;
+
+        ResponseEntity<CalculatedPrice> resultStr = restTemplate.getForEntity(url,CalculatedPrice.class);
+        price = resultStr.getBody();
+        return price;
     }
 }

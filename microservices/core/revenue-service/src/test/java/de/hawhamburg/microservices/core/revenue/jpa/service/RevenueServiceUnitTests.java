@@ -36,7 +36,11 @@ public class RevenueServiceUnitTests {
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Revenueobjekt mit einer UUID anlegen
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(100.0).build();
+//        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(100.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder()
+                .withFlightId(id)
+                .withsoldTicketsBusinessClassStaff(120)
+                .build();
 
         //Objekte & Methoden mocken
 
@@ -45,7 +49,7 @@ public class RevenueServiceUnitTests {
 
         //Tests
         Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.revenueForFlight(id).getFlightId());
-        Assert.assertEquals(100.0, revenueService.revenueForFlight(id).getValue(), delta);
+        Assert.assertEquals(120.0, revenueService.revenueForFlight(id).getSoldTicketsBusinessClassInternet(), delta);
 
 
     }
@@ -58,12 +62,24 @@ public class RevenueServiceUnitTests {
         UUID id2 = UUID.fromString("1b4acc1d-3439-4b67-905a-1f7a4bb692cb");
         UUID id3 = UUID.fromString("2b4acc1d-3439-4b67-905a-1f7a4bb692cc");
 
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(200.0).build();
-        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id2).withValue(300.0).build();
-        Revenue revenue3 = new Revenue.RevenueBuilder().withFlightId(id3).withValue(400.0).build();
-        Revenue revenue4 = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
-        Revenue revenue5 = new Revenue.RevenueBuilder().withFlightId(id2).withValue(600.0).build();
-        Revenue revenue6 = new Revenue.RevenueBuilder().withFlightId(id3).withValue(100.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id)
+                .withsoldTicketsBusinessClassCounter(200.0)
+                .build();
+        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id2)
+                .withSoldTicketsBusinessClassInternet(300.0)
+                .build();
+        Revenue revenue3 = new Revenue.RevenueBuilder().withFlightId(id3)
+                .withsoldTicketsBusinessClassStaff(400.0)
+                .build();
+        Revenue revenue4 = new Revenue.RevenueBuilder().withFlightId(id)
+                .withsoldTicketsBusinessClassTravelOffice(500.0)
+                .build();
+        Revenue revenue5 = new Revenue.RevenueBuilder().withFlightId(id2)
+                .withSoldTicketsEconomyClassCounter(600.0)
+                .build();
+        Revenue revenue6 = new Revenue.RevenueBuilder().withFlightId(id3)
+                .withSoldTicketsEconomyClassInternet(100.0)
+                .build();
 
         //Vergleichsliste erzeugen
         List<Revenue> allRevenues = new ArrayList<>();
@@ -79,33 +95,32 @@ public class RevenueServiceUnitTests {
         List<Revenue> revenueList = revenueService.findAllRevenues();
 
         //Tests
-        Assert.assertEquals(200.0, revenueList.get(0).getValue(), delta);
-        Assert.assertEquals(300.0, revenueList.get(1).getValue(), delta);
-        Assert.assertEquals(400.0, revenueList.get(2).getValue(), delta);
-        Assert.assertEquals(500.0, revenueList.get(3).getValue(), delta);
-        Assert.assertEquals(600.0, revenueList.get(4).getValue(), delta);
-        Assert.assertNotSame(700.0, revenueList.get(5).getValue());
-        Assert.assertEquals(100.0, revenueList.get(5).getValue(), delta);
+        Assert.assertEquals(200.0, revenueList.get(0).getSoldTicketsBusinessClassCounter(), delta);
+        Assert.assertEquals(300.0, revenueList.get(1).getSoldTicketsBusinessClassInternet(), delta);
+        Assert.assertEquals(400.0, revenueList.get(2).getSoldTicketsBusinessClassStaff(), delta);
+        Assert.assertEquals(500.0, revenueList.get(3).getSoldTicketsBusinessClassStaff(), delta);
+        Assert.assertNotSame(700.0, revenueList.get(5).getSoldTicketsEconomyClassCounter());
+        Assert.assertEquals(100.0, revenueList.get(5).getSoldTicketsEconomyClassCounter(), delta);
     }
 
 
     @Test
     public void TestCreateRevenue() {
 
-
-
         //UUID anlegen
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Revenueobjekt mit einer UUID anlegen
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(100.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id)
+                .withSoldTicketsFirstClassInternet(100.0)
+                .build();
 
         //Objekte & Methoden mocken
         Mockito.when(revenueService.createRevenue(revenue)).thenReturn(revenue);
 
         //Tests
         Assert.assertEquals(UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca"), revenueService.createRevenue(revenue).getFlightId());
-        Assert.assertEquals(100.0, revenueService.createRevenue(revenue).getValue(), delta);
+        Assert.assertEquals(100.0, revenueService.createRevenue(revenue).getSoldTicketsFirstClassInternet(), delta);
 
     }
 
@@ -118,8 +133,12 @@ public class RevenueServiceUnitTests {
         UUID id3 = UUID.fromString("1c4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Revenueobjekt mit einer UUID anlegen
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
-        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id).withValue(600.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id)
+                .withsoldTicketsFirstClassStaff(500.0)
+                .build();
+        Revenue revenue2 = new Revenue.RevenueBuilder().withFlightId(id)
+                .withSoldTicketsFirstClassTravelOffice(600.0)
+                .build();
 
         //Objekte & Methoden mocken
         Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);
@@ -141,7 +160,9 @@ public class RevenueServiceUnitTests {
         UUID id = UUID.fromString("0b4acc1d-3439-4b67-905a-1f7a4bb692ca");
 
         //Revenueobjekt mit einer UUID anlegen
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id).withValue(500.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(id)
+                .withSoldTicketsFirstClassInternet(500.0)
+                .build();
 
         //Objekte & Methoden mocken
         Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);

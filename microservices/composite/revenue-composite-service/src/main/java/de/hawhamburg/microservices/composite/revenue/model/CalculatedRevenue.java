@@ -16,15 +16,29 @@ public class CalculatedRevenue {
     private double economyClassPriceByTravelOffice;
     private double firstClassPriceByCounter;
     private double economyClassPriceByCounter;
+    private double businessClassPriceByCounter;
+    private double businessClassPriceByInternet;
+    private double businessClassPriceByTravelOffice;
+    private double businessClassPriceByStaff;
+    private double firstClassPriceByStaff;
+    private double economyClassPriceByStaff;
 
 
     private double revenue;
-    private double soldTicketsFirstClassInternet = 10;
-    private double soldTicketsEconomyClassInternet = 20;
-    private double soldTicketsFirstClassTravelOffice = 5;
-    private double soldTicketsEconomyClassTravelOffice = 30;
-    private double soldTicketsFirstClassCounter = 2;
-    private double soldTicketsEconomyClassCounter = 6;
+
+    private double soldTicketsFirstClassInternet;
+    private double soldTicketsBusinessClassInternet;
+    private double soldTicketsEconomyClassInternet;
+    private double soldTicketsFirstClassTravelOffice;
+    private double soldTicketsBusinessClassTravelOffice;
+    private double soldTicketsEconomyClassTravelOffice;
+    private double soldTicketsFirstClassCounter;
+    private double soldTicketsBusinessClassCounter;
+    private double soldTicketsEconomyClassCounter;
+    private double soldTicketsEconomyClassStaff;
+    private double soldTicketsFirstClassStaff;
+    private double soldTicketsBusinessClassStaff;
+
 
     public double getSoldTicketsEconomyClassCounter() {
         return soldTicketsEconomyClassCounter;
@@ -50,6 +64,12 @@ public class CalculatedRevenue {
         return soldTicketsFirstClassInternet;
     }
 
+    public double getSoldTicketsBusinessClassInternet() { return soldTicketsBusinessClassInternet; }
+
+    public double getSoldTicketsBusinessClassTravelOffice() { return soldTicketsBusinessClassTravelOffice; }
+
+    public double getSoldTicketsBusinessClassCounter() { return soldTicketsBusinessClassCounter; }
+
     public double getRevenue() {
         return revenue;
     }
@@ -66,6 +86,12 @@ public class CalculatedRevenue {
         this.economyClassPriceByCounter = price.getEconomyClassPriceByCounter();
         this.firstClassPriceByTravelOffice = price.getFirstClassPriceByTravelOffice();
         this.economyClassPriceByTravelOffice = price.getEconomyClassPriceByTravelOffice();
+        this.businessClassPriceByCounter = price.getBusinessClassPriceByCounter();
+        this.businessClassPriceByInternet = price.getBusinessClassPriceByInternet();
+        this.businessClassPriceByTravelOffice = price.getBusinessClassPriceByTravelOffice();
+        this.businessClassPriceByStaff = price.getBusinessClassPriceByStaff();
+        this.firstClassPriceByStaff = price.getFirstClassPriceByStaff();
+        this.economyClassPriceByStaff = price.getEconomyClassPriceByStaff();
 
         this.soldTicketsFirstClassInternet = revenue.getSoldTicketsFirstClassInternet();
         this.soldTicketsFirstClassTravelOffice = revenue.getSoldTicketsFirstClassTravelOffice();
@@ -73,13 +99,20 @@ public class CalculatedRevenue {
         this.soldTicketsEconomyClassInternet = revenue.getSoldTicketsEconomyClassInternet();
         this.soldTicketsEconomyClassTravelOffice = revenue.getSoldTicketsEconomyClassTravelOffice();
         this.soldTicketsEconomyClassCounter = revenue.getSoldTicketsEconomyClassCounter();
+        this.soldTicketsBusinessClassCounter = revenue.getSoldTicketsBusinessClassCounter();
+        this.soldTicketsBusinessClassInternet = revenue.getSoldTicketsBusinessClassInternet();
+        this.soldTicketsBusinessClassTravelOffice = revenue.getSoldTicketsBusinessClassTravelOffice();
+        this.soldTicketsBusinessClassStaff = revenue.getSoldTicketsBusinessClassStaff();
+        this.soldTicketsEconomyClassStaff = revenue.getSoldTicketsEconomyClassStaff();
+        this.soldTicketsFirstClassStaff = revenue.getSoldTicketsFirstClassStaff();
         buildRevenue();
     }
     private void buildRevenue() {
-        double revenueForInternet = firstClassPriceByInternet * soldTicketsFirstClassInternet + economyClassPriceByInternet * soldTicketsEconomyClassInternet;
-        double revenueForCounter = firstClassPriceByCounter * soldTicketsFirstClassCounter + economyClassPriceByCounter * soldTicketsEconomyClassCounter;
-        double revenueForTravelOffice = firstClassPriceByTravelOffice * soldTicketsFirstClassTravelOffice + economyClassPriceByTravelOffice * soldTicketsEconomyClassTravelOffice;
-        this.revenue = revenueForCounter + revenueForInternet + revenueForTravelOffice;
+        double revenueForInternet = (firstClassPriceByInternet * soldTicketsFirstClassInternet) + (economyClassPriceByInternet * soldTicketsEconomyClassInternet) + (businessClassPriceByInternet * soldTicketsBusinessClassInternet);
+        double revenueForCounter = (firstClassPriceByCounter * soldTicketsFirstClassCounter) + (economyClassPriceByCounter * soldTicketsEconomyClassCounter) + (businessClassPriceByCounter * soldTicketsBusinessClassCounter);
+        double revenueForTravelOffice = (firstClassPriceByTravelOffice * soldTicketsFirstClassTravelOffice) + (economyClassPriceByTravelOffice * soldTicketsEconomyClassTravelOffice) + (businessClassPriceByTravelOffice * soldTicketsBusinessClassTravelOffice);
+        double revenueForStaff = (firstClassPriceByStaff * soldTicketsFirstClassStaff) + (economyClassPriceByStaff * soldTicketsEconomyClassStaff) + (businessClassPriceByStaff * soldTicketsBusinessClassStaff);
+        this.revenue = revenueForCounter + revenueForInternet + revenueForTravelOffice + revenueForStaff;
     }
 
 }

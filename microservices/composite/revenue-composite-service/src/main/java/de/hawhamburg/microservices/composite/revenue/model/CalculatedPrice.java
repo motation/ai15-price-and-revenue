@@ -1,14 +1,20 @@
 package de.hawhamburg.microservices.composite.revenue.model;
 
+
 /**
- * Created by Ole on 01.12.2015.
+ * Created by Ole on 07.11.2015.
  */
 public class CalculatedPrice {
+
     private final double FIRST = 50;
     private final double ECONOMY = 20;
+    private final double BUSSINESS = 35;
+
+    private final double TRAVELOFFICE = 1.1;
     private final double INTERNET = 1.0;
-    private final double TRAVELOFFICE = 1.2;
     private final double COUNTER = 0.8;
+    private final double STAFF = 0.7;
+
 
     private double basicPrice;
     private double firstClassPriceByInternet;
@@ -17,6 +23,12 @@ public class CalculatedPrice {
     private double economyClassPriceByTravelOffice;
     private double firstClassPriceByCounter;
     private double economyClassPriceByCounter;
+    private double businessClassPriceByCounter;
+    private double businessClassPriceByInternet;
+    private double businessClassPriceByTravelOffice;
+    private double businessClassPriceByStaff;
+    private double firstClassPriceByStaff;
+    private double economyClassPriceByStaff;
 
     public CalculatedPrice(Price price){
         this.basicPrice = price.getValue();
@@ -51,6 +63,31 @@ public class CalculatedPrice {
         this.economyClassPriceByCounter = (basicPrice + ECONOMY) * COUNTER;
     }
 
+    private void calculatePriceBusinessClassByCounter(){
+        this.businessClassPriceByCounter = (basicPrice + BUSSINESS) * COUNTER;
+    }
+
+    private void calculatePriceBusinessClassByInternet(){
+        this.businessClassPriceByInternet = (basicPrice + BUSSINESS) * INTERNET;
+    }
+
+    private void calculatePriceBusinessClassByTravelOffice(){
+        this.businessClassPriceByTravelOffice = (basicPrice + BUSSINESS) * TRAVELOFFICE;
+    }
+
+    private void calculatePriceBusinessClassByStaff(){
+        this.businessClassPriceByStaff = (basicPrice + BUSSINESS) * STAFF;
+    }
+
+    private void calculatePriceEconomyClassByStaff(){
+        this.firstClassPriceByStaff = (basicPrice + FIRST) * STAFF;
+    }
+
+    private void calculatePriceFirstClassByStaff(){
+        this.economyClassPriceByStaff = (basicPrice + ECONOMY) * STAFF;
+    }
+
+
     private void buildPrices() {
         calculatePriceFirstClassByInternet();
         calculatePriceEconomyClassByInternet();
@@ -58,6 +95,12 @@ public class CalculatedPrice {
         calculatePriceEconomyClassByTravelOffice();
         calculatePriceFirstClassByCounter();
         calculatePriceEconomyClassByCounter();
+        calculatePriceBusinessClassByCounter();
+        calculatePriceBusinessClassByInternet();
+        calculatePriceBusinessClassByTravelOffice();
+        calculatePriceBusinessClassByStaff();
+        calculatePriceEconomyClassByStaff();
+        calculatePriceFirstClassByStaff();
     }
 
     public double getBasicPrice() {
@@ -87,4 +130,17 @@ public class CalculatedPrice {
     public double getEconomyClassPriceByCounter() {
         return economyClassPriceByCounter;
     }
+
+    public double getBusinessClassPriceByCounter() { return businessClassPriceByCounter; }
+
+    public double getBusinessClassPriceByInternet() { return businessClassPriceByInternet; }
+
+    public double getBusinessClassPriceByTravelOffice() { return businessClassPriceByTravelOffice; }
+
+    public double getBusinessClassPriceByStaff() { return businessClassPriceByStaff; }
+
+    public double getFirstClassPriceByStaff() { return firstClassPriceByStaff; }
+
+    public double getEconomyClassPriceByStaff() { return economyClassPriceByStaff; }
 }
+

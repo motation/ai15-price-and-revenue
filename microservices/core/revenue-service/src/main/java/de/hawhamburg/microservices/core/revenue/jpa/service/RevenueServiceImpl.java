@@ -25,13 +25,19 @@ public class RevenueServiceImpl implements RevenueService {
             for(double i=2;i<20;i++){
                 Revenue revenue = new Revenue.RevenueBuilder()
                         // TODO später durch Response von Reservation ersetzen
-                        .withValue(12)
-                        .withSoldTicketsFirstClassInternet(i+40)
+//                        .withValue(12)
+                        .withSoldTicketsFirstClassInternet(i + 40)
                         .withSoldTicketsEconomyClassInternet(i+30)
                         .withSoldTicketsFirstClassTravelOffice(i+25)
                         .withSoldTicketsEconomyClassTravelOffice(i+47)
                         .withSoldTicketsFirstClassCounter(i+40)
                         .withSoldTicketsEconomyClassCounter(i+23)
+                        .withsoldTicketsBusinessClassStaff(i+13)
+                        .withsoldTicketsBusinessClassCounter(i+41)
+                        .withsoldTicketsBusinessClassTravelOffice(i+54)
+                        .withSoldTicketsBusinessClassInternet(i+68)
+                        .withsoldTicketsFirstClassStaff(i + 24)
+                        .withsoldTicketsEconomyClassStaff(i+17)
                         .withFlightId(UUID.randomUUID())
                         .build();
                 revenueRepository.save(revenue);
@@ -39,13 +45,19 @@ public class RevenueServiceImpl implements RevenueService {
         }
 
         Revenue revenueSame = new Revenue.RevenueBuilder()
-                .withValue(200)
+//                .withValue(200)
                 .withSoldTicketsFirstClassInternet(50)
                 .withSoldTicketsEconomyClassInternet(80)
                 .withSoldTicketsFirstClassTravelOffice(90)
                 .withSoldTicketsEconomyClassTravelOffice(100)
                 .withSoldTicketsFirstClassCounter(500)
                 .withSoldTicketsEconomyClassCounter(100)
+                .withsoldTicketsBusinessClassStaff(13)
+                .withsoldTicketsBusinessClassCounter(41)
+                .withsoldTicketsBusinessClassTravelOffice(54)
+                .withSoldTicketsBusinessClassInternet(68)
+                .withsoldTicketsFirstClassStaff(24)
+                .withsoldTicketsEconomyClassStaff(17)
                 .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
                 .build();
         revenueRepository.save(revenueSame);
@@ -73,7 +85,6 @@ public class RevenueServiceImpl implements RevenueService {
     public boolean removeRevenue(UUID flightId){
         try{
             Revenue revenue = revenueRepository.findByFlightId(flightId);
-            if(revenue == null) return false;
             revenueRepository.delete(revenue);
         } catch (Exception e){
             return false;
@@ -83,8 +94,10 @@ public class RevenueServiceImpl implements RevenueService {
 
     @Override
     public boolean updateRevenue(Revenue revenue) {
-        revenueRepository.save(revenue);
-        return true;
+
+        if (removeRevenue(revenue.getFlightId()) == true && createRevenue(revenue) !=null) return true;
+
+        return false;
     }
 
 

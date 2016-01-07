@@ -4,12 +4,15 @@ import com.jayway.restassured.RestAssured;
 import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
 import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
@@ -32,6 +35,9 @@ import com.jayway.restassured.parsing.Parser;
 @Produces(APPLICATION_JSON)
 @RestController
 public class PriceCompositeController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PriceCompositeController.class);
+
     @Autowired
     private PriceCompositeIntegration priceCompositeIntegration;
 
@@ -82,6 +88,7 @@ public class PriceCompositeController {
 
     @RequestMapping(value="/testPrice/{flightId}" , method = RequestMethod.GET)
     public CalculatedPrice calc(@PathVariable final UUID flightId){
+        LOG.debug("got a request to testPrice");
         CalculatedPrice price = null;
         URI uri = utils.getServiceUrl("priceapi");
         String url = uri.toString() + "/" + flightId;
@@ -90,12 +97,20 @@ public class PriceCompositeController {
 //        String urlToPriceService = "http://localhost:8080";
 //        String url =urlToPriceService + "/price/" + flightID;
 
+        LOG.debug("url to api is : " + url);
+        String token = getToken();
+        LOG.debug("token is " + token);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + getToken());
+        headers.set("Authorization", "Bearer " + token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<CalculatedPrice> resultStr = restTemplate.exchange(uri, HttpMethod.GET, entity, CalculatedPrice.class);
-        price = resultStr.getBody();
+        ResponseEntity<CalculatedPrice> resultStr = null;
+        try {
+            resultStr = restTemplate.exchange(uri, HttpMethod.GET, entity, CalculatedPrice.class);
+            price = resultStr.getBody();
+        } catch (RestClientException e) {
+            LOG.error(e.getMessage());
+        }
         return price;
     }
 
@@ -110,7 +125,7 @@ public class PriceCompositeController {
                 });
 
 
-        String baseAddress = "";
+        String baseAddress = "127.0.0.1";
         String token;
         RestAssured.useRelaxedHTTPSValidation();
         // Register JSON Parser for plain text responses

@@ -38,7 +38,7 @@ public class RevenueCompositeIntegrationTest {
     @Test
     public void testGetRevenue() throws URISyntaxException {
         UUID flightId = UUID.randomUUID();
-        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(flightId).withValue(200.0).build();
+        Revenue revenue = new Revenue.RevenueBuilder().withFlightId(flightId).withSoldTicketsBusinessClassInternet(200).build();
 
         ResponseEntity<Revenue> revenueResponseEntity = new ResponseEntity<Revenue>(revenue, HttpStatus.OK);
 
@@ -51,7 +51,7 @@ public class RevenueCompositeIntegrationTest {
         ResponseEntity<Revenue> responseEntity = revenueCompositeIntegration.getRevenue(flightId);
         Revenue revenueToCheck = responseEntity.getBody();
 
-        Assert.assertEquals(revenueToCheck.getValue(), 200.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsBusinessClassInternet(), 200.0);
     }
 
 }

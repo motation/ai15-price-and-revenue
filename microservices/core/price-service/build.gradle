@@ -176,11 +176,6 @@ task createDockerfile(type: Dockerfile, dependsOn: [copyDist]) {
     })
 }
 
-task createMysqlImage(type:DockerBuildImage){
-    inputDir = file("mysql")
-    tag = 'mysql'
-}
-
 /**
  * This task builds the actual image of this service by using the previously
  * created Dockerfile from the ./build/docker folder and applying a talking tag
@@ -196,8 +191,8 @@ task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile]) {
 /**
  * Will be run on the CI Server (bamboo)
  */
-task buildAll(dependsOn: [buildImage,createMysqlImage]) {
-
+task buildAll(dependsOn: [buildImage]) {
+    
 }
 
 

@@ -1,13 +1,26 @@
 package de.hawhamburg.microservices.core.revenue.jpa.domain;
 
+
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.UUID;
 
 /**
  * Created by Ole on 01.12.2015.
  */
+
+@Entity
 public class Revenue {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Type(type="uuid-char")
     private UUID flightId;
 
 //    private double value;

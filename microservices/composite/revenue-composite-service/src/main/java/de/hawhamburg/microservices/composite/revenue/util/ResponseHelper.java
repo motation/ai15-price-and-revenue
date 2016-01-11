@@ -3,16 +3,19 @@ package de.hawhamburg.microservices.composite.revenue.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import de.hawhamburg.microservices.composite.revenue.model.CalculatedPrice;
+import de.hawhamburg.microservices.composite.revenue.model.Flight;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ole on 07.11.2015.
  */
 public class ResponseHelper {
 
-    private ResponseHelper(){
+    public ResponseHelper(){
 
     }
 
@@ -33,5 +36,13 @@ public class ResponseHelper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Flight> convert(ResponseEntity<Flight[]> arr){
+        List<Flight> test = new ArrayList<>();
+        for(int i=0;i<arr.getBody().length;i++){
+            test.add(arr.getBody()[i]);
+        }
+        return test;
     }
 }

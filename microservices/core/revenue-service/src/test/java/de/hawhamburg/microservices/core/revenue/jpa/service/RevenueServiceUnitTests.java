@@ -2,11 +2,11 @@ package de.hawhamburg.microservices.core.revenue.jpa.service;
 
 import de.hawhamburg.microservices.core.revenue.jpa.domain.Revenue;
 import de.hawhamburg.microservices.core.revenue.jpa.repository.RevenueRepository;
-import org.junit.Assert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -139,11 +139,15 @@ public class RevenueServiceUnitTests {
                 .withSoldTicketsFirstClassTravelOffice(600.0)
                 .build();
 
+        Revenue revenue3 = null;
+
         //Objekte & Methoden mocken
         Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);
         Mockito.when(revenueRepository.findByFlightId(id2)).thenReturn(revenue2);
-        Mockito.doNothing().when(revenueRepository).delete(revenue);
-        Mockito.doNothing().when(revenueRepository).delete(revenue2);
+        Mockito.when(revenueRepository.findByFlightId(id3)).thenReturn(revenue3);
+
+
+        Mockito.doThrow(new NullPointerException()).when(revenueRepository).delete(revenue3);
 
         //Tests
 

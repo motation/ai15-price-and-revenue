@@ -39,7 +39,7 @@ logging:
 spring:
   profiles: docker
   datasource:
-      url: jdbc:mysql://mysql:3306/pricerevenue
+      url: jdbc:mysql://mysql-price:3306/pricerevenue
       username: admin
       password: root
       driver-class-name: com.mysql.jdbc.Driver

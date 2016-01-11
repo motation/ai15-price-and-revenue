@@ -5,12 +5,12 @@ rabbitmq:
   - "15672:15672"
 
 discovery:
- image: discovery-server
+ image: artifactory.mars.haw-hamburg.de:5002/discovery-serve
  ports:
   - "8761:8761"
 
 auth:
- image: auth-server
+ image: artifactory.mars.haw-hamburg.de:5002/auth-server
  ports:
   - "9999:9999"
 
@@ -25,43 +25,43 @@ mysql-price:
   - "3306:3306"
 
 price:
- image: price-service
+ image: artifactory.mars.haw-hamburg.de:5002/price-service-pricing-blue
  links:
   - discovery
   - mysql-price
 
 revenue:
- image: revenue-service
+ image: artifactory.mars.haw-hamburg.de:5002/revenue-service-pricing-blue
  links:
   - discovery
   - mysql-price
 
 price-composite:
- image: price-composite
+ image: artifactory.mars.haw-hamburg.de:5002/price-composite-pricing-blue
  links:
   - discovery
   - rabbitmq
 
 revenue-composite:
- image: revenue-composite
+ image: artifactory.mars.haw-hamburg.de:5002/revenue-composite-pricing-blue
  links:
   - discovery
   - rabbitmq
 
 priceapi:
- image: price-api-service
+ image: artifactory.mars.haw-hamburg.de:5002/price-api-service-pricing-blue
  links:
   - auth
   - discovery
   - rabbitmq
 
 turbine:
- image: turbine
+ image: artifactory.mars.haw-hamburg.de:5002/turbine
  links:
   - discovery
 
 monitor:
- image: monitor-dashboard
+ image: artifactory.mars.haw-hamburg.de:5002/monitor-dashboard
  ports:
   - "7979:7979"
  links:
@@ -71,7 +71,7 @@ monitor:
   - turbine
 
 edge:
- image: edge-server
+ image: artifactory.mars.haw-hamburg.de:5002/edge-server
  ports:
   - "443:8765"
  links:

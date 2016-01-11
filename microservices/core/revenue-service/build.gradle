@@ -50,7 +50,6 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 group = 'hawai'
 mainClassName = 'de.hawhamburg.microservices.core.revenue.RevenueServiceApplication'
-//mainClassName = 'de.hawhamburg.microservices.api.price.PriceApiServiceApplication'
 
 /**
  * Setup library repositories

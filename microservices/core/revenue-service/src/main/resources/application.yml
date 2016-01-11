@@ -1,5 +1,4 @@
 server:
-#  port: 8079
   port: 0
 
 info:

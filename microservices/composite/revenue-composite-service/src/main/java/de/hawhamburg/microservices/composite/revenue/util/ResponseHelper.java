@@ -39,6 +39,7 @@ public class ResponseHelper {
     }
 
     public List<Flight> convert(ResponseEntity<Flight[]> arr){
+
         List<Flight> test = new ArrayList<>();
         for(int i=0;i<arr.getBody().length;i++){
             test.add(arr.getBody()[i]);

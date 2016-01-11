@@ -47,6 +47,7 @@ public class RevenueCompositeController {
     @RequestMapping(value = "/updateStatistic", method = RequestMethod.GET)
     public void updateStatistic(){
         revenueCompositeIntegration.updateStatistic();
+
     }
 
 }

@@ -120,6 +120,7 @@ public class RevenueCompositeIntegrationTest {
         ticketList[2] = responseTicket3;
         ticketList[3] = responseTicket4;
 
+
 //
         ResponseEntity<Ticket[]> ticketsResponseEntity = new ResponseEntity<Ticket[]>(ticketList, HttpStatus.OK);
 

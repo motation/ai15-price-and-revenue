@@ -72,6 +72,7 @@ public class RevenueCompositeIntegration {
 
     public ResponseEntity<Revenue[]> updateStatistic() {
 
+
         double soldTicketsFirstClassInternet = 0;
         double soldTicketsBusinessClassInternet = 0;
         double soldTicketsEconomyClassInternet = 0;

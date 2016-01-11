@@ -219,7 +219,7 @@ task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile,pullMysql])
 task createMysqlContainer(type: DockerCreateContainer) {
     imageId = "mysql:latest"
     portBindings = ["3306:3306"]
-    containerName = "mysql"
+    containerName = "mysql-price"
     env = ['MYSQL_ROOT_PASSWORD=root',"MYSQL_DATABASE=pricerevenue","MYSQL_USER=admin","MYSQL_PASSWORD=root"]
 }
 
@@ -312,7 +312,7 @@ task stopNetflixAuthContainer(type: DockerStopContainer) {
 task createPriceServiceContainer(type: DockerCreateContainer, dependsOn: [startNetflixAuthContainer]) {
     imageId = "price-service"
     containerName = "price"
-    links = ["discovery:discovery", "mysql:mysql"]
+    links = ["discovery:discovery", "mysql-price:mysql-price"]
 }
 
 task startPriceServiceContainer(type: DockerStartContainer, dependsOn: [createPriceServiceContainer]) {
@@ -335,7 +335,7 @@ task stopPriceServiceContainer(type: DockerStopContainer) {
 task createRevenueServiceContainer(type: DockerCreateContainer, dependsOn: [startPriceServiceContainer]) {
     imageId = "revenue-service"
     containerName = "revenue"
-    links = ["discovery:discovery", "mysql:mysql"]
+    links = ["discovery:discovery", "mysql-price:mysql-price"]
 }
 
 task startRevenueServiceContainer(type: DockerStartContainer, dependsOn: [createRevenueServiceContainer]) {
@@ -405,7 +405,7 @@ task stopPriceCompositeServiceContainer(type: DockerStopContainer) {
  */
 task createPriceAPIServiceContainer(type: DockerCreateContainer, dependsOn: [startPriceCompositeServiceContainer]) {
     imageId = "price-api-service"
-    containerName = "api"
+    containerName = "priceapi"
     links = ["auth:auth", "discovery:discovery", "rabbitmq:rabbitmq"]
 }
 
@@ -453,7 +453,7 @@ task createMonitorDashboardServiceContainer(type: DockerCreateContainer, depends
     imageId = "monitor-dashboard"
     portBindings = ["7979:7979"]
     containerName = "monitor"
-    links = ["api:api","price-composite:price-composite","revenue-composite:revenue-composite", "turbine:turbine"]
+    links = ["priceapi:priceapi","price-composite:price-composite","revenue-composite:revenue-composite", "turbine:turbine"]
 }
 
 task startMonitorDashboardServiceContainer(type: DockerStartContainer, dependsOn: [createMonitorDashboardServiceContainer]) {
@@ -477,7 +477,7 @@ task createNetflixEdgeContainer(type: DockerCreateContainer, dependsOn: [startMo
     imageId = "edge-server"
     portBindings = ["443:8765"]
     containerName = "edge"
-    links = ["discovery:discovery", "api:api"]
+    links = ["discovery:discovery", "priceapi:priceapi"]
 }
 
 task startNetflixEdgeContainer(type: DockerStartContainer, dependsOn: [createNetflixEdgeContainer]) {

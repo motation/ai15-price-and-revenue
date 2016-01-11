@@ -1,31 +1,22 @@
 package de.hawhamburg.microservices.composite.price.controller;
 
-import com.jayway.restassured.RestAssured;
 import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
 import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-
-import java.net.URI;
 import java.util.UUID;
 
-import static com.jayway.restassured.RestAssured.given;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import com.jayway.restassured.parsing.Parser;
 
 /**
  * Created by unknown on 27.10.15.
@@ -51,7 +42,18 @@ public class PriceCompositeController {
     public ResponseEntity<CalculatedPrice> getPrice(@PathVariable final UUID flightId){
         ResponseEntity<Price> priceResult = priceCompositeIntegration.getPrice(flightId);
         if(!priceResult.getStatusCode().is2xxSuccessful()){
-            return utils.createResponse(null,priceResult.getStatusCode());
+            Price price = priceCompositeIntegration.calculatePriceForFlight(flightId);
+//            TODO
+//            price composite integration anschauen, revenue composite greift auf price zu, auch anschauen
+//            calculate from flightop api
+//            new price
+//            priceCompositeIntegration.createPrice()
+//                    return priceCompositeIntegration
+//            core service anschauen
+            if (price.equals(null)) {
+                return utils.createResponse(null,priceResult.getStatusCode());
+            }
+            return utils.createOkResponse(new CalculatedPrice(price));
         }
         return utils.createOkResponse(new CalculatedPrice(priceResult.getBody()));
     }

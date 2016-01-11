@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 //SOF TODO enable client in live system
 @EnableDiscoveryClient
 @SpringBootApplication
+@ComponentScan("de.hawhamburg.microservices.core.revenue")
 public class RevenueServiceApplication {
 
     @Bean

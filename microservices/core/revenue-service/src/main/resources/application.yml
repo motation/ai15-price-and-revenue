@@ -37,16 +37,16 @@ logging:
 
 ---
 # For deployment in Docker containers
-# mysql db
 spring:
+  profiles: docker
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/pricerevenue
-    username: admin
-    password: root
-    driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://mysql-price:3306/pricerevenue
+      username: admin
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
-          ddl-auto: update
+      ddl-auto: update
 server:
   port: 8080
 

@@ -5,7 +5,7 @@ rabbitmq:
   - "15672:15672"
 
 discovery:
- image: artifactory.mars.haw-hamburg.de:5002/discovery-serve
+ image: artifactory.mars.haw-hamburg.de:5002/discovery-server
  ports:
   - "8761:8761"
 

@@ -97,7 +97,7 @@ public class RevenueCompositeIntegration {
 
                 List<Ticket> allTicketsForFlightID = convertTicket(getTicketsFromReservation(flightObj.getFlightId()).getBody());
 
-                ResponseEntity<CalculatedPrice> priceResult = getCalculatedPrice(flightObj.getFlightId());
+//                ResponseEntity<CalculatedPrice> priceResult = getCalculatedPrice(flightObj.getFlightId());
 
                 if (allTicketsForFlightID.size() >= 1) {
 

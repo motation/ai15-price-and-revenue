@@ -19,25 +19,25 @@ public class RevenueServiceImpl implements RevenueService {
     private RevenueRepository revenueRepository;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         //OF fill mysql with data if is empty :)
         if (revenueRepository.findAll().isEmpty()) {
-            for(double i=2;i<20;i++){
+            for (double i = 2; i < 20; i++) {
                 Revenue revenue = new Revenue.RevenueBuilder()
                         // TODO später durch Response von Reservation ersetzen
 //                        .withValue(12)
                         .withSoldTicketsFirstClassInternet(i + 40)
-                        .withSoldTicketsEconomyClassInternet(i+30)
-                        .withSoldTicketsFirstClassTravelOffice(i+25)
-                        .withSoldTicketsEconomyClassTravelOffice(i+47)
-                        .withSoldTicketsFirstClassCounter(i+40)
-                        .withSoldTicketsEconomyClassCounter(i+23)
-                        .withsoldTicketsBusinessClassStaff(i+13)
-                        .withsoldTicketsBusinessClassCounter(i+41)
-                        .withsoldTicketsBusinessClassTravelOffice(i+54)
-                        .withSoldTicketsBusinessClassInternet(i+68)
+                        .withSoldTicketsEconomyClassInternet(i + 30)
+                        .withSoldTicketsFirstClassTravelOffice(i + 25)
+                        .withSoldTicketsEconomyClassTravelOffice(i + 47)
+                        .withSoldTicketsFirstClassCounter(i + 40)
+                        .withSoldTicketsEconomyClassCounter(i + 23)
+                        .withsoldTicketsBusinessClassStaff(i + 13)
+                        .withsoldTicketsBusinessClassCounter(i + 41)
+                        .withsoldTicketsBusinessClassTravelOffice(i + 54)
+                        .withSoldTicketsBusinessClassInternet(i + 68)
                         .withsoldTicketsFirstClassStaff(i + 24)
-                        .withsoldTicketsEconomyClassStaff(i+17)
+                        .withsoldTicketsEconomyClassStaff(i + 17)
                         .withFlightId(UUID.randomUUID())
                         .build();
                 revenueRepository.save(revenue);
@@ -75,18 +75,18 @@ public class RevenueServiceImpl implements RevenueService {
 
     @Override
     public Revenue createRevenue(Revenue revenue) {
-        if(revenueForFlight(revenue.getFlightId()) == null){
+        if (revenueForFlight(revenue.getFlightId()) == null) {
             return revenueRepository.save(revenue);
         }
         return null;
     }
 
     @Override
-    public boolean removeRevenue(UUID flightId){
-        try{
+    public boolean removeRevenue(UUID flightId) {
+        try {
             Revenue revenue = revenueRepository.findByFlightId(flightId);
             revenueRepository.delete(revenue);
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -94,10 +94,13 @@ public class RevenueServiceImpl implements RevenueService {
 
     @Override
     public boolean updateRevenue(Revenue revenue) {
-
-        if (removeRevenue(revenue.getFlightId()) == true && createRevenue(revenue) !=null) return true;
-
-        return false;
+        // OF DONT DO THAT SHIT!
+//        if (removeRevenue(revenue.getFlightId()) == true && createRevenue(revenue) !=null) return true;
+        Revenue revenueFromMysql = revenueRepository.findByFlightId(revenue.getFlightId());
+        if (revenueFromMysql == null) return false;
+        Revenue revenueToUpdate = new Revenue.RevenueBuilder().fromEntity(revenue).build();
+        Revenue savedRevenue = revenueRepository.save(revenueToUpdate);
+        return revenue.equals(savedRevenue);
     }
 
 

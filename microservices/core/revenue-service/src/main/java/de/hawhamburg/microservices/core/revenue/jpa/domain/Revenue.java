@@ -197,6 +197,11 @@ public class Revenue {
         public Revenue build(){
             return this.revenue;
         }
+
+        public RevenueBuilder fromEntity(Revenue revenue) {
+            this.revenue = revenue;
+            return this;
+        }
     }
 
     public Long getId() {

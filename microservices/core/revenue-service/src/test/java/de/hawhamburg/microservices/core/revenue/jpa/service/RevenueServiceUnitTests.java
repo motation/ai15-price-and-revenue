@@ -169,6 +169,7 @@ public class RevenueServiceUnitTests {
 
         //Objekte & Methoden mocken
         Mockito.when(revenueRepository.findByFlightId(id)).thenReturn(revenue);
+        Mockito.when(revenueRepository.save(revenue)).thenReturn(revenue);
 
         //Tests
         Assert.assertTrue(revenueService.updateRevenue(revenue));

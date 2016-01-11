@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.util.UUID;
@@ -35,6 +36,23 @@ public class RevenueCompositeController {
 
     @Autowired
     private ServiceUtils utils;
+
+    @PostConstruct
+    public void init(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!Thread.currentThread().isInterrupted()){
+                    try {
+                        Thread.sleep(1000 * 60 * 2);
+                        updateStatistic();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
 
     @RequestMapping(value = "/revenue/{flightId}", method = RequestMethod.GET)
     public ResponseEntity<CalculatedRevenue> getRevenue(@PathVariable final UUID flightId){

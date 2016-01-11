@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import de.hawhamburg.microservices.api.price.model.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
@@ -41,9 +42,7 @@ public class PriceApiController {
     private RestTemplate restTemplate;
 
     @RequestMapping(value = "/{flightId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getPriceComposite(@PathVariable final UUID flightId,
-                                                    @RequestHeader(value = "Authorization") String authorizationHeader,
-                                                    Principal currentUser) {
+    public ResponseEntity<String> getPriceComposite(@PathVariable final UUID flightId) {
         URI uri = loadBalancer.choose("pricecomposite").getUri();
         String url = uri.toString() + "/price/" + flightId;
 //        String url = "http://localhost:8081/price/" + flightId;
@@ -101,6 +100,16 @@ public class PriceApiController {
         URI uri = loadBalancer.choose("revenuecomposite").getUri();
         String url = uri.toString() + "/revenue/" + flightId;
         return utils.createResponse(restTemplate.getForEntity(url, String.class));
+    }
+
+    @RequestMapping(value = "/statistic")
+    public ResponseEntity<String> getStatistics(@RequestParam final String fromDate,
+                                                @RequestParam final String toDate){
+        //OF TODO get statistic
+        LOG.debug("got a request to statistic");
+
+        //OF TODO get statistic
+        return utils.createResponse(null, HttpStatus.NOT_FOUND);
     }
 
 }

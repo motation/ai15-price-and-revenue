@@ -113,6 +113,15 @@ public class ServiceUtils {
 
     public String getOauth2Token(){
         String baseURL = getServerAdress();
+        String url = null;
+        try {
+            url = this.getServiceUrl("auth").toString();
+        } catch (Exception e) {
+            url = "nopE!";
+            System.out.println("auth not registered!!!!");
+            baseURL = "192.168.178.22";
+        }
+        System.out.println("auth" + url);
         RestAssured.useRelaxedHTTPSValidation();
         // Register JSON Parser for plain text responses
         RestAssured.registerParser("text/plain", Parser.JSON);

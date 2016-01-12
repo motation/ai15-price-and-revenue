@@ -15,6 +15,8 @@ buildscript {
     }
 }
 
+//configure(ext.)
+
 /**
  * Load several plugins, consult the gradle documentation for more info
  */
@@ -211,6 +213,11 @@ task pullMysql(type:DockerPullImage){
 }
 
 task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile,pullMysql]) {
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'price-api-service'
+}
+
+task buildRootImage(type: DockerBuildImage){
     inputDir = createDockerfile.destFile.parentFile
     tag = 'price-api-service'
 }
@@ -602,3 +609,11 @@ tasks.withType(Test) {
     }
 }
 
+task buildOnlyRoot(dependsOn:[buildRootImage]){
+//    if ("$arg1"=="true"){
+//        println "Nur Root bauen"
+//    } else {
+//        println "alles bauen"
+//    }
+//    buildRootImage
+}

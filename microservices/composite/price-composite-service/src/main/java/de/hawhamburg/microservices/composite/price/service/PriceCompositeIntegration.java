@@ -31,7 +31,7 @@ public class PriceCompositeIntegration {
     private RestTemplate restTemplate;
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")
-    public ResponseEntity<Price> getPrice(UUID flightID){
+    public ResponseEntity<Price> getPrice(UUID flightID) {
         //OF TODO use this later
         URI uri = utils.getServiceUrl("price");
         String url = uri.toString() + "/price/" + flightID;
@@ -39,28 +39,45 @@ public class PriceCompositeIntegration {
         //OF TODO remove this later!
 //        String urlToPriceService = "http://localhost:8080";
 //        String url =urlToPriceService + "/price/" + flightID;
+        Price price;
+        ResponseEntity<String> resultStr = restTemplate.getForEntity(url, String.class);
+        if (!resultStr.getStatusCode().is2xxSuccessful()) {
+            System.out.println("Price need to be calculated");
+            price = calculatePriceForFlight(flightID);
+            System.out.println("Price " + price.getValue() + " : " + price);
+        } else {
+            System.out.println("Price found");
+            price = ResponseHelper.response2Price(resultStr);
+            System.out.println("Price " + price.getValue() + " : " + price);
+        }
 
-        ResponseEntity<String> resultStr = restTemplate.getForEntity(url,String.class);
-        Price price = ResponseHelper.response2Price(resultStr);
-        ResponseEntity<Price> response = utils.createOkResponse(price);
+        if (price.equals(null)) {
+            System.out.println("Something went wrong");
+            return utils.createResponse(null, HttpStatus.NOT_FOUND);
+        }
+
+        ResponseEntity<Price> response = new ResponseEntity<Price>(price, HttpStatus.OK);
         return response;
+
+
     }
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")
-    public ResponseEntity<Price> createPrice(Price price){
+    public ResponseEntity<Price> createPrice(Price price) {
         //OF TODO use this later
 //        URI uri = utils.getServiceUrl("price");
 //        String url = uri.toString() + "/price";
 
         //OF TODO remove this later!
         String urlToPriceService = "http://localhost:8080";
-        String url =urlToPriceService + "/price";
+        String url = urlToPriceService + "/price";
         ResponseEntity<Price> resultStr = restTemplate.postForEntity(url, price, Price.class);
         return utils.createOkResponse(resultStr.getBody());
     }
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")
-    public boolean deletePrice(UUID flightId){
+
+    public boolean deletePrice(UUID flightId) {
         //OF TODO implement
         //OF TODO use this later
 //        URI uri = utils.getServiceUrl("price");
@@ -68,32 +85,31 @@ public class PriceCompositeIntegration {
 
         //OF TODO remove this later!
         String urlToPriceService = "http://localhost:8080";
-        String url =urlToPriceService + "/price/"+flightId;
-        try{
+        String url = urlToPriceService + "/price/" + flightId;
+        try {
             restTemplate.delete(url);
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
     //OF TODO add @HystrixCommand(fallbackMethod = "defaultPrice")
-    public boolean putPrice(Price price){
+    public boolean putPrice(Price price) {
         //OF TODO use this later
 //        URI uri = utils.getServiceUrl("price");
 //        String url = uri.toString() + "/price";
 
         //OF TODO remove this later!
         String urlToPriceService = "http://localhost:8080";
-        String url =urlToPriceService + "/price";
-        try{
-            restTemplate.put(url,price);
-        } catch (Exception e){
+        String url = urlToPriceService + "/price";
+        try {
+            restTemplate.put(url, price);
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
-
 
 
     public ResponseEntity<Price> defaultProduct(UUID flightId) {
@@ -101,9 +117,7 @@ public class PriceCompositeIntegration {
     }
 
 
-
-
-    public Flight getFlightFromFlightOp(UUID flightid){
+    public Flight getFlightFromFlightOp(UUID flightid) {
         //OF TODO use this later
         URI uri = utils.getServiceUrl("flightOp");
         String url = uri.toString() + "/api/flight/" + flightid;

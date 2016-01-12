@@ -39,47 +39,47 @@ public class PriceCompositeController {
     private RestTemplate restTemplate;
 
     @RequestMapping(value = "/price/{flightId}", method = RequestMethod.GET)
-    public ResponseEntity<CalculatedPrice> getPrice(@PathVariable final UUID flightId){
+    public ResponseEntity<CalculatedPrice> getPrice(@PathVariable final UUID flightId) {
         ResponseEntity<Price> priceResult = priceCompositeIntegration.getPrice(flightId);
-        if(!priceResult.getStatusCode().is2xxSuccessful()){
-            Price price = priceCompositeIntegration.calculatePriceForFlight(flightId);
-//            TODO
-//            price composite integration anschauen, revenue composite greift auf price zu, auch anschauen
-//            calculate from flightop api
-//            new price
-//            priceCompositeIntegration.createPrice()
-//                    return priceCompositeIntegration
-//            core service anschauen
-            if (price.equals(null)) {
-                return utils.createResponse(null,priceResult.getStatusCode());
-            }
-            return utils.createOkResponse(new CalculatedPrice(price));
-        }
+//                if(!priceResult.getStatusCode().is2xxSuccessful()){
+//            Price price = priceCompositeIntegration.calculatePriceForFlight(flightId);
+////            TODO
+////            price composite integration anschauen, revenue composite greift auf price zu, auch anschauen
+////            calculate from flightop api
+////            new price
+////            priceCompositeIntegration.createPrice()
+////                    return priceCompositeIntegration
+////            core service anschauen
+//            if (price.equals(null)) {
+//                return utils.createResponse(null,priceResult.getStatusCode());
+//            }
+//            return utils.createOkResponse(new CalculatedPrice(price));
+//        }
         return utils.createOkResponse(new CalculatedPrice(priceResult.getBody()));
     }
 
 
     @RequestMapping(value = "/price", method = RequestMethod.POST)
-    public ResponseEntity<CalculatedPrice> createPrice(@RequestBody final Price price){
+    public ResponseEntity<CalculatedPrice> createPrice(@RequestBody final Price price) {
         ResponseEntity<Price> priceResult = priceCompositeIntegration.createPrice(price);
-        if(!priceResult.getStatusCode().is2xxSuccessful()){
-            return utils.createResponse(null,priceResult.getStatusCode());
+        if (!priceResult.getStatusCode().is2xxSuccessful()) {
+            return utils.createResponse(null, priceResult.getStatusCode());
         }
         return utils.createOkResponse(new CalculatedPrice(priceResult.getBody()));
     }
 
     @RequestMapping(value = "/price/{flightID}", method = RequestMethod.DELETE)
-    public void deletePrice(@RequestBody final UUID flightID, HttpServletResponse response){
-        try{
+    public void deletePrice(@RequestBody final UUID flightID, HttpServletResponse response) {
+        try {
             priceCompositeIntegration.deletePrice(flightID);
             response.setStatus(HttpServletResponse.SC_OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
     @RequestMapping(value = "/price", method = RequestMethod.PUT)
-    public void putPrice(@RequestBody final Price price,HttpServletResponse response){
+    public void putPrice(@RequestBody final Price price, HttpServletResponse response) {
         try {
             response.setStatus(HttpServletResponse.SC_OK);
             priceCompositeIntegration.putPrice(price);

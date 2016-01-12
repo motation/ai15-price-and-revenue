@@ -217,11 +217,12 @@ public class RevenueCompositeIntegrationTest {
 
     @Test
     public void testUpdateStatistic() throws URISyntaxException {
+        revenueCompositeIntegration = Mockito.mock(RevenueCompositeIntegration.class);
         UUID flightId = UUID.randomUUID();
 //      FlugObjekt anlegen
         Flight responseFlight = new Flight(flightId, false);
 
-        Flight[] flightArray = new Flight[2];
+        Flight[] flightArray = new Flight[1];
         flightArray[0] = responseFlight;
 
 //      ------------------------------- 1. Reservierung anlegen ------------------------------------
@@ -245,7 +246,7 @@ public class RevenueCompositeIntegrationTest {
         Ticket responseTicket1 = new Ticket(ticketId1, passenger1_1, responseReservationArray1, "BOOKING_TYPE_INTERNET", "01-01-2015");
 
 //      ------------------------------- Tickets hinzugfügen ------------------------------------
-        Ticket[] ticketArray = new Ticket[4];
+        Ticket[] ticketArray = new Ticket[1];
         ticketArray[0] = responseTicket1;
 
 //      -------------------------------------- Response Revenue anlegen -------------------------------------------
@@ -270,11 +271,24 @@ public class RevenueCompositeIntegrationTest {
 
         Mockito.when(revenueCompositeIntegration.getTicketsFromReservation(flightId)).thenReturn(ticketsResponseEntity);
 
+//        String url = "http://localhost:8080/api/tickets/flight/"+flightId;
+
+//        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+//        Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
+//        Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
+
+
 //      -------------------------------- MockAufruf AllFlights ------------------------------------
 
         ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
 
         Mockito.when(revenueCompositeIntegration.getAllFlightsFromReservation()).thenReturn(flightsResponseEntity);
+
+//        String url2 = "http://localhost:8080/api/flights";
+
+//        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+//        Mockito.when(restTemplate.getForEntity(url2,Flight[].class)).thenReturn(flightsResponseEntity);
+//        Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
 
 
 //      ----------------------------------- Mockaufruf saveRevenue -------------------------------------------
@@ -282,6 +296,12 @@ public class RevenueCompositeIntegrationTest {
         ResponseEntity<Revenue> revenueResponseEntity = new ResponseEntity<Revenue>(revenue, HttpStatus.OK);
 
         Mockito.when(revenueCompositeIntegration.saveRevenue(revenue)).thenReturn(revenueResponseEntity);
+
+//        String url3 = "http://localhost:8080/revenue/" + flightId;
+
+//        Mockito.when(utils.getServiceUrl("revenue")).thenReturn(new URI("http://localhost:8080"));
+//        Mockito.when(restTemplate.postForEntity(url3, revenue, Revenue.class)).thenReturn(revenueResponseEntity);
+//        Mockito.when(utils.createOkResponse(revenue)).thenReturn(new ResponseEntity<Revenue>(revenue, HttpStatus.OK));
 
 //      -------------------------------------- Testaufrufe -------------------------------------------
 

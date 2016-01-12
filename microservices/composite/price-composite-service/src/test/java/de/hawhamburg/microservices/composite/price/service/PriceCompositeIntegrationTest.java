@@ -2,6 +2,8 @@ package de.hawhamburg.microservices.composite.price.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.hawhamburg.microservices.composite.price.model.Flight;
+import de.hawhamburg.microservices.composite.price.model.FlightBlueprint;
 import de.hawhamburg.microservices.composite.price.model.Price;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +41,7 @@ public class PriceCompositeIntegrationTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    //When price exists
     @Test
     public void testGetPrice() throws URISyntaxException {
         UUID flightId = UUID.randomUUID();
@@ -59,6 +62,35 @@ public class PriceCompositeIntegrationTest {
         Price priceToCheck = responseEntity.getBody();
 
         Assert.assertEquals(priceToCheck.getValue(),200.0);
+    }
+
+    //When price need to be calculated
+    @Test
+    public void testGetPriceFromFlightOp() throws URISyntaxException {
+        UUID flightId = UUID.randomUUID();
+
+        Flight flight = new Flight();
+        flight.setId(flightId);
+        FlightBlueprint flightBlueprint = new FlightBlueprint();
+        flightBlueprint.setDuration("10.0");
+        flight.setBlueprint(flightBlueprint);
+
+        ResponseEntity<String> priceResponseEntity = new ResponseEntity<String>("no price", HttpStatus.NOT_FOUND);
+        ResponseEntity<Flight> flightResponseEntity = new ResponseEntity<Flight>(flight, HttpStatus.OK);
+
+        String url = "http://localhost:8080/price/"+flightId;
+        String urlFlightOp = "flightOp/api/flight/" + flightId;
+
+
+        Mockito.when(utils.getServiceUrl("price")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(utils.getServiceUrl("flightOp")).thenReturn(new URI("flightOp"));
+        Mockito.when(restTemplate.getForEntity(url,String.class)).thenReturn(priceResponseEntity);
+        Mockito.when(restTemplate.getForEntity(urlFlightOp, Flight.class)).thenReturn(flightResponseEntity);
+
+        ResponseEntity<Price> responseEntity = priceCompositeIntegration.getPrice(flightId);
+        Price priceToCheck = responseEntity.getBody();
+
+        Assert.assertEquals(priceToCheck.getValue(),400.0);
     }
 
     @Test

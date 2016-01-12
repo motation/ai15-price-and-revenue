@@ -217,7 +217,7 @@ task buildImage(type: DockerBuildImage, dependsOn: [createDockerfile,pullMysql])
     tag = 'price-api-service'
 }
 
-task buildRootImage(type: DockerBuildImage){
+task buildRootImage(type: DockerBuildImage,dependsOn: [createDockerfile]){
     inputDir = createDockerfile.destFile.parentFile
     tag = 'price-api-service'
 }

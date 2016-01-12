@@ -92,92 +92,83 @@ public class RevenueCompositeIntegration {
 
         List<Flight> allFlightIdsArray = convertFlight(getAllFlightsFromReservation().getBody());
 
-        if (allFlightIdsArray.size() >= 1) {
+        for (Flight flightObj : allFlightIdsArray) {
 
-            for (Flight flightObj : allFlightIdsArray) {
+            List<Ticket> allTicketsForFlightID = convertTicket(getTicketsFromReservation(flightObj.getFlightId()).getBody());
 
-                List<Ticket> allTicketsForFlightID = convertTicket(getTicketsFromReservation(flightObj.getFlightId()).getBody());
+            for (Ticket ticketObj : allTicketsForFlightID) {
 
-//                ResponseEntity<CalculatedPrice> priceResult = getCalculatedPrice(flightObj.getFlightId());
+                boolean internet = false;
+                boolean counter = false;
+                boolean agency = false;
+                boolean staff = false;
+                boolean economy_class = false;
+                boolean business_class = false;
+                boolean first_class = false;
 
-                if (allTicketsForFlightID.size() >= 1) {
-
-                    for (Ticket ticketObj : allTicketsForFlightID) {
-
-                        boolean internet = false;
-                        boolean counter = false;
-                        boolean agency = false;
-                        boolean staff = false;
-                        boolean economy_class = false;
-                        boolean business_class = false;
-                        boolean first_class = false;
-
-//                        System.out.println("BookingType: --->>>>" + ticketObj.getBookingType());
-                        switch (ticketObj.getBookingType()) {
-                            case "BOOKING_TYPE_INTERNET":
-                                internet = true;
-                            case "BOOKING_TYPE_COUNTER":
-                                counter = true;
-                            case "BOOKING_TYPE_AGENCY":
-                                agency = true;
-                            case "BOOKING_TYPE_STAFF":
-                                staff = true;
-                        }
-
-                        if (ticketObj.getReservations().size() >= 1) {
-
-                            for (Reservation reservationObj : ticketObj.getReservations()) {
-
-//                                System.out.println("Reservation: ------->>>>>" + reservationObj.getReservationType());
-                                switch (reservationObj.getReservationType()) {
-                                    case "ECONOMY_CLASS":
-                                        economy_class = true;
-                                    case "BUSINESS_CLASS":
-                                        business_class = true;
-                                    case "FIRST_CLASS":
-                                        first_class = true;
-                                }
-
-                                if (internet == true && economy_class == true) soldTicketsEconomyClassInternet += 1;
-                                if (internet == true && business_class == true) soldTicketsBusinessClassInternet += 1;
-                                if (internet == true && first_class == true) soldTicketsFirstClassInternet += 1;
-                                if (counter == true && economy_class == true) soldTicketsEconomyClassCounter += 1;
-                                if (counter == true && business_class == true) soldTicketsBusinessClassCounter += 1;
-                                if (counter == true && first_class == true) soldTicketsFirstClassCounter += 1;
-                                if (agency == true && economy_class == true) soldTicketsEconomyClassTravelOffice += 1;
-                                if (agency == true && business_class == true) soldTicketsBusinessClassTravelOffice += 1;
-                                if (agency == true && first_class == true) soldTicketsFirstClassTravelOffice += 1;
-                                if (staff == true && economy_class == true) soldTicketsEconomyClassStaff += 1;
-                                if (staff == true && business_class == true) soldTicketsBusinessClassStaff += 1;
-                                if (staff == true && first_class == true) soldTicketsFirstClassStaff += 1;
-
-                            }
-
-                        }
-
-                    }
+                System.out.println("BookingType: --->>>>" + ticketObj.getBookingType());
+                switch (ticketObj.getBookingType()) {
+                    case "BOOKING_TYPE_INTERNET":
+                        internet = true;
+                    case "BOOKING_TYPE_COUNTER":
+                        counter = true;
+                    case "BOOKING_TYPE_AGENCY":
+                        agency = true;
+                    case "BOOKING_TYPE_STAFF":
+                        staff = true;
+                    default:
                 }
-//              TODO - Speicherung des einzelnen Revenue
-                Revenue newRevenue = new Revenue.RevenueBuilder()
-                        .withFlightId(flightObj.getFlightId())
-                        .withsoldTicketsBusinessClassCounter(soldTicketsBusinessClassCounter)
-                        .withSoldTicketsBusinessClassInternet(soldTicketsBusinessClassInternet)
-                        .withsoldTicketsBusinessClassTravelOffice(soldTicketsBusinessClassTravelOffice)
-                        .withSoldTicketsFirstClassCounter(soldTicketsFirstClassCounter)
-                        .withSoldTicketsFirstClassInternet(soldTicketsFirstClassInternet)
-                        .withSoldTicketsFirstClassTravelOffice(soldTicketsFirstClassTravelOffice)
-                        .withSoldTicketsEconomyClassCounter(soldTicketsEconomyClassCounter)
-                        .withSoldTicketsEconomyClassInternet(soldTicketsEconomyClassInternet)
-                        .withSoldTicketsEconomyClassTravelOffice(soldTicketsEconomyClassTravelOffice)
-                        .withsoldTicketsFirstClassStaff(soldTicketsFirstClassStaff)
-                        .withsoldTicketsBusinessClassStaff(soldTicketsBusinessClassStaff)
-                        .withsoldTicketsEconomyClassStaff(soldTicketsEconomyClassStaff)
-                        .build();
 
-                saveRevenue(newRevenue);
-                resultList.add(newRevenue);
+
+                for (Reservation reservationObj : ticketObj.getReservations()) {
+
+                  System.out.println("Reservation: ------->>>>>" + reservationObj.getReservationType());
+                    switch (reservationObj.getReservationType()) {
+                        case "ECONOMY_CLASS":
+                            economy_class = true;
+                        case "BUSINESS_CLASS":
+                            business_class = true;
+                        case "FIRST_CLASS":
+                            first_class = true;
+                        default:
+                    }
+
+                    if (internet == true && economy_class == true) soldTicketsEconomyClassInternet += 1;
+                    if (internet == true && business_class == true) soldTicketsBusinessClassInternet += 1;
+                    if (internet == true && first_class == true) soldTicketsFirstClassInternet += 1;
+                    if (counter == true && economy_class == true) soldTicketsEconomyClassCounter += 1;
+                    if (counter == true && business_class == true) soldTicketsBusinessClassCounter += 1;
+                    if (counter == true && first_class == true) soldTicketsFirstClassCounter += 1;
+                    if (agency == true && economy_class == true) soldTicketsEconomyClassTravelOffice += 1;
+                    if (agency == true && business_class == true) soldTicketsBusinessClassTravelOffice += 1;
+                    if (agency == true && first_class == true) soldTicketsFirstClassTravelOffice += 1;
+                    if (staff == true && economy_class == true) soldTicketsEconomyClassStaff += 1;
+                    if (staff == true && business_class == true) soldTicketsBusinessClassStaff += 1;
+                    if (staff == true && first_class == true) soldTicketsFirstClassStaff += 1;
+
+                }
+
+
             }
+//              TODO - Speicherung des einzelnen Revenue
+            Revenue newRevenue = new Revenue.RevenueBuilder()
+                    .withFlightId(flightObj.getFlightId())
+                    .withsoldTicketsBusinessClassCounter(soldTicketsBusinessClassCounter)
+                    .withSoldTicketsBusinessClassInternet(soldTicketsBusinessClassInternet)
+                    .withsoldTicketsBusinessClassTravelOffice(soldTicketsBusinessClassTravelOffice)
+                    .withSoldTicketsFirstClassCounter(soldTicketsFirstClassCounter)
+                    .withSoldTicketsFirstClassInternet(soldTicketsFirstClassInternet)
+                    .withSoldTicketsFirstClassTravelOffice(soldTicketsFirstClassTravelOffice)
+                    .withSoldTicketsEconomyClassCounter(soldTicketsEconomyClassCounter)
+                    .withSoldTicketsEconomyClassInternet(soldTicketsEconomyClassInternet)
+                    .withSoldTicketsEconomyClassTravelOffice(soldTicketsEconomyClassTravelOffice)
+                    .withsoldTicketsFirstClassStaff(soldTicketsFirstClassStaff)
+                    .withsoldTicketsBusinessClassStaff(soldTicketsBusinessClassStaff)
+                    .withsoldTicketsEconomyClassStaff(soldTicketsEconomyClassStaff)
+                    .build();
 
+            saveRevenue(newRevenue);
+            resultList.add(newRevenue);
         }
         Revenue[] resultArray = resultList.toArray(new Revenue[resultList.size()]);
         return utils.createOkResponse(resultArray);

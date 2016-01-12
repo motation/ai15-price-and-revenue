@@ -215,26 +215,26 @@ public class RevenueCompositeIntegrationTest {
         Assert.assertEquals(ticketArrayToCheck[0].getPassenger().getPassengerId(), passengerId1);
     }
 
-//    @Test
-//    public void testUpdateStatistic() throws URISyntaxException {
-//        UUID flightId = UUID.randomUUID();
-////      FlugObjekt anlegen
-//        Flight resonseFlight = new Flight(flightId, false);
-//
-////      TODO - Ticket 1 anlegen - INTERNET + Economy
-//
-//        List<Reservation> responseReservationArray1 = new ArrayList<Reservation>();
-//
-////      ---------------------------- 1. Reservierung anlegen ------------------------------------
-//        UUID passengerId1 = UUID.randomUUID();
-//        UUID reservationId1_1 = UUID.randomUUID();
-//        Passenger passenger1_1 = new Passenger(passengerId1, "Wolf-Dieter");
-//        UUID placeId1_1 = UUID.randomUUID();
-////        UUID placeId, int floor, int row, String seat, String placeType)
-//        Place place1_1 = new Place(placeId1_1, 1, 1, "Innen", "Sessel");
-////        UUID reservationId, boolean checkedIn, UUID flightId, Passenger traveler, Place place, String reservationType
-//        Reservation reservation1_1 = new Reservation(reservationId1_1, false, flightId, passenger1_1, place1_1,"ECONOMY");
-////      ---------------------------- 2. Reservierung anlegen ------------------------------------
+    @Test
+    public void testUpdateStatistic() throws URISyntaxException {
+        UUID flightId = UUID.randomUUID();
+//      FlugObjekt anlegen
+        Flight resonseFlight = new Flight(flightId, false);
+
+//      TODO - Ticket 1 anlegen - INTERNET + Economy
+
+        List<Reservation> responseReservationArray1 = new ArrayList<Reservation>();
+
+//      ---------------------------- 1. Reservierung anlegen ------------------------------------
+        UUID passengerId1 = UUID.randomUUID();
+        UUID reservationId1_1 = UUID.randomUUID();
+        Passenger passenger1_1 = new Passenger(passengerId1, "Wolf-Dieter");
+        UUID placeId1_1 = UUID.randomUUID();
+//        UUID placeId, int floor, int row, String seat, String placeType)
+        Place place1_1 = new Place(placeId1_1, 1, 1, "Innen", "Sessel");
+//        UUID reservationId, boolean checkedIn, UUID flightId, Passenger traveler, Place place, String reservationType
+        Reservation reservation1_1 = new Reservation(reservationId1_1, false, flightId, passenger1_1, place1_1,"ECONOMY_CLASS");
+//      ---------------------------- 2. Reservierung anlegen ------------------------------------
 //        UUID passengerId2 = UUID.randomUUID();
 //        UUID reservationId1_2 = UUID.randomUUID();
 //        Passenger passenger1_2 = new Passenger(passengerId2, "Günther");
@@ -243,7 +243,7 @@ public class RevenueCompositeIntegrationTest {
 //        Place place1_2 = new Place(placeId1_2, 1, 1, "Außen", "Couch");
 ////        UUID reservationId, boolean checkedIn, UUID flightId, Passenger traveler, Place place, String reservationType
 //        Reservation reservation1_2 = new Reservation(reservationId1_2, false, flightId, passenger1_2, place1_2,"BUSINESS");
-////      ---------------------------- 3. Reservierung anlegen ------------------------------------
+//      ---------------------------- 3. Reservierung anlegen ------------------------------------
 //        UUID passengerId3 = UUID.randomUUID();
 //        UUID reservationId1_3= UUID.randomUUID();
 //        Passenger passenger1_3 = new Passenger(passengerId3, "Klaus");
@@ -252,95 +252,95 @@ public class RevenueCompositeIntegrationTest {
 //        Place place1_3 = new Place(placeId1_3, 1, 1, "Mitte", "Tragfläche");
 ////        UUID reservationId, boolean checkedIn, UUID flightId, Passenger traveler, Place place, String reservationType
 //        Reservation reservation1_3 = new Reservation(reservationId1_3, false, flightId, passenger1_3, place1_3,"FIRST");
-////      ---------------------------- Reservierungen hinzugfügen ------------------------------------
-//
-//        responseReservationArray1.add(reservation1_1);
+//      ---------------------------- Reservierungen hinzugfügen ------------------------------------
+
+        responseReservationArray1.add(reservation1_1);
 //        responseReservationArray1.add(reservation1_2);
 //        responseReservationArray1.add(reservation1_3);
-//
-////      ----------------------------- 1. Ticket anlegen -----------------------------------------
-//        UUID ticketId1 = UUID.randomUUID();
-//        UUID ticketId2 = UUID.randomUUID();
-//        UUID ticketId3 = UUID.randomUUID();
-//        UUID ticketId4 = UUID.randomUUID();
-//
-////        UUID ticketID, Passenger passenger, List<Reservation> reservations, String bookingType, String ticketDate
-//        Ticket responseTicket1 = new Ticket(ticketId1, passenger1_1, responseReservationArray1, "INTERNET", "01-01-2015");
+
+//      ----------------------------- 1. Ticket anlegen -----------------------------------------
+        UUID ticketId1 = UUID.randomUUID();
+        UUID ticketId2 = UUID.randomUUID();
+        UUID ticketId3 = UUID.randomUUID();
+        UUID ticketId4 = UUID.randomUUID();
+
+//        UUID ticketID, Passenger passenger, List<Reservation> reservations, String bookingType, String ticketDate
+        Ticket responseTicket1 = new Ticket(ticketId1, passenger1_1, responseReservationArray1, "BOOKING_TYPE_INTERNET", "01-01-2015");
 //        Ticket responseTicket2 = new Ticket(ticketId2, passenger1_2, responseReservationArray1, "AGENCY", "01-01-2015");
 //        Ticket responseTicket3 = new Ticket(ticketId3, passenger1_3, responseReservationArray1, "STAFF", "01-01-2015");
 //        Ticket responseTicket4 = new Ticket(ticketId4, passenger1_1, responseReservationArray1, "COUNTER", "01-01-2015");
-//
-////      ---------------------------- Tickets hinzugfügen ------------------------------------
-//        Ticket[] ticketArray = new Ticket[4];
-//        ticketArray[0] = responseTicket1;
+
+//      ---------------------------- Tickets hinzugfügen ------------------------------------
+        Ticket[] ticketArray = new Ticket[4];
+        ticketArray[0] = responseTicket1;
 //        ticketArray[1] = responseTicket2;
 //        ticketArray[2] = responseTicket3;
 //        ticketArray[3] = responseTicket4;
-//
-//
-////      ---------------------------- Array mit einem FlightObjekt ------------------------------------
-//
-////        Flight testFlight1 = new Flight();
-//
-//        Flight[] flightArray = new Flight[2];
-//        flightArray[0] = resonseFlight;
-//
-////      -------------------------------------- Mockaufrufe -------------------------------------------
-//        ResponseEntity<Ticket[]> ticketsResponseEntity = new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK);
-//
-//        String url = "http://localhost:8080/api/tickets/flight/"+flightId;
-//
-//        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
-//        Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
-//        Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
-//
-//        ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
-//
-//        String url2 = "http://localhost:8080/api/flights";
-//
-//        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
-//        Mockito.when(restTemplate.getForEntity(url2,Flight[].class)).thenReturn(flightsResponseEntity);
-//        Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
-//
-//
-//
-//        String url3 = "http://localhost:8080/revenue/" + flightId;
-//
-//        Revenue revenue = new Revenue.RevenueBuilder()
-//                .withFlightId(flightId)
-//                .withsoldTicketsBusinessClassCounter(1)
-//                .withSoldTicketsBusinessClassInternet(1)
-//                .withsoldTicketsBusinessClassTravelOffice(1)
-//                .withSoldTicketsFirstClassCounter(1)
-//                .withSoldTicketsFirstClassInternet(1)
-//                .withSoldTicketsFirstClassTravelOffice(1)
-//                .withSoldTicketsEconomyClassCounter(1)
-//                .withSoldTicketsEconomyClassInternet(1)
-//                .withSoldTicketsEconomyClassTravelOffice(1)
-//                .withsoldTicketsFirstClassStaff(1)
-//                .withsoldTicketsBusinessClassStaff(1)
-//                .withsoldTicketsEconomyClassStaff(1)
-//                .build();
-//
-//        ResponseEntity<Revenue> revenueResponseEntity = new ResponseEntity<Revenue>(revenue, HttpStatus.OK);
-//
-//        Mockito.when(utils.getServiceUrl("revenue")).thenReturn(new URI("http://localhost:8080"));
-//        Mockito.when(restTemplate.postForEntity(url3, revenue, Revenue.class)).thenReturn(revenueResponseEntity);
-//        Mockito.when(utils.createOkResponse(revenue)).thenReturn(new ResponseEntity<Revenue>(revenue, HttpStatus.OK));
-//
-////      -------------------------------------- Testaufrufe -------------------------------------------
-//
-////        ResponseEntity<Ticket[]> responseEntityTickets = revenueCompositeIntegration.getTicketsFromReservation(flightId);
-//        ResponseEntity<Revenue[]> responseEntityRevenuesArray = revenueCompositeIntegration.updateStatistic();
-//        List<Revenue> responseEntityRevenueList = revenueCompositeIntegration.convertRevenue(responseEntityRevenuesArray.getBody());
-////        Ticket ticketToCheck = responseEntityTickets.getBody()[0];
-//
-//
-//
-//
-////      -------------------------------------- Tests -------------------------------------------
-//
-//        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassInternet(), 1);
+
+
+//      ---------------------------- Array mit einem FlightObjekt ------------------------------------
+
+//        Flight testFlight1 = new Flight();
+
+        Flight[] flightArray = new Flight[2];
+        flightArray[0] = resonseFlight;
+
+//      -------------------------------------- Mockaufrufe -------------------------------------------
+        ResponseEntity<Ticket[]> ticketsResponseEntity = new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK);
+
+        String url = "http://localhost:8080/api/tickets/flight/"+flightId;
+
+        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
+        Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
+
+        ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
+
+        String url2 = "http://localhost:8080/api/flights";
+
+        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.getForEntity(url2,Flight[].class)).thenReturn(flightsResponseEntity);
+        Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
+
+
+
+        String url3 = "http://localhost:8080/revenue/" + flightId;
+
+        Revenue revenue = new Revenue.RevenueBuilder()
+                .withFlightId(flightId)
+                .withsoldTicketsBusinessClassCounter(0)
+                .withSoldTicketsBusinessClassInternet(0)
+                .withsoldTicketsBusinessClassTravelOffice(0)
+                .withSoldTicketsFirstClassCounter(0)
+                .withSoldTicketsFirstClassInternet(0)
+                .withSoldTicketsFirstClassTravelOffice(0)
+                .withSoldTicketsEconomyClassCounter(0)
+                .withSoldTicketsEconomyClassInternet(1)
+                .withSoldTicketsEconomyClassTravelOffice(0)
+                .withsoldTicketsFirstClassStaff(0)
+                .withsoldTicketsBusinessClassStaff(0)
+                .withsoldTicketsEconomyClassStaff(0)
+                .build();
+
+        ResponseEntity<Revenue> revenueResponseEntity = new ResponseEntity<Revenue>(revenue, HttpStatus.OK);
+
+        Mockito.when(utils.getServiceUrl("revenue")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.postForEntity(url3, revenue, Revenue.class)).thenReturn(revenueResponseEntity);
+        Mockito.when(utils.createOkResponse(revenue)).thenReturn(new ResponseEntity<Revenue>(revenue, HttpStatus.OK));
+
+//      -------------------------------------- Testaufrufe -------------------------------------------
+
+//        ResponseEntity<Ticket[]> responseEntityTickets = revenueCompositeIntegration.getTicketsFromReservation(flightId);
+        ResponseEntity<Revenue[]> responseEntityRevenuesArray = revenueCompositeIntegration.updateStatistic();
+        List<Revenue> responseEntityRevenueList = revenueCompositeIntegration.convertRevenue(responseEntityRevenuesArray.getBody());
+//        Ticket ticketToCheck = responseEntityTickets.getBody()[0];
+
+
+
+
+//      -------------------------------------- Tests -------------------------------------------
+
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassInternet(), 1);
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassInternet(), 1);
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassInternet(), 1);
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassTravelOffice(), 1);
@@ -352,6 +352,6 @@ public class RevenueCompositeIntegrationTest {
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassStaff(), 1);
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassStaff(), 1);
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassStaff(), 1);
-//}
+}
 
 }

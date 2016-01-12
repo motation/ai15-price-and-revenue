@@ -66,9 +66,6 @@ public class PriceApiServiceTests {
                 new javax.net.ssl.HostnameVerifier() {
                     public boolean verify(String hostname,
                                           javax.net.ssl.SSLSession sslSession) {
-                        if (hostname.equals("192.168.178.22")) {
-                            return true;
-                        }
                         return true;
                     }
                 });
@@ -91,14 +88,14 @@ public class PriceApiServiceTests {
     @Test
     public void testPriceToken() {
         //OF DONT REMOVE
-//        UUID flightId = UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39");
-//        String uri = "https://" + baseAddress + "/api/price/" + flightId;
-//        RestTemplate rest = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", "Bearer " + token);
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        ResponseEntity<String> resp = rest.exchange(uri, HttpMethod.GET, entity, String.class);
-//        System.out.println("hallo");
-//        System.out.println(resp.toString());
+        UUID flightId = UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39");
+        String uri = "https://" + baseAddress + "/api/price/" + flightId;
+        RestTemplate rest = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> resp = rest.exchange(uri, HttpMethod.GET, entity, String.class);
+        System.out.println("hallo");
+        System.out.println(resp.toString());
     }
 }

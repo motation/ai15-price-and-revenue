@@ -3,6 +3,7 @@ package de.hawhamburg.microservices.composite.price.controller;
 import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
 import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegration;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,7 @@ public class PriceCompositeController {
         LOG.info("Now trying to make API Call");
         String url = utils.getServiceUrl("priceapi").toString();
         url += "/" + flightId;
+        LOG.info("API URL IS: " + url);
 
         //OF for oauth2 secured resources!-->>
         String token = utils.getOauth2Token();

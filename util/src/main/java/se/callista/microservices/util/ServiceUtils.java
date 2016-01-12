@@ -99,29 +99,7 @@ public class ServiceUtils {
         return new ResponseEntity<>(body, httpStatus);
     }
 
-    private String getServerAdress(){
-        String baseAddress = "";
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.indexOf("win") >= 0 || os.indexOf("mac") >= 0) {
-            baseAddress = "192.168.99.100";
-        } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
-            baseAddress = "127.0.0.1";
-        }
-        System.out.println("Base Adress is "+baseAddress);
-        return baseAddress;
-    }
-
     public String getOauth2Token(){
-        String baseURL = getServerAdress();
-        String url = null;
-        try {
-            url = this.getServiceUrl("auth").toString();
-        } catch (Exception e) {
-            url = "nopE!";
-            System.out.println("auth not registered!!!!");
-            baseURL = "192.168.178.22";
-        }
-        System.out.println("auth" + url);
         RestAssured.useRelaxedHTTPSValidation();
         // Register JSON Parser for plain text responses
         RestAssured.registerParser("text/plain", Parser.JSON);
@@ -132,7 +110,7 @@ public class ServiceUtils {
                         param("client_id", "acme").
                         param("username", "user").
                         param("password", "password").
-                        when().post("https://acme:acmesecret@" + baseURL + ":9999/uaa/oauth/token").then().
+                        when().post("https://acme:acmesecret@auth:9999/uaa/oauth/token").then().
                         extract().path("access_token");
         System.out.println("token is " + token);
         return token;

@@ -50,7 +50,8 @@ public class RevenueCompositeIntegration {
         URI uri = utils.getServiceUrl("revenue");
         String url = uri.toString() + "/revenue/" + newRevenue.getFlightId();
         ResponseEntity<Revenue> resultStr = restTemplate.postForEntity(url, newRevenue, Revenue.class);
-        return utils.createOkResponse(resultStr.getBody());
+        Revenue tempRevenue = resultStr.getBody();
+        return utils.createOkResponse(tempRevenue);
     }
 
     public ResponseEntity<Flight[]> getAllFlightsFromReservation() {
@@ -111,6 +112,7 @@ public class RevenueCompositeIntegration {
                         boolean business_class = false;
                         boolean first_class = false;
 
+//                        System.out.println("BookingType: --->>>>" + ticketObj.getBookingType());
                         switch (ticketObj.getBookingType()) {
                             case "BOOKING_TYPE_INTERNET":
                                 internet = true;
@@ -126,6 +128,7 @@ public class RevenueCompositeIntegration {
 
                             for (Reservation reservationObj : ticketObj.getReservations()) {
 
+//                                System.out.println("Reservation: ------->>>>>" + reservationObj.getReservationType());
                                 switch (reservationObj.getReservationType()) {
                                     case "ECONOMY_CLASS":
                                         economy_class = true;

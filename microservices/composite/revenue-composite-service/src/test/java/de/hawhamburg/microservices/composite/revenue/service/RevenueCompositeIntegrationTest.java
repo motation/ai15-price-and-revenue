@@ -57,6 +57,163 @@ public class RevenueCompositeIntegrationTest {
     }
 
 
+    @Test
+    public void testGetCalculatedPrice() throws URISyntaxException {
+        UUID flightId = UUID.randomUUID();
+        Price price = new Price.PriceBuilder()
+                .withFlightId(flightId)
+                .withValue(150)
+                .build();
+        CalculatedPrice calculatedPrice = new CalculatedPrice(price);
+
+        ResponseEntity<CalculatedPrice> calculatedPriceResponseEntity = new ResponseEntity<CalculatedPrice>(calculatedPrice, HttpStatus.OK);
+
+        String url = "http://localhost:8080/price/" + flightId;
+
+        Mockito.when(utils.getServiceUrl("pricecomposite")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.getForEntity(url,CalculatedPrice.class)).thenReturn(calculatedPriceResponseEntity);
+        Mockito.when(utils.createOkResponse(calculatedPrice)).thenReturn(new ResponseEntity<CalculatedPrice>(calculatedPrice,HttpStatus.OK));
+
+        ResponseEntity<CalculatedPrice> responseEntity = revenueCompositeIntegration.getCalculatedPrice(flightId);
+        CalculatedPrice calcPriceToCheck = responseEntity.getBody();
+
+        Float delta = 0.0000000000003f;
+
+        Assert.assertEquals(calcPriceToCheck.getBasicPrice(), 150.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getBusinessClassPriceByCounter(), 148.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getBusinessClassPriceByInternet(), 185.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getBusinessClassPriceByStaff(), 129.5, delta);
+        Assert.assertEquals(calcPriceToCheck.getBusinessClassPriceByTravelOffice(), 203.5, delta);
+        Assert.assertEquals(calcPriceToCheck.getFirstClassPriceByCounter(), 160.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getFirstClassPriceByInternet(), 200.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getFirstClassPriceByStaff(), 140.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getFirstClassPriceByTravelOffice(), 220.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getEconomyClassPriceByCounter(), 136.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getEconomyClassPriceByInternet(), 170.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getEconomyClassPriceByStaff(), 119.0, delta);
+        Assert.assertEquals(calcPriceToCheck.getEconomyClassPriceByTravelOffice(), 187.0, delta);
+    }
+
+
+    @Test
+    public void testsaveRevenue() throws URISyntaxException {
+        UUID flightId = UUID.randomUUID();
+        Revenue revenue = new Revenue.RevenueBuilder()
+                .withFlightId(flightId)
+                .withsoldTicketsBusinessClassCounter(10)
+                .withSoldTicketsBusinessClassInternet(20)
+                .withsoldTicketsBusinessClassTravelOffice(30)
+                .withSoldTicketsFirstClassCounter(40)
+                .withSoldTicketsFirstClassInternet(50)
+                .withSoldTicketsFirstClassTravelOffice(60)
+                .withSoldTicketsEconomyClassCounter(70)
+                .withSoldTicketsEconomyClassInternet(80)
+                .withSoldTicketsEconomyClassTravelOffice(90)
+                .withsoldTicketsFirstClassStaff(100)
+                .withsoldTicketsBusinessClassStaff(110)
+                .withsoldTicketsEconomyClassStaff(120)
+                .build();
+
+        ResponseEntity<Revenue> revenueResponseEntity = new ResponseEntity<Revenue>(revenue, HttpStatus.OK);
+
+        String url = "http://localhost:8080/revenue/"+flightId;
+
+        Mockito.when(utils.getServiceUrl("revenue")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.postForEntity(url, revenue, Revenue.class)).thenReturn(revenueResponseEntity);
+        Mockito.when(utils.createOkResponse(revenue)).thenReturn(new ResponseEntity<Revenue>(revenue,HttpStatus.OK));
+
+        ResponseEntity<Revenue> responseEntity = revenueCompositeIntegration.saveRevenue(revenue);
+        Revenue revenueToCheck = responseEntity.getBody();
+
+        Assert.assertEquals(revenueToCheck.getSoldTicketsBusinessClassCounter(), 10.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsBusinessClassInternet(), 20.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsBusinessClassTravelOffice(), 30.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsBusinessClassStaff(), 110.0);
+
+        Assert.assertEquals(revenueToCheck.getSoldTicketsFirstClassCounter(), 40.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsFirstClassInternet(), 50.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsFirstClassTravelOffice(), 60.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsFirstClassStaff(), 100.0);
+
+        Assert.assertEquals(revenueToCheck.getSoldTicketsEconomyClassCounter(), 70.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsEconomyClassInternet(), 80.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsEconomyClassTravelOffice(), 90.0);
+        Assert.assertEquals(revenueToCheck.getSoldTicketsEconomyClassStaff(), 120.0);
+
+        Assert.assertEquals(revenueToCheck.getFlightId(), revenue.getFlightId());
+        Assert.assertEquals(revenueToCheck, revenue);
+    }
+
+    @Test
+    public void testGetAllFlightsFromReservation() throws URISyntaxException {
+        UUID flightId1 = UUID.randomUUID();
+        UUID flightId2 = UUID.randomUUID();
+
+        Flight resonseFlight1 = new Flight(flightId1, false);
+        Flight resonseFlight2 = new Flight(flightId2, true);
+
+        Flight[] flightArray = new Flight[2];
+        flightArray[0] = resonseFlight1;
+        flightArray[1] = resonseFlight2;
+
+        ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
+
+        String url = "http://localhost:8080/api/flights";
+
+        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.getForEntity(url,Flight[].class)).thenReturn(flightsResponseEntity);
+        Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
+
+        ResponseEntity<Flight[]> responseEntity = revenueCompositeIntegration.getAllFlightsFromReservation();
+        Flight[] flightArrayToCheck = responseEntity.getBody();
+
+        Assert.assertEquals(flightArrayToCheck[0].getFlightId(), flightId1);
+        Assert.assertEquals(flightArrayToCheck[0].isCheckInReady(), false);
+        Assert.assertEquals(flightArrayToCheck[1].getFlightId(), flightId2);
+        Assert.assertEquals(flightArrayToCheck[1].isCheckInReady(), true);
+    }
+
+    @Test
+    public void testGetTicketsFromReservation() throws URISyntaxException {
+        UUID flightId = UUID.randomUUID();
+
+        //      ---------------------------- 1. Reservierung anlegen ------------------------------------
+        UUID passengerId1 = UUID.randomUUID();
+        UUID reservationId1_1 = UUID.randomUUID();
+        Passenger passenger1_1 = new Passenger(passengerId1, "Wolf-Dieter");
+        UUID placeId1_1 = UUID.randomUUID();
+//        UUID placeId, int floor, int row, String seat, String placeType)
+        Place place1_1 = new Place(placeId1_1, 1, 1, "Innen", "Sessel");
+//        UUID reservationId, boolean checkedIn, UUID flightId, Passenger traveler, Place place, String reservationType
+        Reservation reservation1_1 = new Reservation(reservationId1_1, false, flightId, passenger1_1, place1_1,"ECONOMY_CLASS");
+
+        List<Reservation> responseReservationArray1 = new ArrayList<Reservation>();
+        responseReservationArray1.add(reservation1_1);
+
+        UUID ticketId1 = UUID.randomUUID();
+        Ticket responseTicket1 = new Ticket(ticketId1, passenger1_1, responseReservationArray1, "BOOKING_TYPE_INTERNET", "01-01-2015");
+
+        Ticket[] ticketArray = new Ticket[4];
+        ticketArray[0] = responseTicket1;
+
+        ResponseEntity<Ticket[]> ticketsResponseEntity = new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK);
+
+
+        String url = "http://localhost:8080/api/tickets/flight/"+flightId;
+
+        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
+        Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
+
+        ResponseEntity<Ticket[]> responseEntity = revenueCompositeIntegration.getTicketsFromReservation(flightId);
+        Ticket[] ticketArrayToCheck = responseEntity.getBody();
+
+        Assert.assertEquals(ticketArrayToCheck[0].getTicketID(), ticketId1);
+        Assert.assertEquals(ticketArrayToCheck[0], responseTicket1);
+        Assert.assertEquals(ticketArrayToCheck[0].getBookingType(), "BOOKING_TYPE_INTERNET");
+        Assert.assertEquals(ticketArrayToCheck[0].getTicketDate(), "01-01-2015");
+        Assert.assertEquals(ticketArrayToCheck[0].getPassenger().getPassengerId(), passengerId1);
+    }
 
 //    @Test
 //    public void testUpdateStatistic() throws URISyntaxException {

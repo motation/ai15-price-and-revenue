@@ -42,7 +42,9 @@ public class PriceApiController {
     private RestTemplate restTemplate;
 
     @RequestMapping(value = "/{flightId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getPriceComposite(@PathVariable final UUID flightId) {
+    public ResponseEntity<String> getPriceComposite(@PathVariable final UUID flightId,
+                                                    @RequestHeader(value = "Authorization") String authorizationHeader,
+                                                    Principal currentUser) {
         URI uri = loadBalancer.choose("pricecomposite").getUri();
         String url = uri.toString() + "/price/" + flightId;
 //        String url = "http://localhost:8081/price/" + flightId;
@@ -93,8 +95,8 @@ public class PriceApiController {
 
     @RequestMapping(value = "/revenue/{flightId}", method = RequestMethod.GET)
     public ResponseEntity<String> getRevenue(@PathVariable final UUID flightId,
-                @RequestHeader(value = "Authorization") String authorizationHeader,
-                Principal currentUser) {
+                                             @RequestHeader(value = "Authorization") String authorizationHeader,
+                                             Principal currentUser) {
         LOG.debug("D: got a request to revenue + flight id:: " + flightId);
         LOG.info("I: got a request to revenue + flight id:: " + flightId);
         URI uri = loadBalancer.choose("revenuecomposite").getUri();
@@ -104,7 +106,9 @@ public class PriceApiController {
 
     @RequestMapping(value = "/statistic")
     public ResponseEntity<String> getStatistics(@RequestParam final String fromDate,
-                                                @RequestParam final String toDate){
+                                                @RequestParam final String toDate,
+                                                @RequestHeader(value = "Authorization") String authorizationHeader,
+                                                Principal currentUser) {
         //OF TODO get statistic
         LOG.debug("got a request to statistic");
 

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
@@ -86,5 +87,21 @@ public class PriceCompositeController {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    @RequestMapping(value = "/test/{flightId}", method = RequestMethod.GET)
+    public ResponseEntity<String> testApiCall(@PathVariable final UUID flightId) {
+        LOG.debug("Got a request to /test/" + flightId);
+        LOG.debug("Now trying to make API Call");
+        String url = utils.getServiceUrl("priceapi").toString();
+        url += "/"+flightId;
+        ResponseEntity<String> result=null;
+        try {
+            result = restTemplate.getForEntity(url,String.class);
+        } catch (RestClientException e) {
+            LOG.debug(e.getMessage());
+            LOG.debug(e.getStackTrace().toString());
+        }
+        return result;
     }
 }

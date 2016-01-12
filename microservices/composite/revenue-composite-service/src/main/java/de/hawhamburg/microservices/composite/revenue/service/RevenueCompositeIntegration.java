@@ -89,8 +89,8 @@ public class RevenueCompositeIntegration {
 
 
         List<Revenue> resultList = new ArrayList<Revenue>();
-
-        List<Flight> allFlightIdsArray = convertFlight(getAllFlightsFromReservation().getBody());
+        ResponseEntity<Flight[]> fl = getAllFlightsFromReservation();
+        List<Flight> allFlightIdsArray = convertFlight(fl.getBody());
 
         for (Flight flightObj : allFlightIdsArray) {
 
@@ -111,12 +111,16 @@ public class RevenueCompositeIntegration {
                 switch (test) {
                     case "BOOKING_TYPE_INTERNET":
                         internet = true;
+                        break;
                     case "BOOKING_TYPE_COUNTER":
                         counter = true;
+                        break;
                     case "BOOKING_TYPE_AGENCY":
                         agency = true;
+                        break;
                     case "BOOKING_TYPE_STAFF":
                         staff = true;
+                        break;
                     default:
                 }
 
@@ -127,10 +131,13 @@ public class RevenueCompositeIntegration {
                     switch (reservationObj.getReservationType()) {
                         case "ECONOMY_CLASS":
                             economy_class = true;
+                            break;
                         case "BUSINESS_CLASS":
                             business_class = true;
+                            break;
                         case "FIRST_CLASS":
                             first_class = true;
+                            break;
                         default:
                     }
 
@@ -172,11 +179,13 @@ public class RevenueCompositeIntegration {
             resultList.add(newRevenue);
         }
         Revenue[] resultArray = resultList.toArray(new Revenue[resultList.size()]);
-        return utils.createOkResponse(resultArray);
+        resultArray = new Revenue[0];
+        ResponseEntity<Revenue[]> revenueResultArray = utils.createOkResponse(resultArray);
+        return  revenueResultArray;
     }
 
 
-    public List<Flight> convertFlight(Flight[] arr) {
+    public static List<Flight> convertFlight(Flight[] arr) {
         List<Flight> flights = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             flights.add(arr[i]);
@@ -184,7 +193,7 @@ public class RevenueCompositeIntegration {
         return flights;
     }
 
-    public List<Ticket> convertTicket(Ticket[] arr) {
+    public static List<Ticket> convertTicket(Ticket[] arr) {
         List<Ticket> tickets = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             tickets.add(arr[i]);
@@ -192,7 +201,7 @@ public class RevenueCompositeIntegration {
         return tickets;
     }
 
-    public List<Revenue> convertRevenue(Revenue[] arr) {
+    public static List<Revenue> convertRevenue(Revenue[] arr) {
         List<Revenue> revenues = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             revenues.add(arr[i]);

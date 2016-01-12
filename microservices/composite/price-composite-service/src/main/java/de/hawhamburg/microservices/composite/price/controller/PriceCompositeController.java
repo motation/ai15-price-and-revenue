@@ -6,6 +6,9 @@ import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegra
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
@@ -94,10 +97,18 @@ public class PriceCompositeController {
         LOG.info("Got a request to /test/" + flightId);
         LOG.info("Now trying to make API Call");
         String url = utils.getServiceUrl("priceapi").toString();
-        url += "/"+flightId;
-        ResponseEntity<String> result=null;
+        url += "/" + flightId;
+
+        //OF for oauth2 secured resources!-->>
+        String token = utils.getOauth2Token();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + token);
+        HttpEntity<String> request = new HttpEntity<String>(headers);
+        //<----
+
+        ResponseEntity<String> result = null;
         try {
-            result = restTemplate.getForEntity(url,String.class);
+            result = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
         } catch (RestClientException e) {
             LOG.info(e.getMessage());
             LOG.info(e.getStackTrace().toString());

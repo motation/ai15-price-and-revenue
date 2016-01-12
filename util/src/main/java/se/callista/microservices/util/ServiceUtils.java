@@ -1,5 +1,7 @@
 package se.callista.microservices.util;
 
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.parsing.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
+
+import static com.jayway.restassured.RestAssured.given;
 
 /**
  * Created by magnus on 08/03/15.
@@ -22,7 +26,6 @@ public class ServiceUtils {
 
     @Autowired
     private LoadBalancerClient loadBalancer;
-
 
 
     /**
@@ -94,5 +97,33 @@ public class ServiceUtils {
 
     public <T> ResponseEntity<T> createResponse(T body, HttpStatus httpStatus) {
         return new ResponseEntity<>(body, httpStatus);
+    }
+
+    private String getServerAdress(){
+        String baseAddress = "";
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.indexOf("win") >= 0 || os.indexOf("mac") >= 0) {
+            baseAddress = "192.168.99.100";
+        } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
+            baseAddress = "127.0.0.1";
+        }
+        return baseAddress;
+    }
+
+    public String getOauth2Token(){
+        String baseURL = getServerAdress();
+        RestAssured.useRelaxedHTTPSValidation();
+        // Register JSON Parser for plain text responses
+        RestAssured.registerParser("text/plain", Parser.JSON);
+        // Order and extract
+        String token =
+                given().
+                        param("grant_type", "password").
+                        param("client_id", "acme").
+                        param("username", "user").
+                        param("password", "password").
+                        when().post("https://acme:acmesecret@" + baseURL + ":9999/uaa/oauth/token").then().
+                        extract().path("access_token");
+        return token;
     }
 }

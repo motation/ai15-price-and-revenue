@@ -2,7 +2,10 @@ package de.hawhamburg.microservices.api.price;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.parsing.Parser;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,8 +17,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.UUID;
 
-import static com.jayway.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.anything;
+import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 /**
@@ -53,7 +55,6 @@ public class PriceApiServiceTests {
         } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
             baseAddress = "127.0.0.1";
         }
-        baseAddress = "192.168.178.22";
     }
 
     private void sslTrustFake() {

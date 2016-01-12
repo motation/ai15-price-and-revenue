@@ -107,7 +107,8 @@ public class RevenueCompositeIntegration {
                 boolean first_class = false;
 
                 System.out.println("BookingType: --->>>>" + ticketObj.getBookingType());
-                switch (ticketObj.getBookingType()) {
+                String test = ticketObj.getBookingType().toString();
+                switch (test) {
                     case "BOOKING_TYPE_INTERNET":
                         internet = true;
                     case "BOOKING_TYPE_COUNTER":

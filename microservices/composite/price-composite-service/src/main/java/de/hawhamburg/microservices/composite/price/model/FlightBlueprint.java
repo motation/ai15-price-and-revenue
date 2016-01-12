@@ -1,25 +1,17 @@
 package de.hawhamburg.microservices.composite.price.model;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.util.UUID;
 
 /**
  * Created by tim on 20.10.15.
  */
-@Entity
+
 public class FlightBlueprint {
-    @Id
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid2")
-    @Column(name = "id", unique = true, columnDefinition = "BINARY(16)")
+
     private UUID id;
     private UUID aircraftModel;
     private UUID destination;
     private UUID departure;
-    @Temporal(TemporalType.TIME)
     private String duration;
     private boolean deleted;
 

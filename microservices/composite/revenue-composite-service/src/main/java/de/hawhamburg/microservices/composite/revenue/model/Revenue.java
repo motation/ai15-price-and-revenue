@@ -202,4 +202,65 @@ public class Revenue {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Revenue revenue = (Revenue) o;
+
+        if (Double.compare(revenue.soldTicketsFirstClassInternet, soldTicketsFirstClassInternet) != 0) return false;
+        if (Double.compare(revenue.soldTicketsBusinessClassInternet, soldTicketsBusinessClassInternet) != 0)
+            return false;
+        if (Double.compare(revenue.soldTicketsEconomyClassInternet, soldTicketsEconomyClassInternet) != 0) return false;
+        if (Double.compare(revenue.soldTicketsFirstClassTravelOffice, soldTicketsFirstClassTravelOffice) != 0)
+            return false;
+        if (Double.compare(revenue.soldTicketsBusinessClassTravelOffice, soldTicketsBusinessClassTravelOffice) != 0)
+            return false;
+        if (Double.compare(revenue.soldTicketsEconomyClassTravelOffice, soldTicketsEconomyClassTravelOffice) != 0)
+            return false;
+        if (Double.compare(revenue.soldTicketsFirstClassCounter, soldTicketsFirstClassCounter) != 0) return false;
+        if (Double.compare(revenue.soldTicketsBusinessClassCounter, soldTicketsBusinessClassCounter) != 0) return false;
+        if (Double.compare(revenue.soldTicketsEconomyClassCounter, soldTicketsEconomyClassCounter) != 0) return false;
+        if (Double.compare(revenue.soldTicketsEconomyClassStaff, soldTicketsEconomyClassStaff) != 0) return false;
+        if (Double.compare(revenue.soldTicketsBusinessClassStaff, soldTicketsBusinessClassStaff) != 0) return false;
+        if (Double.compare(revenue.soldTicketsFirstClassStaff, soldTicketsFirstClassStaff) != 0) return false;
+        if (id != null ? !id.equals(revenue.id) : revenue.id != null) return false;
+        return flightId != null ? flightId.equals(revenue.flightId) : revenue.flightId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (flightId != null ? flightId.hashCode() : 0);
+        temp = Double.doubleToLongBits(soldTicketsFirstClassInternet);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsBusinessClassInternet);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsEconomyClassInternet);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsFirstClassTravelOffice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsBusinessClassTravelOffice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsEconomyClassTravelOffice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsFirstClassCounter);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsBusinessClassCounter);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsEconomyClassCounter);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsEconomyClassStaff);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsBusinessClassStaff);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(soldTicketsFirstClassStaff);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

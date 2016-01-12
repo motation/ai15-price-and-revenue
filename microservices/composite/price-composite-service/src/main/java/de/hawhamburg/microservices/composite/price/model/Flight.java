@@ -1,31 +1,24 @@
 package de.hawhamburg.microservices.composite.price.model;
 
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 /**
  * Created by tim on 20.10.15.
  */
-@Entity
+
 public class Flight {
-    @Id
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(generator = "uuid2")
-    @Column(name = "id", unique = true, columnDefinition = "BINARY(16)")
+
     private UUID id;
 
     private String flightnumber;
-    @Temporal(TemporalType.TIME)
+
     private Date delay;
-    @Temporal(TemporalType.DATE)
+
     private Date startTime;
     private UUID aircraft;
-    @ManyToOne
+
     private FlightBlueprint blueprint;
     private boolean deleted;
 

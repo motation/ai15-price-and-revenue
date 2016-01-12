@@ -229,9 +229,7 @@ public class RevenueCompositeIntegrationTest {
         UUID reservationId1_1 = UUID.randomUUID();
         Passenger passenger1_1 = new Passenger(passengerId1, "Wolf-Dieter");
         UUID placeId1_1 = UUID.randomUUID();
-//        UUID placeId, int floor, int row, String seat, String placeType)
         Place place1_1 = new Place(placeId1_1, 1, 1, "Innen", "Sessel");
-//        UUID reservationId, boolean checkedIn, UUID flightId, Passenger traveler, Place place, String reservationType
         Reservation reservation1_1 = new Reservation(reservationId1_1, false, flightId, passenger1_1, place1_1,"ECONOMY_CLASS");
 
 //      -------------------------------- Reservierungen hinzugfügen ------------------------------------
@@ -269,43 +267,26 @@ public class RevenueCompositeIntegrationTest {
 //        Mockito.when(revenueCompositeIntegration.getTicketsFromReservation(flightId)).thenReturn(ticketsResponseEntity);
         Mockito.doReturn(ticketsResponseEntity).when(revenueCompositeIntegration).getTicketsFromReservation(flightId);
 
-//        String url = "http://localhost:8080/api/tickets/flight/"+flightId;
-
-//        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
-//        Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
-//        Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
-
-
 //      -------------------------------- MockAufruf AllFlights ------------------------------------
 
         ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
         Mockito.doReturn(flightsResponseEntity).when(revenueCompositeIntegration).getAllFlightsFromReservation();
-//        Mockito.when(revenueCompositeIntegration.getAllFlightsFromReservation()).thenReturn(flightsResponseEntity);
-
-//        String url2 = "http://localhost:8080/api/flights";
-
-//        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
-//        Mockito.when(restTemplate.getForEntity(url2,Flight[].class)).thenReturn(flightsResponseEntity);
-//        Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
-
 
 //      ----------------------------------- Mockaufruf saveRevenue -------------------------------------------
 
         ResponseEntity<Revenue> revenueResponseEntity = new ResponseEntity<Revenue>(revenue, HttpStatus.OK);
 
-//        Mockito.when(revenueCompositeIntegration.saveRevenue(revenue)).thenReturn(revenueResponseEntity);
         Mockito.doReturn(revenueResponseEntity).when(revenueCompositeIntegration).saveRevenue(revenue);
 
-//        String url3 = "http://localhost:8080/revenue/" + flightId;
+//      -------------------------------------- Testaufrufe ---------------------------------------------------
 
-//        Mockito.when(utils.getServiceUrl("revenue")).thenReturn(new URI("http://localhost:8080"));
-//        Mockito.when(restTemplate.postForEntity(url3, revenue, Revenue.class)).thenReturn(revenueResponseEntity);
-//        Mockito.when(utils.createOkResponse(revenue)).thenReturn(new ResponseEntity<Revenue>(revenue, HttpStatus.OK));
+        Revenue[] revArray1 = new Revenue[1];
+        revArray1[0] = revenue;
 
-//      -------------------------------------- Testaufrufe -------------------------------------------
-//        Mockito.when(revenueCompositeIntegration.updateStatistic()).thenCallRealMethod();
         Mockito.doCallRealMethod().when(revenueCompositeIntegration).updateStatistic();
-        Mockito.when(utils.createOkResponse(new Revenue[0])).thenReturn(new ResponseEntity<Revenue[]>(new Revenue[0],HttpStatus.OK));
+
+        Mockito.when(utils.createOkResponse(revArray1)).thenReturn(new ResponseEntity<Revenue[]>(revArray1, HttpStatus.OK));
+//        Mockito.when(utils.createOkResponse(new Revenue[0])).thenReturn(new ResponseEntity<Revenue[]>(new Revenue[0], HttpStatus.OK));
 
         ResponseEntity<Revenue[]> responseEntityRevenuesArray = revenueCompositeIntegration.updateStatistic();
         List<Revenue> responseEntityRevenueList = RevenueCompositeIntegration.convertRevenue(responseEntityRevenuesArray.getBody());
@@ -314,7 +295,7 @@ public class RevenueCompositeIntegrationTest {
 //      ----------------------------------------- Tests -------------------------------------------
 
 //        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassInternet(), 1);
-        Assert.assertEquals(responseEntityRevenueList.size(), 0);
+        Assert.assertEquals(responseEntityRevenueList.size(), 1);
 
 }
 

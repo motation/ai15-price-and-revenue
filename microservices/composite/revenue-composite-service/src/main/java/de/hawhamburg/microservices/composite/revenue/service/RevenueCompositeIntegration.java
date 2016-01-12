@@ -106,9 +106,7 @@ public class RevenueCompositeIntegration {
                 boolean business_class = false;
                 boolean first_class = false;
 
-                System.out.println("BookingType: --->>>>" + ticketObj.getBookingType());
-                String test = ticketObj.getBookingType().toString();
-                switch (test) {
+                switch (ticketObj.getBookingType().toString()) {
                     case "BOOKING_TYPE_INTERNET":
                         internet = true;
                         break;
@@ -124,10 +122,8 @@ public class RevenueCompositeIntegration {
                     default:
                 }
 
-
                 for (Reservation reservationObj : ticketObj.getReservations()) {
 
-                  System.out.println("Reservation: ------->>>>>" + reservationObj.getReservationType());
                     switch (reservationObj.getReservationType()) {
                         case "ECONOMY_CLASS":
                             economy_class = true;
@@ -179,7 +175,6 @@ public class RevenueCompositeIntegration {
             resultList.add(newRevenue);
         }
         Revenue[] resultArray = resultList.toArray(new Revenue[resultList.size()]);
-        resultArray = new Revenue[0];
         ResponseEntity<Revenue[]> revenueResultArray = utils.createOkResponse(resultArray);
         return  revenueResultArray;
     }

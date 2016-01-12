@@ -369,7 +369,6 @@ public class RevenueCompositeIntegrationTest {
         Flight[] flightArray = new Flight[1];
         flightArray[0] = resonseFlight;
 
-
 //      -------------------------------------- Response Revenue anlegen -------------------------------------------
         Revenue revenue = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
@@ -386,7 +385,6 @@ public class RevenueCompositeIntegrationTest {
                 .withsoldTicketsBusinessClassStaff(11)
                 .withsoldTicketsEconomyClassStaff(12)
                 .build();
-
 
 //      -------------------------------------- Mockaufruf getTicket -------------------------------------------
         ResponseEntity<Ticket[]> ticketsResponseEntity = new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK);
@@ -420,31 +418,30 @@ public class RevenueCompositeIntegrationTest {
 
 //      -------------------------------------- Testaufrufe -------------------------------------------
         Revenue[] revArray1 = new Revenue[1];
-        revArray1[0] = revenue;
+        revArray1[0] = revenue_save;
 
         Mockito.doCallRealMethod().when(revenueCompositeIntegration).updateStatistic();
 
         Mockito.when(utils.createOkResponse(revArray1)).thenReturn(new ResponseEntity<Revenue[]>(revArray1, HttpStatus.OK));
-//        Mockito.when(utils.createOkResponse(new Revenue[0])).thenReturn(new ResponseEntity<Revenue[]>(new Revenue[0], HttpStatus.OK));
 
         ResponseEntity<Revenue[]> responseEntityRevenuesArray = revenueCompositeIntegration.updateStatistic();
         List<Revenue> responseEntityRevenueList = revenueCompositeIntegration.convertRevenue(responseEntityRevenuesArray.getBody());
 
-
 //      -------------------------------------- Tests -------------------------------------------
 
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassInternet(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassInternet(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassInternet(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassTravelOffice(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassTravelOffice(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassTravelOffice(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassCounter(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassCounter(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassCounter(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassStaff(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassStaff(), 1);
-        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassStaff(), 1);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassInternet(), 3.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassInternet(), 2.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassInternet(), 1.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassTravelOffice(), 3.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassTravelOffice(), 2.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassTravelOffice(), 1.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassCounter(), 3.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassCounter(), 2.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassCounter(), 1.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsEconomyClassStaff(), 3.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsBusinessClassStaff(), 2.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getSoldTicketsFirstClassStaff(), 1.0);
+        Assert.assertEquals(responseEntityRevenueList.get(0).getFlightId(), flightId);
     }
 
 }

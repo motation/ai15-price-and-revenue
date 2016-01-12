@@ -3,13 +3,6 @@ package de.hawhamburg.microservices.api.price;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.parsing.Parser;
 import org.springframework.http.*;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.AccessTokenRequest;
-import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
-import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -19,9 +12,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import static com.jayway.restassured.RestAssured.*;
@@ -38,7 +28,7 @@ public class PriceApiServiceTests {
 
     @BeforeClass
     public void setupSecurityToken() {
-        helper();
+        sslTrustFake();
         setupSystemIpConfig();
         // Define relaxed SSL Auth, since we use self-signed certificates
         RestAssured.useRelaxedHTTPSValidation();
@@ -66,7 +56,7 @@ public class PriceApiServiceTests {
         baseAddress = "192.168.178.22";
     }
 
-    private void helper() {
+    private void sslTrustFake() {
         javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
                 new javax.net.ssl.HostnameVerifier() {
                     public boolean verify(String hostname,
@@ -95,7 +85,6 @@ public class PriceApiServiceTests {
             ex.printStackTrace();
         }
     }
-
 
 
     @Test

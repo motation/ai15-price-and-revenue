@@ -45,7 +45,7 @@ public class PriceApiController {
     public ResponseEntity<String> getPriceComposite(@PathVariable final UUID flightId,
                                                     @RequestHeader(value = "Authorization") String authorizationHeader,
                                                     Principal currentUser) {
-        LOG.debug("Got a request to /"+ flightId);
+        LOG.info("Got a request to /"+ flightId);
         URI uri = loadBalancer.choose("pricecomposite").getUri();
         String url = uri.toString() + "/price/" + flightId;
 //        String url = "http://localhost:8081/price/" + flightId;

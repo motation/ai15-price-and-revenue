@@ -107,6 +107,7 @@ public class ServiceUtils {
         } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
             baseAddress = "127.0.0.1";
         }
+        System.out.println("Base Adress is "+baseAddress);
         return baseAddress;
     }
 
@@ -124,6 +125,7 @@ public class ServiceUtils {
                         param("password", "password").
                         when().post("https://acme:acmesecret@" + baseURL + ":9999/uaa/oauth/token").then().
                         extract().path("access_token");
+        System.out.println("token is " + token);
         return token;
     }
 }

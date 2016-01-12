@@ -105,12 +105,12 @@ public class PriceCompositeController {
         String token = utils.getOauth2Token();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
-        HttpEntity<String> request = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
         //<----
         LOG.info("Token is: " + token);
         ResponseEntity<String> result = null;
         try {
-            result = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+            result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
         } catch (RestClientException e) {
             LOG.info("RESTTEMPLATE ERROR:" + e.getMessage());
         }

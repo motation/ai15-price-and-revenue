@@ -91,16 +91,16 @@ public class PriceCompositeController {
 
     @RequestMapping(value = "/test/{flightId}", method = RequestMethod.GET)
     public ResponseEntity<String> testApiCall(@PathVariable final UUID flightId) {
-        LOG.debug("Got a request to /test/" + flightId);
-        LOG.debug("Now trying to make API Call");
+        LOG.info("Got a request to /test/" + flightId);
+        LOG.info("Now trying to make API Call");
         String url = utils.getServiceUrl("priceapi").toString();
         url += "/"+flightId;
         ResponseEntity<String> result=null;
         try {
             result = restTemplate.getForEntity(url,String.class);
         } catch (RestClientException e) {
-            LOG.debug(e.getMessage());
-            LOG.debug(e.getStackTrace().toString());
+            LOG.info(e.getMessage());
+            LOG.info(e.getStackTrace().toString());
         }
         return result;
     }

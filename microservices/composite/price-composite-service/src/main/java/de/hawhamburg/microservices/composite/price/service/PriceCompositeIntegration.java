@@ -45,6 +45,11 @@ public class PriceCompositeIntegration {
         if (!resultStr.getStatusCode().is2xxSuccessful()) {
             LOG.info("Price need to be calculated");
             price = calculatePriceForFlight(flightID);
+            if (price.equals(null)) {
+                LOG.info("Something went wrong");
+                return utils.createResponse(null, HttpStatus.NOT_FOUND);
+            }
+            putPrice(price);
             LOG.info("Price " + price.getValue() + " : " + price);
         } else {
             LOG.info("Price found");
@@ -52,10 +57,6 @@ public class PriceCompositeIntegration {
             LOG.info("Price " + price.getValue() + " : " + price);
         }
 
-        if (price.equals(null)) {
-            LOG.info("Something went wrong");
-            return utils.createResponse(null, HttpStatus.NOT_FOUND);
-        }
 
         ResponseEntity<Price> response = new ResponseEntity<Price>(price, HttpStatus.OK);
         return response;

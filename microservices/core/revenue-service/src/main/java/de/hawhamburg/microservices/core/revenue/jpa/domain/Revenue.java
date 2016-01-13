@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -218,8 +217,8 @@ public class Revenue {
             return this;
         }
 
-        public RevenueBuilder withTimestamp(Date timestamp){
-            this.revenue.timestamp= timestamp.getTime();
+        public RevenueBuilder withTimestamp(long timestamp){
+            this.revenue.timestamp= timestamp;
             return this;
         }
 

@@ -22,6 +22,7 @@ public class CalculatedRevenue {
     private double businessClassPriceByStaff;
     private double firstClassPriceByStaff;
     private double economyClassPriceByStaff;
+    private long startime;
 
 
     private double revenue;
@@ -105,6 +106,7 @@ public class CalculatedRevenue {
         this.soldTicketsBusinessClassStaff = revenue.getSoldTicketsBusinessClassStaff();
         this.soldTicketsEconomyClassStaff = revenue.getSoldTicketsEconomyClassStaff();
         this.soldTicketsFirstClassStaff = revenue.getSoldTicketsFirstClassStaff();
+        this.startime = revenue.getTimestamp();
         buildRevenue();
     }
     private void buildRevenue() {

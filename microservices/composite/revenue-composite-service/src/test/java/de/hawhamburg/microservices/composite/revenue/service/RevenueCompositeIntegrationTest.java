@@ -2,8 +2,7 @@ package de.hawhamburg.microservices.composite.revenue.service;
 
 import de.hawhamburg.microservices.composite.revenue.model.*;
 import org.mockito.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -158,8 +157,13 @@ public class RevenueCompositeIntegrationTest {
 
         String url = "http://localhost:8080/api/flights";
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + "123");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        Mockito.when(utils.getOauth2Token()).thenReturn("123");
+
         Mockito.when(utils.getServiceUrl("reservationapi")).thenReturn(new URI("http://localhost:8080"));
-        Mockito.when(restTemplate.getForEntity(url,Flight[].class)).thenReturn(flightsResponseEntity);
+        Mockito.when(restTemplate.exchange(url, HttpMethod.GET,entity,Flight[].class)).thenReturn(flightsResponseEntity);
         Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
 
         ResponseEntity<Flight[]> responseEntity = revenueCompositeIntegration.getAllFlightsFromReservation();
@@ -199,8 +203,13 @@ public class RevenueCompositeIntegrationTest {
 
         String url = "http://localhost:8080/api/tickets/flight/"+flightId;
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + "123");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        Mockito.when(utils.getOauth2Token()).thenReturn("123");
+
         Mockito.when(utils.getServiceUrl("reservationapi")).thenReturn(new URI("http://localhost:8080"));
-        Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
+        Mockito.when(restTemplate.exchange(url,HttpMethod.GET,entity,Ticket[].class)).thenReturn(ticketsResponseEntity);
         Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
 
         ResponseEntity<Ticket[]> responseEntity = revenueCompositeIntegration.getTicketsFromReservation(flightId);

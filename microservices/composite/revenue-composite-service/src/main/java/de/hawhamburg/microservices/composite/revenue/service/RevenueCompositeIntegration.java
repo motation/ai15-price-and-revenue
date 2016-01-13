@@ -3,6 +3,9 @@ package de.hawhamburg.microservices.composite.revenue.service;
 import de.hawhamburg.microservices.composite.revenue.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -58,7 +61,15 @@ public class RevenueCompositeIntegration {
         //OF TODO use this later
         URI uri = utils.getServiceUrl("reservationapi");
         String url = uri.toString() + "/api/flights";
-        ResponseEntity<Flight[]> responseEntity = restTemplate.getForEntity(url, Flight[].class);
+
+        //OF for oauth2 secured resources!-->>
+        String token = utils.getOauth2Token();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        // <---
+
+        ResponseEntity<Flight[]> responseEntity = restTemplate.exchange(url,HttpMethod.GET,entity, Flight[].class);
         return utils.createOkResponse(responseEntity.getBody());
     }
 
@@ -66,7 +77,15 @@ public class RevenueCompositeIntegration {
 //        OF TODO use this later
         URI uri = utils.getServiceUrl("reservationapi");
         String url = uri.toString() + "/api/tickets/flight/" + flightID;
-        ResponseEntity<Ticket[]> responseEntity = restTemplate.getForEntity(url, Ticket[].class);
+
+        //OF for oauth2 secured resources!-->>
+        String token = utils.getOauth2Token();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        // <---
+
+        ResponseEntity<Ticket[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET,entity, Ticket[].class);
         return utils.createOkResponse(responseEntity.getBody());
     }
 

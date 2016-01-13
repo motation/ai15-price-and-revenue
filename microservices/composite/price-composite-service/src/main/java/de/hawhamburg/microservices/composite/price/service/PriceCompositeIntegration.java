@@ -49,7 +49,7 @@ public class PriceCompositeIntegration {
                 LOG.info("Something went wrong");
                 return utils.createResponse(null, HttpStatus.NOT_FOUND);
             }
-            putPrice(price);
+            createPrice(price);
             LOG.info("Price " + price.getValue() + " : " + price);
         } else {
             LOG.info("Price found");

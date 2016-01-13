@@ -57,10 +57,10 @@ public class RevenueCompositeIntegration {
         return utils.createOkResponse(tempRevenue);
     }
 
-    public ResponseEntity<Flight[]> getAllFlightsFromReservation() {
+    public ResponseEntity<Flight[]> getAllFlightsFromFlightOp() {
         //OF TODO use this later
-        URI uri = utils.getServiceUrl("reservationapi");
-        String url = uri.toString() + "/api/flights";
+        URI uri = utils.getServiceUrl("flightopapi");
+        String url = uri.toString() + "/api/flight";
 
         //OF for oauth2 secured resources!-->>
         String token = utils.getOauth2Token();
@@ -82,7 +82,7 @@ public class RevenueCompositeIntegration {
         String token = utils.getOauth2Token();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
         // <---
 
         ResponseEntity<Ticket[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET,entity, Ticket[].class);
@@ -108,12 +108,12 @@ public class RevenueCompositeIntegration {
 
 
         List<Revenue> resultList = new ArrayList<Revenue>();
-        ResponseEntity<Flight[]> fl = getAllFlightsFromReservation();
+        ResponseEntity<Flight[]> fl = getAllFlightsFromFlightOp();
         List<Flight> allFlightIdsArray = convertFlight(fl.getBody());
 
         for (Flight flightObj : allFlightIdsArray) {
 
-            List<Ticket> allTicketsForFlightID = convertTicket(getTicketsFromReservation(flightObj.getFlightId()).getBody());
+            List<Ticket> allTicketsForFlightID = convertTicket(getTicketsFromReservation(flightObj.getId()).getBody());
 
             for (Ticket ticketObj : allTicketsForFlightID) {
 
@@ -125,7 +125,7 @@ public class RevenueCompositeIntegration {
                 boolean business_class = false;
                 boolean first_class = false;
 
-                switch (ticketObj.getBookingType().toString()) {
+                switch (ticketObj.getBookingType()) {
                     case "BOOKING_TYPE_INTERNET":
                         internet = true;
                         break;
@@ -175,7 +175,8 @@ public class RevenueCompositeIntegration {
             }
 //              TODO - Speicherung des einzelnen Revenue
             Revenue newRevenue = new Revenue.RevenueBuilder()
-                    .withFlightId(flightObj.getFlightId())
+                    .withFlightId(flightObj.getId())
+                    .withTimestamp(flightObj.getStartTime())
                     .withsoldTicketsBusinessClassCounter(soldTicketsBusinessClassCounter)
                     .withSoldTicketsBusinessClassInternet(soldTicketsBusinessClassInternet)
                     .withsoldTicketsBusinessClassTravelOffice(soldTicketsBusinessClassTravelOffice)

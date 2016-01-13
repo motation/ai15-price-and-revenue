@@ -12,6 +12,7 @@ import se.callista.microservices.util.ServiceUtils;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,8 +96,10 @@ public class RevenueCompositeIntegrationTest {
     @Test
     public void testsaveRevenue() throws URISyntaxException {
         UUID flightId = UUID.randomUUID();
+        Date startime1 = new Date();
         Revenue revenue = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
+                .withTimestamp(startime1)
                 .withsoldTicketsBusinessClassCounter(10)
                 .withSoldTicketsBusinessClassInternet(20)
                 .withsoldTicketsBusinessClassTravelOffice(30)
@@ -146,8 +149,21 @@ public class RevenueCompositeIntegrationTest {
         UUID flightId1 = UUID.randomUUID();
         UUID flightId2 = UUID.randomUUID();
 
-        Flight resonseFlight1 = new Flight(flightId1, false);
-        Flight resonseFlight2 = new Flight(flightId2, true);
+        UUID aircraftId1 = UUID.randomUUID();
+        UUID aircraftId2 = UUID.randomUUID();
+
+        FlightBlueprint blueprint1 = new FlightBlueprint();
+        FlightBlueprint blueprint2 = new FlightBlueprint();
+
+        Date startime1 = new Date();
+        Date startime2 = new Date();
+
+        Date delay1 = new Date();
+        Date delay2 = new Date();
+
+//        (UUID id, String flightnumber, Date delay, Date startTime, UUID aircraft, FlightBlueprint blueprint, boolean deleted)
+        Flight resonseFlight1 = new Flight(flightId1, "ABC123", delay1,startime1, aircraftId1, blueprint1, false);
+        Flight resonseFlight2 = new Flight(flightId2, "DEF456", delay2,startime2, aircraftId2, blueprint2, false);
 
         Flight[] flightArray = new Flight[2];
         flightArray[0] = resonseFlight1;
@@ -155,24 +171,24 @@ public class RevenueCompositeIntegrationTest {
 
         ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
 
-        String url = "http://localhost:8080/api/flights";
+        String url = "http://localhost:8080/api/flight";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + "123");
         HttpEntity<String> entity = new HttpEntity<>(headers);
         Mockito.when(utils.getOauth2Token()).thenReturn("123");
 
-        Mockito.when(utils.getServiceUrl("reservationapi")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(utils.getServiceUrl("flightopapi")).thenReturn(new URI("http://localhost:8080"));
         Mockito.when(restTemplate.exchange(url, HttpMethod.GET,entity,Flight[].class)).thenReturn(flightsResponseEntity);
         Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
 
-        ResponseEntity<Flight[]> responseEntity = revenueCompositeIntegration.getAllFlightsFromReservation();
+        ResponseEntity<Flight[]> responseEntity = revenueCompositeIntegration.getAllFlightsFromFlightOp();
         Flight[] flightArrayToCheck = responseEntity.getBody();
 
-        Assert.assertEquals(flightArrayToCheck[0].getFlightId(), flightId1);
-        Assert.assertEquals(flightArrayToCheck[0].isCheckInReady(), false);
-        Assert.assertEquals(flightArrayToCheck[1].getFlightId(), flightId2);
-        Assert.assertEquals(flightArrayToCheck[1].isCheckInReady(), true);
+        Assert.assertEquals(flightArrayToCheck[0].getId(), flightId1);
+        Assert.assertEquals(flightArrayToCheck[0].isDeleted(), false);
+        Assert.assertEquals(flightArrayToCheck[1].getId(), flightId2);
+        Assert.assertEquals(flightArrayToCheck[1].isDeleted(), false);
     }
 
     @Test
@@ -227,7 +243,18 @@ public class RevenueCompositeIntegrationTest {
 //        revenueCompositeIntegration = Mockito.mock(RevenueCompositeIntegration.class);
         UUID flightId = UUID.randomUUID();
 //      FlugObjekt anlegen
-        Flight responseFlight = new Flight(flightId, false);
+
+        UUID aircraftId1 = UUID.randomUUID();
+
+        FlightBlueprint blueprint1 = new FlightBlueprint();
+
+        Date startime1 = new Date();
+
+        Date delay1 = new Date();
+
+//        (UUID id, String flightnumber, Date delay, Date startTime, UUID aircraft, FlightBlueprint blueprint, boolean deleted)
+        Flight responseFlight = new Flight(flightId, "ABC123", delay1,startime1, aircraftId1, blueprint1, false);
+
 
         Flight[] flightArray = new Flight[1];
         flightArray[0] = responseFlight;
@@ -257,6 +284,7 @@ public class RevenueCompositeIntegrationTest {
 //      -------------------------------------- Response Revenue anlegen -------------------------------------------
         Revenue revenue = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
+                .withTimestamp(startime1)
                 .withsoldTicketsBusinessClassCounter(0)
                 .withSoldTicketsBusinessClassInternet(0)
                 .withsoldTicketsBusinessClassTravelOffice(0)
@@ -279,7 +307,7 @@ public class RevenueCompositeIntegrationTest {
 //      -------------------------------- MockAufruf AllFlights ------------------------------------
 
         ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
-        Mockito.doReturn(flightsResponseEntity).when(revenueCompositeIntegration).getAllFlightsFromReservation();
+        Mockito.doReturn(flightsResponseEntity).when(revenueCompositeIntegration).getAllFlightsFromFlightOp();
 
 //      ----------------------------------- Mockaufruf saveRevenue -------------------------------------------
 
@@ -315,7 +343,17 @@ public class RevenueCompositeIntegrationTest {
     public void testUpdateStatistic2() throws URISyntaxException {
         UUID flightId = UUID.randomUUID();
 //      FlugObjekt anlegen
-        Flight resonseFlight = new Flight(flightId, false);
+
+        UUID aircraftId1 = UUID.randomUUID();
+
+        FlightBlueprint blueprint1 = new FlightBlueprint();
+
+        Date startime1 = new Date();
+
+        Date delay1 = new Date();
+
+//        (UUID id, String flightnumber, Date delay, Date startTime, UUID aircraft, FlightBlueprint blueprint, boolean deleted)
+        Flight responseFlight = new Flight(flightId, "ABC123", delay1,startime1, aircraftId1, blueprint1, false);
 
 //      TODO - Ticket 1 anlegen - INTERNET + Economy
 
@@ -376,7 +414,7 @@ public class RevenueCompositeIntegrationTest {
 //      ---------------------------- Array mit einem FlightObjekt ------------------------------------
 
         Flight[] flightArray = new Flight[1];
-        flightArray[0] = resonseFlight;
+        flightArray[0] = responseFlight;
 
 //      -------------------------------------- Response Revenue anlegen -------------------------------------------
         Revenue revenue = new Revenue.RevenueBuilder()
@@ -402,7 +440,7 @@ public class RevenueCompositeIntegrationTest {
 //      ------------------------------------- MockAufruf AllFlights ------------------------------------
 
         ResponseEntity<Flight[]> flightsResponseEntity = new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK);
-        Mockito.doReturn(flightsResponseEntity).when(revenueCompositeIntegration).getAllFlightsFromReservation();
+        Mockito.doReturn(flightsResponseEntity).when(revenueCompositeIntegration).getAllFlightsFromFlightOp();
 
 //      ----------------------------------- Mockaufruf saveRevenue -------------------------------------------
 

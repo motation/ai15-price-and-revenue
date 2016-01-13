@@ -1,5 +1,6 @@
 package de.hawhamburg.microservices.composite.revenue.model;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -25,8 +26,18 @@ public class Revenue {
     private double soldTicketsBusinessClassStaff;
     private double soldTicketsFirstClassStaff;
 
+    private long timestamp;
+
     protected Revenue(){
 
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public UUID getFlightId() {
@@ -191,6 +202,11 @@ public class Revenue {
 
         public RevenueBuilder withFlightId(UUID flightId){
             this.revenue.flightId = flightId;
+            return this;
+        }
+
+        public RevenueBuilder withTimestamp(Date timestamp){
+            this.revenue.timestamp= timestamp.getTime();
             return this;
         }
 

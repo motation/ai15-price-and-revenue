@@ -1,51 +1,91 @@
 package de.hawhamburg.microservices.composite.revenue.model;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
  * Created by final-work on 11.01.16.
  */
 public class Flight {
-    private UUID flightId;
-    private boolean checkInReady;
 
-    public Flight(UUID flightId, boolean checkInReady) {
-        this.flightId = flightId;
-        this.checkInReady = checkInReady;
+    private UUID id;
+
+    private String flightnumber;
+
+    private Date delay;
+
+    private Date startTime;
+    private UUID aircraft;
+
+    private FlightBlueprint blueprint;
+    private boolean deleted;
+
+    public Flight(UUID id, String flightnumber, Date delay, Date startTime, UUID aircraft, FlightBlueprint blueprint, boolean deleted) {
+        this.id = id;
+        this.flightnumber = flightnumber;
+        this.delay = delay;
+        this.startTime = startTime;
+        this.aircraft = aircraft;
+        this.blueprint = blueprint;
+        this.deleted = deleted;
     }
 
-    public UUID getFlightId() {
-        return flightId;
+    public Flight() {
     }
 
-    public void setFlightId(UUID flightId) {
-        this.flightId = flightId;
+    public UUID getId() {
+        return id;
     }
 
-    public boolean isCheckInReady() {
-        return checkInReady;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public void setCheckInReady(boolean checkInReady) {
-        this.checkInReady = checkInReady;
+    public String getFlightnumber() {
+        return flightnumber;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Flight flight = (Flight) o;
-
-        if (flightId != flight.flightId) return false;
-        return checkInReady == flight.checkInReady;
-
+    public void setFlightnumber(String flightnumber) {
+        this.flightnumber = flightnumber;
     }
 
-    @Override
-    public int hashCode() {
-        int result = flightId.hashCode();
-        result = 31 * result + (checkInReady ? 1 : 0);
-        return result;
+    public Date getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Date delay) {
+        this.delay = delay;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public UUID getAircraft() {
+        return aircraft;
+    }
+
+    public void setAircraft(UUID aircraft) {
+        this.aircraft = aircraft;
+    }
+
+    public FlightBlueprint getBlueprint() {
+        return blueprint;
+    }
+
+    public void setBlueprint(FlightBlueprint blueprint) {
+        this.blueprint = blueprint;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -3,6 +3,8 @@ package de.hawhamburg.microservices.core.price.controller;
 import de.hawhamburg.microservices.core.price.jpa.domain.Price;
 import de.hawhamburg.microservices.core.price.jpa.service.PriceService;
 import de.hawhamburg.microservices.core.price.util.WrappedList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @RestController
 public class PriceController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PriceController.class);
+
     @Autowired
     private PriceService priceService;
 
@@ -36,16 +40,21 @@ public class PriceController {
 
     @RequestMapping(value = "/prices", method = RequestMethod.GET)
     public WrappedList findAllPrices(){
+        LOG.info("Got a request to /prices");
         return WrappedList.getWrappedList(Price.class, priceService.findAllPrices());
     }
 
     @RequestMapping(value = "/price", method = RequestMethod.POST)
     public Price createPrice(@RequestBody final Price price, HttpServletResponse response) throws IOException {
+        LOG.info("Got a request to /price");
+        LOG.info("With price Object " + price.toString());
         Price savedPriceItem = priceService.createPrice(price);
         // OF maybe build Error Entity!
         if(savedPriceItem != null){
+            LOG.info("Price created!");
             response.setStatus(HttpServletResponse.SC_CREATED);
         } else {
+            LOG.info("Price not created");
             response.setStatus(HttpServletResponse.SC_CONFLICT);
         }
         return savedPriceItem;

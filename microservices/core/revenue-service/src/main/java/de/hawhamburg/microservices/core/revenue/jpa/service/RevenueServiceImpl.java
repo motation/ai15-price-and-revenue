@@ -27,7 +27,7 @@ public class RevenueServiceImpl implements RevenueService {
                 Revenue revenue = new Revenue.RevenueBuilder()
                         // TODO später durch Response von Reservation ersetzen
 //                        .withValue(12)
-                        .withTimestamp(new Date())
+                        .withTimestamp(new Date().getTime())
                         .withSoldTicketsFirstClassInternet(i + 40)
                         .withSoldTicketsEconomyClassInternet(i + 30)
                         .withSoldTicketsFirstClassTravelOffice(i + 25)
@@ -48,7 +48,7 @@ public class RevenueServiceImpl implements RevenueService {
 
         Revenue revenueSame = new Revenue.RevenueBuilder()
 //                .withValue(200)
-                .withTimestamp(new Date())
+                .withTimestamp(new Date().getTime())
                 .withSoldTicketsFirstClassInternet(50)
                 .withSoldTicketsEconomyClassInternet(80)
                 .withSoldTicketsFirstClassTravelOffice(90)

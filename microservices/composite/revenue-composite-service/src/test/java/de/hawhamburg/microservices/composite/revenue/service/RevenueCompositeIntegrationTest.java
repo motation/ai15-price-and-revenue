@@ -419,6 +419,7 @@ public class RevenueCompositeIntegrationTest {
 //      -------------------------------------- Response Revenue anlegen -------------------------------------------
         Revenue revenue = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
+                .withTimestamp(startime1.getTime())
                 .withsoldTicketsBusinessClassCounter(1)
                 .withSoldTicketsBusinessClassInternet(2)
                 .withsoldTicketsBusinessClassTravelOffice(3)
@@ -446,6 +447,7 @@ public class RevenueCompositeIntegrationTest {
 
         Revenue revenue_save = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
+                .withTimestamp(startime1.getTime())
                 .withsoldTicketsBusinessClassCounter(2)
                 .withSoldTicketsBusinessClassInternet(2)
                 .withsoldTicketsBusinessClassTravelOffice(2)

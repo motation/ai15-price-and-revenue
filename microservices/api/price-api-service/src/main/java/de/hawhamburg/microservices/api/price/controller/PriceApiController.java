@@ -53,57 +53,57 @@ public class PriceApiController {
         return utils.createResponse(result);
     }
 
-    @RequestMapping(value = "/price", method = RequestMethod.POST)
-    public ResponseEntity<String> createPrice(@RequestBody final Price price,
-                                              @RequestHeader(value = "Authorization") String authorizationHeader,
-                                              Principal currentUser) {
-        URI uri = loadBalancer.choose("pricecomposite").getUri();
-        String url = uri.toString() + "/price";
-//        String url = "http://localhost:8081/price";
-        ResponseEntity<String> result = restTemplate.postForEntity(url, price, String.class);
-        return utils.createResponse(result);
-    }
-
-    @RequestMapping(value = "/price/{flightId}", method = RequestMethod.DELETE)
-    public void deletePrice(@PathVariable final UUID flightId, HttpServletResponse response,
-                            @RequestHeader(value = "Authorization") String authorizationHeader,
-                            Principal currentUser) {
-        URI uri = loadBalancer.choose("pricecomposite").getUri();
-        String url = uri.toString() + "/price/" + flightId;
-//        String url = "http://localhost:8081/price/"+flightId;
-        try {
-            restTemplate.delete(url);
-            response.setStatus(HttpServletResponse.SC_OK);
-        } catch (RestClientException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    @RequestMapping(value = "/price", method = RequestMethod.PUT)
-    public void updateCompletePrice(@RequestBody final Price price, HttpServletResponse response,
-                                    @RequestHeader(value = "Authorization") String authorizationHeader,
-                                    Principal currentUser) {
-        URI uri = loadBalancer.choose("pricecomposite").getUri();
-        String url = uri.toString() + "/price";
-//        String url = "http://localhost:8081/price";
-        try {
-            restTemplate.put(url, price);
-            response.setStatus(HttpServletResponse.SC_OK);
-        } catch (RestClientException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
-    @RequestMapping(value = "/revenue/{flightId}", method = RequestMethod.GET)
-    public ResponseEntity<String> getRevenue(@PathVariable final UUID flightId,
-                                             @RequestHeader(value = "Authorization") String authorizationHeader,
-                                             Principal currentUser) {
-        LOG.debug("D: got a request to revenue + flight id:: " + flightId);
-        LOG.info("I: got a request to revenue + flight id:: " + flightId);
-        URI uri = loadBalancer.choose("revenuecomposite").getUri();
-        String url = uri.toString() + "/revenue/" + flightId;
-        return utils.createResponse(restTemplate.getForEntity(url, String.class));
-    }
+//    @RequestMapping(value = "/price", method = RequestMethod.POST)
+//    public ResponseEntity<String> createPrice(@RequestBody final Price price,
+//                                              @RequestHeader(value = "Authorization") String authorizationHeader,
+//                                              Principal currentUser) {
+//        URI uri = loadBalancer.choose("pricecomposite").getUri();
+//        String url = uri.toString() + "/price";
+////        String url = "http://localhost:8081/price";
+//        ResponseEntity<String> result = restTemplate.postForEntity(url, price, String.class);
+//        return utils.createResponse(result);
+//    }
+//
+//    @RequestMapping(value = "/price/{flightId}", method = RequestMethod.DELETE)
+//    public void deletePrice(@PathVariable final UUID flightId, HttpServletResponse response,
+//                            @RequestHeader(value = "Authorization") String authorizationHeader,
+//                            Principal currentUser) {
+//        URI uri = loadBalancer.choose("pricecomposite").getUri();
+//        String url = uri.toString() + "/price/" + flightId;
+////        String url = "http://localhost:8081/price/"+flightId;
+//        try {
+//            restTemplate.delete(url);
+//            response.setStatus(HttpServletResponse.SC_OK);
+//        } catch (RestClientException e) {
+//            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//        }
+//    }
+//
+//    @RequestMapping(value = "/price", method = RequestMethod.PUT)
+//    public void updateCompletePrice(@RequestBody final Price price, HttpServletResponse response,
+//                                    @RequestHeader(value = "Authorization") String authorizationHeader,
+//                                    Principal currentUser) {
+//        URI uri = loadBalancer.choose("pricecomposite").getUri();
+//        String url = uri.toString() + "/price";
+////        String url = "http://localhost:8081/price";
+//        try {
+//            restTemplate.put(url, price);
+//            response.setStatus(HttpServletResponse.SC_OK);
+//        } catch (RestClientException e) {
+//            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//        }
+//    }
+//
+//    @RequestMapping(value = "/revenue/{flightId}", method = RequestMethod.GET)
+//    public ResponseEntity<String> getRevenue(@PathVariable final UUID flightId,
+//                                             @RequestHeader(value = "Authorization") String authorizationHeader,
+//                                             Principal currentUser) {
+//        LOG.debug("D: got a request to revenue + flight id:: " + flightId);
+//        LOG.info("I: got a request to revenue + flight id:: " + flightId);
+//        URI uri = loadBalancer.choose("revenuecomposite").getUri();
+//        String url = uri.toString() + "/revenue/" + flightId;
+//        return utils.createResponse(restTemplate.getForEntity(url, String.class));
+//    }
 
     @RequestMapping(value = "/statistic")
     public ResponseEntity<String> getStatistics(@RequestParam final String fromDate,

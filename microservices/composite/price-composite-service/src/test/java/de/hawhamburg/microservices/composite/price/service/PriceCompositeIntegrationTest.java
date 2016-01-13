@@ -67,12 +67,19 @@ public class PriceCompositeIntegrationTest {
     //When price need to be calculated
     @Test
     public void testCalculatePriceForFlight() throws URISyntaxException {
-
+        // TODO calculate price
     }
 
     @Test
-    public void testGetFlightFromFlightOp(){
-
+    public void testGetFlightFromFlightOp() throws URISyntaxException {
+        UUID flightId = UUID.randomUUID();
+        URI uri = new URI("http://localhost:8080");
+        String url = uri.toString() + "/api/flight/" + flightId;
+        Mockito.when(utils.getServiceUrl("flightopapi")).thenReturn(uri);
+        Flight flight = new Flight();
+        flight.setId(flightId);
+        ResponseEntity<Flight> resultStr = new ResponseEntity<Flight>(flight,HttpStatus.OK);
+        Mockito.when(restTemplate.getForEntity(url,Flight.class)).thenReturn(resultStr);
     }
 
     @Test

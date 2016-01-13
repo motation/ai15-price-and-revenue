@@ -205,8 +205,8 @@ public class Revenue {
             return this;
         }
 
-        public RevenueBuilder withTimestamp(Date timestamp){
-            this.revenue.timestamp= timestamp.getTime();
+        public RevenueBuilder withTimestamp(long timestamp){
+            this.revenue.timestamp= timestamp;
             return this;
         }
 

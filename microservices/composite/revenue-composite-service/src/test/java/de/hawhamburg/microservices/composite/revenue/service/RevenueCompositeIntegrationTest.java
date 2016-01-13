@@ -99,7 +99,7 @@ public class RevenueCompositeIntegrationTest {
         Date startime1 = new Date();
         Revenue revenue = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
-                .withTimestamp(startime1)
+                .withTimestamp(startime1.getTime())
                 .withsoldTicketsBusinessClassCounter(10)
                 .withSoldTicketsBusinessClassInternet(20)
                 .withsoldTicketsBusinessClassTravelOffice(30)
@@ -284,7 +284,7 @@ public class RevenueCompositeIntegrationTest {
 //      -------------------------------------- Response Revenue anlegen -------------------------------------------
         Revenue revenue = new Revenue.RevenueBuilder()
                 .withFlightId(flightId)
-                .withTimestamp(startime1)
+                .withTimestamp(startime1.getTime())
                 .withsoldTicketsBusinessClassCounter(0)
                 .withSoldTicketsBusinessClassInternet(0)
                 .withsoldTicketsBusinessClassTravelOffice(0)

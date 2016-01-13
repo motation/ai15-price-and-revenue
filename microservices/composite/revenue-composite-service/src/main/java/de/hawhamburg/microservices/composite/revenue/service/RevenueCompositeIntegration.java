@@ -176,7 +176,7 @@ public class RevenueCompositeIntegration {
 //              TODO - Speicherung des einzelnen Revenue
             Revenue newRevenue = new Revenue.RevenueBuilder()
                     .withFlightId(flightObj.getId())
-                    .withTimestamp(flightObj.getStartTime())
+                    .withTimestamp(flightObj.getStartTime().getTime())
                     .withsoldTicketsBusinessClassCounter(soldTicketsBusinessClassCounter)
                     .withSoldTicketsBusinessClassInternet(soldTicketsBusinessClassInternet)
                     .withsoldTicketsBusinessClassTravelOffice(soldTicketsBusinessClassTravelOffice)

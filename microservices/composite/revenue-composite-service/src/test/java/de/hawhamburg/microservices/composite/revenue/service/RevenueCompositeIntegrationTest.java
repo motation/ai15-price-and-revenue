@@ -158,7 +158,7 @@ public class RevenueCompositeIntegrationTest {
 
         String url = "http://localhost:8080/api/flights";
 
-        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(utils.getServiceUrl("reservationapi")).thenReturn(new URI("http://localhost:8080"));
         Mockito.when(restTemplate.getForEntity(url,Flight[].class)).thenReturn(flightsResponseEntity);
         Mockito.when(utils.createOkResponse(flightArray)).thenReturn(new ResponseEntity<Flight[]>(flightArray, HttpStatus.OK));
 
@@ -199,7 +199,7 @@ public class RevenueCompositeIntegrationTest {
 
         String url = "http://localhost:8080/api/tickets/flight/"+flightId;
 
-        Mockito.when(utils.getServiceUrl("reservation")).thenReturn(new URI("http://localhost:8080"));
+        Mockito.when(utils.getServiceUrl("reservationapi")).thenReturn(new URI("http://localhost:8080"));
         Mockito.when(restTemplate.getForEntity(url,Ticket[].class)).thenReturn(ticketsResponseEntity);
         Mockito.when(utils.createOkResponse(ticketArray)).thenReturn(new ResponseEntity<Ticket[]>(ticketArray, HttpStatus.OK));
 

@@ -21,7 +21,6 @@ logging:
   level:
     root: WARN
     de.hawhamburg: INFO
-    de.hawhamburg: INFO
 
 ---
 # For deployment in Docker containers

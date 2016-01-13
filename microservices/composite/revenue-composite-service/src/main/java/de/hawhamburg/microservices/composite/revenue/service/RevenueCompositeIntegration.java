@@ -3,10 +3,7 @@ package de.hawhamburg.microservices.composite.revenue.service;
 import de.hawhamburg.microservices.composite.revenue.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
@@ -69,7 +66,7 @@ public class RevenueCompositeIntegration {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         // <---
 
-        ResponseEntity<Flight[]> responseEntity = restTemplate.exchange(url,HttpMethod.GET,entity, Flight[].class);
+        ResponseEntity<Flight[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Flight[].class);
         return utils.createOkResponse(responseEntity.getBody());
     }
 
@@ -85,7 +82,7 @@ public class RevenueCompositeIntegration {
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         // <---
 
-        ResponseEntity<Ticket[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET,entity, Ticket[].class);
+        ResponseEntity<Ticket[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Ticket[].class);
         return utils.createOkResponse(responseEntity.getBody());
     }
 
@@ -196,7 +193,7 @@ public class RevenueCompositeIntegration {
         }
         Revenue[] resultArray = resultList.toArray(new Revenue[resultList.size()]);
         ResponseEntity<Revenue[]> revenueResultArray = utils.createOkResponse(resultArray);
-        return  revenueResultArray;
+        return revenueResultArray;
     }
 
 
@@ -222,5 +219,17 @@ public class RevenueCompositeIntegration {
             revenues.add(arr[i]);
         }
         return revenues;
+    }
+
+    public ResponseEntity<CalculatedRevenue[]> getCalculatedRevenuesForTime(long startTime, long endTime) {
+        String url = utils.getServiceUrl("revenue") + "/forTime/" + startTime + "/" + endTime;
+        Revenue[] revenues = restTemplate.getForEntity(url, Revenue[].class).getBody();
+        CalculatedRevenue[] calculatedRevenues = new CalculatedRevenue[revenues.length];
+        for (int i = 0; i < revenues.length; i++) {
+            Revenue revenue = revenues[i];
+            CalculatedPrice calculatedPrice = getCalculatedPrice(revenue.getFlightId()).getBody();
+            calculatedRevenues[i] = new CalculatedRevenue(calculatedPrice, revenue);
+        }
+        return new ResponseEntity<>(calculatedRevenues, HttpStatus.OK);
     }
 }

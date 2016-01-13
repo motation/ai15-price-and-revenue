@@ -6,16 +6,16 @@ import de.hawhamburg.microservices.composite.revenue.model.Revenue;
 import de.hawhamburg.microservices.composite.revenue.service.RevenueCompositeIntegration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -65,6 +65,18 @@ public class RevenueCompositeController {
     @RequestMapping(value = "/updateStatistic", method = RequestMethod.GET)
     public void updateStatistic(){
         revenueCompositeIntegration.updateStatistic();
+    }
+
+    @RequestMapping(value="/statistic")
+    public ResponseEntity<CalculatedRevenue[]> getStatisticForTime(@RequestParam final String fromDate,
+                                                                   @RequestParam final String toDate) throws ParseException {
+        DateFormat formatter = DateFormat.getDateTimeInstance();
+        Date d  = formatter.parse(fromDate);
+        long startTime=d.getTime();
+        d = formatter.parse(toDate);
+        long endTime = d.getTime();
+        ResponseEntity<CalculatedRevenue[]> result = revenueCompositeIntegration.getCalculatedRevenuesForTime(startTime,endTime);
+        return result;
     }
 
 }

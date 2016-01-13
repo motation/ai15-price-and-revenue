@@ -66,31 +66,13 @@ public class PriceCompositeIntegrationTest {
 
     //When price need to be calculated
     @Test
-    public void testGetPriceFromFlightOp() throws URISyntaxException {
-        UUID flightId = UUID.randomUUID();
+    public void testCalculatePriceForFlight() throws URISyntaxException {
 
-        Flight flight = new Flight();
-        flight.setId(flightId);
-        FlightBlueprint flightBlueprint = new FlightBlueprint();
-        flightBlueprint.setDuration("10.0");
-        flight.setBlueprint(flightBlueprint);
+    }
 
-        ResponseEntity<String> priceResponseEntity = new ResponseEntity<String>("no price", HttpStatus.NOT_FOUND);
-        ResponseEntity<Flight> flightResponseEntity = new ResponseEntity<Flight>(flight, HttpStatus.OK);
+    @Test
+    public void testGetFlightFromFlightOp(){
 
-        String url = "http://localhost:8080/price/"+flightId;
-        String urlFlightOp = "flightOp/api/flight/" + flightId;
-
-
-        Mockito.when(utils.getServiceUrl("price")).thenReturn(new URI("http://localhost:8080"));
-        Mockito.when(utils.getServiceUrl("flightOp")).thenReturn(new URI("flightOp"));
-        Mockito.when(restTemplate.getForEntity(url,String.class)).thenReturn(priceResponseEntity);
-        Mockito.when(restTemplate.getForEntity(urlFlightOp, Flight.class)).thenReturn(flightResponseEntity);
-
-        ResponseEntity<Price> responseEntity = priceCompositeIntegration.getPrice(flightId);
-        Price priceToCheck = responseEntity.getBody();
-
-        Assert.assertEquals(priceToCheck.getValue(),400.0);
     }
 
     @Test
@@ -102,6 +84,8 @@ public class PriceCompositeIntegrationTest {
         ResponseEntity<Price> resultStr = new ResponseEntity<>(price, HttpStatus.OK);
         Mockito.when(restTemplate.postForEntity(url, price, Price.class)).thenReturn(resultStr);
         Mockito.when(utils.createOkResponse(price)).thenReturn(new ResponseEntity<>(price,HttpStatus.OK));
+        URI uri = new URI(urlToPriceService);
+        Mockito.when(utils.getServiceUrl("price")).thenReturn(uri);
         ResponseEntity<Price> responseEntity = priceCompositeIntegration.createPrice(price);
         Price priceToCheck = responseEntity.getBody();
 
@@ -118,6 +102,8 @@ public class PriceCompositeIntegrationTest {
         ResponseEntity<Price> resultStr = new ResponseEntity<Price>(price, HttpStatus.OK);
         Mockito.when(restTemplate.postForEntity(url,price,Price.class)).thenReturn(resultStr);
         Mockito.when(utils.createOkResponse(price)).thenReturn(new ResponseEntity<>(price,HttpStatus.OK));
+        URI uri = new URI(urlToPriceService);
+        Mockito.when(utils.getServiceUrl("price")).thenReturn(uri);
         priceCompositeIntegration.createPrice(price);
 
         Boolean response = priceCompositeIntegration.deletePrice(uuid);
@@ -128,6 +114,12 @@ public class PriceCompositeIntegrationTest {
     public void testPutPrice() throws URISyntaxException {
         UUID uuid = UUID.randomUUID();
         Price price = new Price.PriceBuilder().withFlightId(uuid).withValue(200.0).build();
+
+        String urlToPriceService = "http://localhost:8080";
+        URI uri = new URI(urlToPriceService);
+        Mockito.when(utils.getServiceUrl("price")).thenReturn(uri);
+        String url = "http://localhost:8080/price";
+        Mockito.doNothing().when(restTemplate).put(url,price);
 
         Boolean response = priceCompositeIntegration.putPrice(price);
         Assert.assertTrue(response);

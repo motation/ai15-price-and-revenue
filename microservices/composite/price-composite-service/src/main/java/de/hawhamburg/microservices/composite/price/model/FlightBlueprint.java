@@ -12,10 +12,11 @@ public class FlightBlueprint {
     private UUID aircraftModel;
     private UUID destination;
     private UUID departure;
-    private String duration;
+    private Duration duration;
     private boolean deleted;
 
-    public FlightBlueprint(UUID id, UUID aircraftModel, UUID destination, UUID departure, String duration, boolean deleted) {
+
+    public FlightBlueprint(UUID id, UUID aircraftModel, UUID destination, UUID departure, Duration duration, boolean deleted) {
         this.id = id;
         this.aircraftModel = aircraftModel;
         this.destination = destination;
@@ -60,11 +61,11 @@ public class FlightBlueprint {
         this.departure = departure;
     }
 
-    public String getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 

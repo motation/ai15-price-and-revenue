@@ -2,6 +2,7 @@ package de.hawhamburg.microservices.composite.price.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.hawhamburg.microservices.composite.price.model.Duration;
 import de.hawhamburg.microservices.composite.price.model.Flight;
 import de.hawhamburg.microservices.composite.price.model.FlightBlueprint;
 import de.hawhamburg.microservices.composite.price.model.Price;
@@ -69,13 +70,17 @@ public class PriceCompositeIntegrationTest {
         Flight flight = new Flight();
         flight.setId(flightId);
         FlightBlueprint flightBlueprint = new FlightBlueprint();
-        flightBlueprint.setDuration("90");
+        Duration duration = new Duration();
+        duration.setDays(0);
+        duration.setHours(2);
+        duration.setMinutes(15);
+        flightBlueprint.setDuration(duration);
         flight.setBlueprint(flightBlueprint);
 
         Mockito.doReturn(flight).when(priceCompositeIntegration).getFlightFromFlightOp(flightId);
 
         Price price = priceCompositeIntegration.calculatePriceForFlight(flightId);
-        Assert.assertEquals(price.getValue(),3600.0);
+        Assert.assertEquals(price.getValue(),129.6);
     }
 
     @Test

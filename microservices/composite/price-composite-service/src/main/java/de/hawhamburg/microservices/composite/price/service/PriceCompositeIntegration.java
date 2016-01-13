@@ -1,5 +1,6 @@
 package de.hawhamburg.microservices.composite.price.service;
 
+import de.hawhamburg.microservices.composite.price.model.Duration;
 import de.hawhamburg.microservices.composite.price.model.Flight;
 import de.hawhamburg.microservices.composite.price.model.FlightBlueprint;
 import de.hawhamburg.microservices.composite.price.model.Price;
@@ -124,11 +125,14 @@ public class PriceCompositeIntegration {
         Double price = null;
         Flight flight = getFlightFromFlightOp(flightid);
         FlightBlueprint flightBlueprint = flight.getBlueprint();
-        String duration = flightBlueprint.getDuration();
+        Duration duration = flightBlueprint.getDuration();
         if (!duration.equals(null)) {
-            double durationInHours = Double.valueOf(duration);
-            double priceForOneHour = 40.0;
-            price = durationInHours * priceForOneHour;
+            double durationInSeconds = duration.getSeconds() +
+                    (duration.getDays() * 3600 * 24) + (duration.getMinutes() * 60) +
+                    duration.getHours() * 3600;
+            double factor = 1.2;
+            int numSeats = 75;
+            price = (durationInSeconds * factor) / numSeats;
         }
 
         Price result;

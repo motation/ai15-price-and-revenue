@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -79,30 +76,30 @@ public class PriceController {
     }
 
 
-    public static void main(String[] args) throws IOException {
-        String path ="http://localhost:8080/price";
-        HttpURLConnection con = (HttpURLConnection) new URL(path).openConnection();
-        con.setRequestMethod("DELETE");
-//        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type","application/json");
-        con.setDoInput(true);
-        con.setDoOutput(true);
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream()));
-        String uuid = "95fbe489-9217-469f-8771-cf15ee1051b5";
-//        UUID uuid = UUID.randomUUID();
-        String json = "{\"value\":260.0,\"flightId\":\""+uuid+"\"}";
-        System.out.println(json);
-        writer.write(json);
-        writer.flush();
+//    public static void main(String[] args) throws IOException {
+//        String path ="http://localhost:8080/price";
+//        HttpURLConnection con = (HttpURLConnection) new URL(path).openConnection();
+//        con.setRequestMethod("DELETE");
+////        con.setRequestMethod("POST");
+//        con.setRequestProperty("Content-Type","application/json");
+//        con.setDoInput(true);
+//        con.setDoOutput(true);
+//        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream()));
+//        String uuid = "95fbe489-9217-469f-8771-cf15ee1051b5";
+////        UUID uuid = UUID.randomUUID();
+//        String json = "{\"value\":260.0,\"flightId\":\""+uuid+"\"}";
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String line = null;
+//        writer.write(json);
+//        writer.flush();
+//
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//        String line = null;
+//
+//        while((line=reader.readLine() ) != null){
 
-        while((line=reader.readLine() ) != null){
-            System.out.println(line);
-        }
-        reader.close();
-        writer.close();
-        con.disconnect();
-    }
+//        }
+//        reader.close();
+//        writer.close();
+//        con.disconnect();
+//    }
 }

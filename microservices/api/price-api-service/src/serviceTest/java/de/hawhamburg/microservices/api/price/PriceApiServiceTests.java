@@ -112,7 +112,5 @@ public class PriceApiServiceTests {
         headers.set("Authorization", "Bearer " + token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> resp = rest.exchange(uri, HttpMethod.GET, entity, String.class);
-        System.out.println("hallo");
-        System.out.println(resp.toString());
     }
 }

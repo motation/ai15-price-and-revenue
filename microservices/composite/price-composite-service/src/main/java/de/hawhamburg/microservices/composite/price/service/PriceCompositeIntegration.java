@@ -4,6 +4,8 @@ import de.hawhamburg.microservices.composite.price.model.Flight;
 import de.hawhamburg.microservices.composite.price.model.FlightBlueprint;
 import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.util.ResponseHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @Service
 public class PriceCompositeIntegration {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PriceCompositeIntegration.class);
+
     @Autowired
     private ServiceUtils utils;
 
@@ -36,23 +40,20 @@ public class PriceCompositeIntegration {
         URI uri = utils.getServiceUrl("price");
         String url = uri.toString() + "/price/" + flightID;
 
-        //OF TODO remove this later!
-//        String urlToPriceService = "http://localhost:8080";
-//        String url =urlToPriceService + "/price/" + flightID;
         Price price;
         ResponseEntity<String> resultStr = restTemplate.getForEntity(url, String.class);
         if (!resultStr.getStatusCode().is2xxSuccessful()) {
-            System.out.println("Price need to be calculated");
+            LOG.info("Price need to be calculated");
             price = calculatePriceForFlight(flightID);
-            System.out.println("Price " + price.getValue() + " : " + price);
+            LOG.info("Price " + price.getValue() + " : " + price);
         } else {
-            System.out.println("Price found");
+            LOG.info("Price found");
             price = ResponseHelper.response2Price(resultStr);
-            System.out.println("Price " + price.getValue() + " : " + price);
+            LOG.info("Price " + price.getValue() + " : " + price);
         }
 
         if (price.equals(null)) {
-            System.out.println("Something went wrong");
+            LOG.info("Something went wrong");
             return utils.createResponse(null, HttpStatus.NOT_FOUND);
         }
 

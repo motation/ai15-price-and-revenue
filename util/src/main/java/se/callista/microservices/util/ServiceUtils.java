@@ -112,7 +112,6 @@ public class ServiceUtils {
                         param("password", "password").
                         when().post("https://acme:acmesecret@auth:9999/uaa/oauth/token").then().
                         extract().path("access_token");
-        System.out.println("token is " + token);
         return token;
     }
 }

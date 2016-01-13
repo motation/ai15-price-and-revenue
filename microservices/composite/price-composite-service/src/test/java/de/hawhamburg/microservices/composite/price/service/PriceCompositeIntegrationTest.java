@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import de.hawhamburg.microservices.composite.price.model.Flight;
 import de.hawhamburg.microservices.composite.price.model.FlightBlueprint;
 import de.hawhamburg.microservices.composite.price.model.Price;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
@@ -25,6 +22,7 @@ import java.util.UUID;
  */
 public class PriceCompositeIntegrationTest {
 
+    @Spy
     @InjectMocks
     private PriceCompositeIntegration priceCompositeIntegration;
 
@@ -67,6 +65,17 @@ public class PriceCompositeIntegrationTest {
     @Test
     public void testCalculatePriceForFlight() throws URISyntaxException {
         // TODO calculate price
+        UUID flightId = UUID.randomUUID();
+        Flight flight = new Flight();
+        flight.setId(flightId);
+        FlightBlueprint flightBlueprint = new FlightBlueprint();
+        flightBlueprint.setDuration("90");
+        flight.setBlueprint(flightBlueprint);
+
+        Mockito.doReturn(flight).when(priceCompositeIntegration).getFlightFromFlightOp(flightId);
+
+        Price price = priceCompositeIntegration.calculatePriceForFlight(flightId);
+        Assert.assertEquals(price.getValue(),3600.0);
     }
 
     @Test

@@ -9,8 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -78,8 +77,16 @@ public class PriceCompositeIntegrationTest {
         Mockito.when(utils.getServiceUrl("flightopapi")).thenReturn(uri);
         Flight flight = new Flight();
         flight.setId(flightId);
+
+        Mockito.when(utils.getOauth2Token()).thenReturn("123");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + "123");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
         ResponseEntity<Flight> resultStr = new ResponseEntity<Flight>(flight,HttpStatus.OK);
-        Mockito.when(restTemplate.getForEntity(url,Flight.class)).thenReturn(resultStr);
+        Mockito.when(restTemplate.exchange(url, HttpMethod.GET,entity,Flight.class)).thenReturn(resultStr);
+        Flight flightToTest = priceCompositeIntegration.getFlightFromFlightOp(flightId);
+        Assert.assertEquals(flightToTest.getId(),flightId);
     }
 
     @Test

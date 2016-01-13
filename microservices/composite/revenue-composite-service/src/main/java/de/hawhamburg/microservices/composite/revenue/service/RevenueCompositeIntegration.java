@@ -56,7 +56,7 @@ public class RevenueCompositeIntegration {
 
     public ResponseEntity<Flight[]> getAllFlightsFromReservation() {
         //OF TODO use this later
-        URI uri = utils.getServiceUrl("reservation");
+        URI uri = utils.getServiceUrl("reservationapi");
         String url = uri.toString() + "/api/flights";
         ResponseEntity<Flight[]> responseEntity = restTemplate.getForEntity(url, Flight[].class);
         return utils.createOkResponse(responseEntity.getBody());
@@ -64,7 +64,7 @@ public class RevenueCompositeIntegration {
 
     public ResponseEntity<Ticket[]> getTicketsFromReservation(UUID flightID) {
 //        OF TODO use this later
-        URI uri = utils.getServiceUrl("reservation");
+        URI uri = utils.getServiceUrl("reservationapi");
         String url = uri.toString() + "/api/tickets/flight/" + flightID;
         ResponseEntity<Ticket[]> responseEntity = restTemplate.getForEntity(url, Ticket[].class);
         return utils.createOkResponse(responseEntity.getBody());

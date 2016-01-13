@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ public class RevenueServiceImpl implements RevenueService {
                 Revenue revenue = new Revenue.RevenueBuilder()
                         // TODO später durch Response von Reservation ersetzen
 //                        .withValue(12)
+                        .withTimestamp(new Date())
                         .withSoldTicketsFirstClassInternet(i + 40)
                         .withSoldTicketsEconomyClassInternet(i + 30)
                         .withSoldTicketsFirstClassTravelOffice(i + 25)
@@ -46,6 +48,7 @@ public class RevenueServiceImpl implements RevenueService {
 
         Revenue revenueSame = new Revenue.RevenueBuilder()
 //                .withValue(200)
+                .withTimestamp(new Date())
                 .withSoldTicketsFirstClassInternet(50)
                 .withSoldTicketsEconomyClassInternet(80)
                 .withSoldTicketsFirstClassTravelOffice(90)

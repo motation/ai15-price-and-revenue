@@ -366,7 +366,7 @@ task stopRevenueServiceContainer(type: DockerStopContainer) {
 task createRevenueCompositeServiceContainer(type:DockerCreateContainer, dependsOn: [startRevenueServiceContainer]){
     imageId = "revenue-composite"
     containerName = "revenue-composite"
-    links = ["discovery:discovery","rabbitmq:rabbitmq"]
+    links = ["discovery:discovery","rabbitmq:rabbitmq","auth:auth"]
 }
 
 task startRevenueCompositeServiceContainer(type: DockerStartContainer, dependsOn: [createRevenueCompositeServiceContainer]) {
@@ -390,7 +390,7 @@ task stopRevenueCompositeServiceContainer(type: DockerStopContainer) {
 task createPriceCompositeServiceContainer(type: DockerCreateContainer, dependsOn: [startRevenueCompositeServiceContainer]) {
     imageId = "price-composite"
     containerName = "price-composite"
-    links = ["discovery:discovery","rabbitmq:rabbitmq"]
+    links = ["discovery:discovery","rabbitmq:rabbitmq","auth:auth"]
 }
 
 task startPriceCompositeServiceContainer(type: DockerStartContainer, dependsOn: [createPriceCompositeServiceContainer]) {

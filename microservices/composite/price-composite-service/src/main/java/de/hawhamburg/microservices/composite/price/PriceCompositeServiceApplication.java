@@ -44,11 +44,11 @@ public class PriceCompositeServiceApplication {
     public static void main(String[] args) {
         LOG.info("Register MDCHystrixConcurrencyStrategy");
         HystrixPlugins.getInstance().registerConcurrencyStrategy(new MDCHystrixConcurrencyStrategy());
-        sslTrustFake();
+        useRelaxedHTTPSValidation();
         SpringApplication.run(PriceCompositeServiceApplication.class,args);
     }
 
-    private static void sslTrustFake() {
+    private static void useRelaxedHTTPSValidation() {
         javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
                 new javax.net.ssl.HostnameVerifier() {
                     public boolean verify(String hostname,

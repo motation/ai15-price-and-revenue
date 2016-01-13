@@ -41,12 +41,14 @@ price-composite:
  links:
   - discovery
   - rabbitmq
+  - auth
 
 revenue-composite:
  image: artifactory.mars.haw-hamburg.de:5002/revenue-composite-pricing-blue
  links:
   - discovery
   - rabbitmq
+  - auth
 
 priceapi:
  image: artifactory.mars.haw-hamburg.de:5002/price-api-service-pricing-blue

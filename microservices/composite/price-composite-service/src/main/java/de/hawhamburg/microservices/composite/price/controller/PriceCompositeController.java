@@ -3,16 +3,11 @@ package de.hawhamburg.microservices.composite.price.controller;
 import de.hawhamburg.microservices.composite.price.model.CalculatedPrice;
 import de.hawhamburg.microservices.composite.price.model.Price;
 import de.hawhamburg.microservices.composite.price.service.PriceCompositeIntegration;
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.callista.microservices.util.ServiceUtils;
 
@@ -93,27 +88,28 @@ public class PriceCompositeController {
         }
     }
 
-    @RequestMapping(value = "/test/{flightId}", method = RequestMethod.GET)
-    public ResponseEntity<String> testApiCall(@PathVariable final UUID flightId) {
-        LOG.info("Got a request to /test/" + flightId);
-        LOG.info("Now trying to make API Call");
-        String url = utils.getServiceUrl("priceapi").toString();
-        url += "/" + flightId;
-        LOG.info("API URL IS: " + url);
-
-        //OF for oauth2 secured resources!-->>
-        String token = utils.getOauth2Token();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        //<----
-        LOG.info("Token is: " + token);
-        ResponseEntity<String> result = null;
-        try {
-            result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        } catch (RestClientException e) {
-            LOG.info("RESTTEMPLATE ERROR:" + e.getMessage());
-        }
-        return result;
-    }
+    //OF TODO don't remove this is an example for api calls from composite-service
+//    @RequestMapping(value = "/test/{flightId}", method = RequestMethod.GET)
+//    public ResponseEntity<String> testApiCall(@PathVariable final UUID flightId) {
+//        LOG.info("Got a request to /test/" + flightId);
+//        LOG.info("Now trying to make API Call");
+//        String url = utils.getServiceUrl("priceapi").toString();
+//        url += "/" + flightId;
+//        LOG.info("API URL IS: " + url);
+//
+//        //OF for oauth2 secured resources!-->>
+//        String token = utils.getOauth2Token();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "Bearer " + token);
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//        //<----
+//        LOG.info("Token is: " + token);
+//        ResponseEntity<String> result = null;
+//        try {
+//            result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+//        } catch (RestClientException e) {
+//            LOG.info("RESTTEMPLATE ERROR:" + e.getMessage());
+//        }
+//        return result;
+//    }
 }

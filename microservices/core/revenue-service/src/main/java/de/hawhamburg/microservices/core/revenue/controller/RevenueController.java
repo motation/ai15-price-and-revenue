@@ -11,6 +11,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
 import java.io.*;
+import java.util.List;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -66,6 +67,12 @@ public class RevenueController {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    @RequestMapping(value="/revenues/{startTime}/{endTime}", method = RequestMethod.GET)
+    public List<Revenue> getRevenuesForTime(@PathVariable long startTime,@PathVariable long endTime){
+        List<Revenue> revenues = revenueService.revenuesForTime(startTime,endTime);
+        return revenues;
     }
 
 }

@@ -222,7 +222,7 @@ public class RevenueCompositeIntegration {
     }
 
     public ResponseEntity<CalculatedRevenue[]> getCalculatedRevenuesForTime(long startTime, long endTime) {
-        String url = utils.getServiceUrl("revenue") + "/forTime/" + startTime + "/" + endTime;
+        String url = utils.getServiceUrl("revenue") + "/revenues/" + startTime + "/" + endTime;
         Revenue[] revenues = restTemplate.getForEntity(url, Revenue[].class).getBody();
         CalculatedRevenue[] calculatedRevenues = new CalculatedRevenue[revenues.length];
         for (int i = 0; i < revenues.length; i++) {

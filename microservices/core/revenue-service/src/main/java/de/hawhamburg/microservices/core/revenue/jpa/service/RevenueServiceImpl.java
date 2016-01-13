@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -104,6 +105,23 @@ public class RevenueServiceImpl implements RevenueService {
         Revenue revenueToUpdate = new Revenue.RevenueBuilder().fromEntity(revenue).build();
         Revenue savedRevenue = revenueRepository.save(revenueToUpdate);
         return revenue.equals(savedRevenue);
+    }
+
+    @Override
+    public List<Revenue> revenuesForTime(long startTime, long endTime) {
+        //OF TODO find all revenues for time in db --> improvment use sql...
+        List<Revenue> revenues = revenueRepository.findAll();
+        List<Revenue> foundRevenues = new ArrayList<>();
+        for(Revenue revenue : revenues){
+            if(revenue.getTimestamp() == startTime || revenue.getTimestamp() == endTime){
+                foundRevenues.add(revenue);
+                continue;
+            }
+            if(revenue.getTimestamp() > startTime && revenue.getTimestamp() < endTime ){
+                foundRevenues.add(revenue);
+            }
+        }
+        return foundRevenues;
     }
 
 

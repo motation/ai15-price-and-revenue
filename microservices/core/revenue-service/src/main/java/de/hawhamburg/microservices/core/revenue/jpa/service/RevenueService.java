@@ -19,4 +19,5 @@ public interface RevenueService {
 
     boolean updateRevenue(Revenue price);
 
+    List<Revenue> revenuesForTime(long startTime, long endTime);
 }

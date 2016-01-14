@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import de.hawhamburg.microservices.api.price.model.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -109,8 +110,8 @@ public class PriceApiController {
 //    }
 
     @RequestMapping(value = "/statistic")
-    public ResponseEntity<String> getStatistics(@RequestParam final Date fromDate,
-                                                @RequestParam final Date toDate,
+    public ResponseEntity<String> getStatistics(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") final Date fromDate,
+                                                @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") final Date toDate,
                                                 @RequestHeader(value = "Authorization") String authorizationHeader,
                                                 Principal currentUser) throws ParseException {
 

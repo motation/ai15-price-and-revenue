@@ -3,6 +3,8 @@ package de.hawhamburg.microservices.core.revenue.controller;
 import de.hawhamburg.microservices.core.revenue.jpa.domain.Revenue;
 import de.hawhamburg.microservices.core.revenue.jpa.service.RevenueService;
 import de.hawhamburg.microservices.core.revenue.util.WrappedList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Produces(APPLICATION_JSON)
 @RestController
 public class RevenueController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RevenueController.class);
 
     @Autowired
     private RevenueService revenueService;
@@ -71,6 +75,7 @@ public class RevenueController {
 
     @RequestMapping(value="/revenues/{startTime}/{endTime}", method = RequestMethod.GET)
     public List<Revenue> getRevenuesForTime(@PathVariable long startTime,@PathVariable long endTime){
+        LOG.info("startTime="+startTime+" endTime="+endTime);
         List<Revenue> revenues = revenueService.revenuesForTime(startTime,endTime);
         return revenues;
     }

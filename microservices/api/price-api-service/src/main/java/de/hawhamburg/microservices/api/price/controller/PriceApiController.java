@@ -115,16 +115,18 @@ public class PriceApiController {
                                                 @RequestHeader(value = "Authorization") String authorizationHeader,
                                                 Principal currentUser) throws ParseException {
 
+        LOG.info("start " + fromDate.toString());
+        LOG.info("end " + toDate.toString());
         //OF get time from string
 //        Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fromDate);
-        Date startTime = fromDate;
+        long startTime = 1452759122000L;
 //        Date endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(toDate);
-        Date endTime = toDate;
+        long endTime = 1452759185000L;
 
         //OF TODO get statistic
         LOG.debug("got a request to statistic");
         String url = utils.getServiceUrl("revenuecomposite").toString();
-        url += "/statistic/"+startTime.getTime()+"/"+endTime.getTime();
+        url += "/statistic/"+startTime+"/"+endTime;
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         if (responseEntity != null && responseEntity.getBody() != null) return utils.createOkResponse(responseEntity.getBody());
 

@@ -1,6 +1,8 @@
 package de.hawhamburg.microservices.composite.revenue.service;
 
 import de.hawhamburg.microservices.composite.revenue.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.*;
@@ -18,6 +20,8 @@ import java.util.UUID;
  */
 @Service
 public class RevenueCompositeIntegration {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RevenueCompositeIntegration.class);
 
     @Autowired
     private ServiceUtils utils;
@@ -225,7 +229,10 @@ public class RevenueCompositeIntegration {
 
     public ResponseEntity<CalculatedRevenue[]> getCalculatedRevenuesForTime(long startTime, long endTime) {
         String url = utils.getServiceUrl("revenue") + "/revenues/" + startTime + "/" + endTime;
+        ResponseEntity<String> restTest = restTemplate.getForEntity(url,String.class);
+        LOG.info("ENTITY is : " + restTest.getBody().toString());
         Revenue[] revenues = restTemplate.getForEntity(url, Revenue[].class).getBody();
+        LOG.info("ENTITY[] size is : " + revenues.length);
         CalculatedRevenue[] calculatedRevenues = new CalculatedRevenue[revenues.length];
         for (int i = 0; i < revenues.length; i++) {
             Revenue revenue = revenues[i];

@@ -109,19 +109,21 @@ public class PriceApiController {
 //    }
 
     @RequestMapping(value = "/statistic")
-    public ResponseEntity<String> getStatistics(@RequestParam final String fromDate,
-                                                @RequestParam final String toDate,
+    public ResponseEntity<String> getStatistics(@RequestParam final Date fromDate,
+                                                @RequestParam final Date toDate,
                                                 @RequestHeader(value = "Authorization") String authorizationHeader,
                                                 Principal currentUser) throws ParseException {
 
         //OF get time from string
-        Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fromDate);
-        Date endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(toDate);
+//        Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fromDate);
+        Date startTime = fromDate;
+//        Date endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(toDate);
+        Date endTime = toDate;
 
         //OF TODO get statistic
         LOG.debug("got a request to statistic");
         String url = utils.getServiceUrl("revenuecomposite").toString();
-        url += "/statistic/"+startTime+"/"+endTime;
+        url += "/statistic/"+startTime.getTime()+"/"+endTime.getTime();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         if (responseEntity != null && responseEntity.getBody() != null) return utils.createOkResponse(responseEntity.getBody());
 

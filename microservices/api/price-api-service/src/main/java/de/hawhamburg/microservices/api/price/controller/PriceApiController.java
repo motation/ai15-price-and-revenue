@@ -110,8 +110,8 @@ public class PriceApiController {
 //    }
 
     @RequestMapping(value = "/statistic")
-    public ResponseEntity<String> getStatistics(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") final Date fromDate,
-                                                @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") final Date toDate,
+    public ResponseEntity<String> getStatistics(@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.TIME,pattern="yyyy-MM-dd HH:mm:ss") final Date fromDate,
+                                                @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.TIME,pattern="yyyy-MM-dd HH:mm:ss") final Date toDate,
                                                 @RequestHeader(value = "Authorization") String authorizationHeader,
                                                 Principal currentUser) throws ParseException {
 

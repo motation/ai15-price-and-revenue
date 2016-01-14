@@ -2,6 +2,7 @@ package de.hawhamburg.microservices.api.price;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.parsing.Parser;
+import com.jayway.restassured.response.ResponseBody;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -113,4 +117,40 @@ public class PriceApiServiceTests {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> resp = rest.exchange(uri, HttpMethod.GET, entity, String.class);
     }
+
+    @Test
+    public void testStatistic() {
+        Date start = new Date(1452759122847L);
+        Date end = new Date(1452759185190L);
+
+        String fromDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(start);
+        String toDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(end);
+
+        String url = "https://" + baseAddress + "/api/price/statistic/"+fromDate+"/"+toDate;
+        ResponseBody body = given()
+                .auth()
+                .oauth2(token)
+                .when()
+                .get(url)
+                .getBody();
+        body.prettyPrint();
+    }
+
+//    public static void main(String[] args) throws ParseException {
+//        long startTime = 1452759122847L;
+//        long revTime = 1452759161549L;
+//        long endtime = 1452759185190L;
+//        System.out.println(startTime);
+//        Date date = new Date(startTime);
+//        System.out.println(date.toString());
+////        Thu Jan 14 09:12:02 CET 2016
+////        SimpleDateFormat format = new SimpleDateFormat("EE MM dd k:mm:ss z yyyy");
+//        // convert to String
+//        String datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+//        System.out.println(datum);
+//
+//        // convert from string
+//        Date time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datum);
+//        System.out.println(time.getTime());
+//    }
 }

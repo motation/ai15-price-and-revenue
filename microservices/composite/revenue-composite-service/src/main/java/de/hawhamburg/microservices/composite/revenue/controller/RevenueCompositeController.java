@@ -67,15 +67,10 @@ public class RevenueCompositeController {
         revenueCompositeIntegration.updateStatistic();
     }
 
-    @RequestMapping(value="/statistic")
-    public ResponseEntity<CalculatedRevenue[]> getStatisticForTime(@RequestParam final String fromDate,
-                                                                   @RequestParam final String toDate) throws ParseException {
-        DateFormat formatter = DateFormat.getDateTimeInstance();
-        Date d  = formatter.parse(fromDate);
-        long startTime=d.getTime();
-        d = formatter.parse(toDate);
-        long endTime = d.getTime();
-        ResponseEntity<CalculatedRevenue[]> result = revenueCompositeIntegration.getCalculatedRevenuesForTime(startTime,endTime);
+    @RequestMapping(value="/statistic/{start}/{end}")
+    public ResponseEntity<CalculatedRevenue[]> getStatisticForTime(@PathVariable final long start,
+                                                                   @PathVariable final long end) throws ParseException {
+        ResponseEntity<CalculatedRevenue[]> result = revenueCompositeIntegration.getCalculatedRevenuesForTime(start,end);
         return result;
     }
 

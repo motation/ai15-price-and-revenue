@@ -18,6 +18,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.net.URI;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -109,9 +112,18 @@ public class PriceApiController {
     public ResponseEntity<String> getStatistics(@RequestParam final String fromDate,
                                                 @RequestParam final String toDate,
                                                 @RequestHeader(value = "Authorization") String authorizationHeader,
-                                                Principal currentUser) {
+                                                Principal currentUser) throws ParseException {
+
+        //OF get time from string
+        Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fromDate);
+        Date endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(toDate);
+
         //OF TODO get statistic
         LOG.debug("got a request to statistic");
+        String url = utils.getServiceUrl("revenuecomposite").toString();
+        url += "/statistic/"+startTime+"/"+endTime;
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
+        if (responseEntity != null && responseEntity.getBody() != null) return utils.createOkResponse(responseEntity.getBody());
 
         //OF TODO get statistic
         return utils.createResponse(null, HttpStatus.NOT_FOUND);

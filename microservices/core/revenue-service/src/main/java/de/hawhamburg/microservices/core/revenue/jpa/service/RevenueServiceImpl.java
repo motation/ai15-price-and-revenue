@@ -49,7 +49,7 @@ public class RevenueServiceImpl implements RevenueService {
 
         Revenue revenueSame = new Revenue.RevenueBuilder()
 //                .withValue(200)
-                .withTimestamp(new Date().getTime())
+                .withTimestamp(1452759161549L)
                 .withSoldTicketsFirstClassInternet(50)
                 .withSoldTicketsEconomyClassInternet(80)
                 .withSoldTicketsFirstClassTravelOffice(90)

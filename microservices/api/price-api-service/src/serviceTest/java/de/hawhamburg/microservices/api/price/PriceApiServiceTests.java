@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.equalTo;
  */
 @Test
 public class PriceApiServiceTests {
+    public static final String LOCALHOST = "localhost";
     private String token;
     private String baseAddress = "";
 
@@ -120,13 +121,14 @@ public class PriceApiServiceTests {
 
     @Test
     public void testStatistic() {
-        Date start = new Date(1452759122847L);
-        Date end = new Date(1452759185190L);
-
+        Date start = new Date(1452759122000L);
+        Date end = new Date(1452759185000L);
         String fromDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(start);
         String toDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(end);
+        System.out.println(fromDate);
+        System.out.println(toDate);
 
-        String url = "https://" + baseAddress + "/api/price/statistic/"+fromDate+"/"+toDate;
+        String url = "https://" + baseAddress + "/api/price/statistic?fromDate=" +fromDate+"&toDate="+toDate;
         ResponseBody body = given()
                 .auth()
                 .oauth2(token)
@@ -135,22 +137,4 @@ public class PriceApiServiceTests {
                 .getBody();
         body.prettyPrint();
     }
-
-//    public static void main(String[] args) throws ParseException {
-//        long startTime = 1452759122847L;
-//        long revTime = 1452759161549L;
-//        long endtime = 1452759185190L;
-//        System.out.println(startTime);
-//        Date date = new Date(startTime);
-//        System.out.println(date.toString());
-////        Thu Jan 14 09:12:02 CET 2016
-////        SimpleDateFormat format = new SimpleDateFormat("EE MM dd k:mm:ss z yyyy");
-//        // convert to String
-//        String datum = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-//        System.out.println(datum);
-//
-//        // convert from string
-//        Date time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datum);
-//        System.out.println(time.getTime());
-//    }
 }

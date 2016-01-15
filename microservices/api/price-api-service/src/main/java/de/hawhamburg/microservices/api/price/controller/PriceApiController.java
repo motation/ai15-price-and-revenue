@@ -48,7 +48,8 @@ public class PriceApiController {
     @RequestMapping(value = "/{flightId}", method = RequestMethod.GET)
     public ResponseEntity<String> getPriceComposite(@PathVariable final UUID flightId,
                                                     @RequestHeader(value = "Authorization") String authorizationHeader,
-                                                    Principal currentUser) {
+                                                    Principal currentUser, HttpServletResponse response) {
+        response.setContentType("application/json");
         LOG.info("Got a request to /"+ flightId);
         URI uri = loadBalancer.choose("pricecomposite").getUri();
         String url = uri.toString() + "/price/" + flightId;
@@ -113,8 +114,8 @@ public class PriceApiController {
     public ResponseEntity<String> getStatistics(@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.TIME,pattern="yyyy-MM-dd HH:mm:ss") final Date fromDate,
                                                 @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.TIME,pattern="yyyy-MM-dd HH:mm:ss") final Date toDate,
                                                 @RequestHeader(value = "Authorization") String authorizationHeader,
-                                                Principal currentUser) throws ParseException {
-
+                                                Principal currentUser, HttpServletResponse response) throws ParseException {
+        response.setContentType("application/json");
         LOG.info("start " + fromDate.toString());
         LOG.info("end " + toDate.toString());
         //OF get time from string

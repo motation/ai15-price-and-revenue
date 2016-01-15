@@ -29,7 +29,6 @@ import static org.hamcrest.Matchers.equalTo;
  */
 @Test
 public class PriceApiServiceTests {
-    public static final String LOCALHOST = "localhost";
     private String token;
     private String baseAddress = "";
 
@@ -60,6 +59,7 @@ public class PriceApiServiceTests {
         } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
             baseAddress = "127.0.0.1";
         }
+        baseAddress = "192.168.178.22";
     }
 
     private void sslTrustFake() {
@@ -135,6 +135,6 @@ public class PriceApiServiceTests {
                 .when()
                 .get(url)
                 .then()
-                .body("soldTicketsFirstClassCounter", equalTo(500.0f));
+                .body("[0].soldTicketsFirstClassCounter", equalTo(500.0f));
     }
 }

@@ -59,7 +59,6 @@ public class PriceApiServiceTests {
         } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
             baseAddress = "127.0.0.1";
         }
-        baseAddress = "192.168.178.22";
     }
 
     private void sslTrustFake() {

@@ -119,9 +119,9 @@ public class PriceApiController {
         LOG.info("end " + toDate.toString());
         //OF get time from string
 //        Date startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fromDate);
-        long startTime = 1452759122000L;
+        long startTime = fromDate.getTime();
 //        Date endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(toDate);
-        long endTime = 1452759185000L;
+        long endTime = toDate.getTime();
 
         //OF TODO get statistic
         LOG.debug("got a request to statistic");

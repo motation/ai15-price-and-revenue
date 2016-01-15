@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import se.callista.microservices.util.MDCHystrixConcurrencyStrategy;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.util.TimeZone;
 
 /**
  * Created by Ole on 08.11.2015.
@@ -26,7 +27,6 @@ import javax.net.ssl.HttpsURLConnection;
 @SpringBootApplication
 @ComponentScan({"de.hawhamburg.microservices.api.price","se.callista.microservices.util"})
 public class PriceApiServiceApplication {
-
 
     private static final Logger LOG = LoggerFactory.getLogger(PriceApiServiceApplication.class);
 
@@ -50,7 +50,13 @@ public class PriceApiServiceApplication {
     public static void main(String[] args) {
         LOG.info("Register MDCHystrixConcurrencyStrategy");
         HystrixPlugins.getInstance().registerConcurrencyStrategy(new MDCHystrixConcurrencyStrategy());
+        setupTimeZone();
         SpringApplication.run(PriceApiServiceApplication.class,args);
+    }
+
+    private static void setupTimeZone(){
+        System.setProperty("user.timezone", "CET");
+        TimeZone.setDefault(TimeZone.getTimeZone("CET"));
     }
 }
 

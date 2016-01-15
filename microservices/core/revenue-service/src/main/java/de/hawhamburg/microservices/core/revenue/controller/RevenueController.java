@@ -82,15 +82,4 @@ public class RevenueController {
         List<Revenue> revenues = revenueService.revenuesForTime(startTime, endTime);
         return revenues;
     }
-
-    @RequestMapping(value = "/rev", method = RequestMethod.GET)
-    public List<Revenue> getRevenueFor(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME,
-            pattern = "yyyy-MM-dd HH:mm:ss") final Date fromDate,
-                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME,
-                                         pattern = "yyyy-MM-dd HH:mm:ss") final Date toDate) {
-        LOG.info("From Date: " + fromDate.toString());
-        LOG.info("To Date: " + toDate.toString());
-        return revenueService.revenuesForTime(fromDate.getTime(),toDate.getTime());
-    }
-
 }

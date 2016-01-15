@@ -19,6 +19,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.TimeZone;
 
 /**
  * Created by unknown on 27.10.15.
@@ -46,7 +47,13 @@ public class RevenueCompositeServiceApplication {
         LOG.info("Register MDCHystrixConcurrencyStrategy");
         HystrixPlugins.getInstance().registerConcurrencyStrategy(new MDCHystrixConcurrencyStrategy());
         useRelaxedHTTPSValidation();
+        setupTimeZone();
         SpringApplication.run(RevenueCompositeServiceApplication.class,args);
+    }
+
+    private static void setupTimeZone(){
+        System.setProperty("user.timezone", "CET");
+        TimeZone.setDefault(TimeZone.getTimeZone("CET"));
     }
 
     private static void useRelaxedHTTPSValidation() {

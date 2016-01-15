@@ -24,12 +24,6 @@ public class RevenueServiceApplication {
     }
 
     public static void main(String[] args) {
-        setupTimeZone();
         SpringApplication.run(RevenueServiceApplication.class,args);
-    }
-
-    private static void setupTimeZone(){
-        System.setProperty("user.timezone", "CET");
-        TimeZone.setDefault(TimeZone.getTimeZone("CET"));
     }
 }

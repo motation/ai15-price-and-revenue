@@ -128,13 +128,13 @@ public class PriceApiServiceTests {
         System.out.println(fromDate);
         System.out.println(toDate);
 
-        String url = "https://" + baseAddress + "/api/price/statistic?fromDate=" +fromDate+"&toDate="+toDate;
-        ResponseBody body = given()
+        String url = "https://" + baseAddress + "/api/price/statistic?fromDate=" + fromDate + "&toDate=" + toDate;
+        given()
                 .auth()
                 .oauth2(token)
                 .when()
                 .get(url)
-                .getBody();
-        body.prettyPrint();
+                .then()
+                .body("soldTicketsFirstClassCounter", equalTo(500.0f));
     }
 }

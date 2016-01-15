@@ -24,7 +24,7 @@ public class RevenueServiceImpl implements RevenueService {
     public void init() {
         //OF fill mysql with data if is empty :)
         if (revenueRepository.findAll().isEmpty()) {
-            for (double i = 2; i < 20; i++) {
+            for (int i = 2; i < 20; i++) {
                 Revenue revenue = new Revenue.RevenueBuilder()
                         // TODO später durch Response von Reservation ersetzen
 //                        .withValue(12)
@@ -45,26 +45,24 @@ public class RevenueServiceImpl implements RevenueService {
                         .build();
                 revenueRepository.save(revenue);
             }
+            Revenue revenueSame = new Revenue.RevenueBuilder()
+                    .withTimestamp(1452759161549L)
+                    .withSoldTicketsFirstClassInternet(50)
+                    .withSoldTicketsEconomyClassInternet(80)
+                    .withSoldTicketsFirstClassTravelOffice(90)
+                    .withSoldTicketsEconomyClassTravelOffice(100)
+                    .withSoldTicketsFirstClassCounter(500)
+                    .withSoldTicketsEconomyClassCounter(100)
+                    .withsoldTicketsBusinessClassStaff(13)
+                    .withsoldTicketsBusinessClassCounter(41)
+                    .withsoldTicketsBusinessClassTravelOffice(54)
+                    .withSoldTicketsBusinessClassInternet(68)
+                    .withsoldTicketsFirstClassStaff(24)
+                    .withsoldTicketsEconomyClassStaff(17)
+                    .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
+                    .build();
+            revenueRepository.save(revenueSame);
         }
-
-        Revenue revenueSame = new Revenue.RevenueBuilder()
-//                .withValue(200)
-                .withTimestamp(1452759161549L)
-                .withSoldTicketsFirstClassInternet(50)
-                .withSoldTicketsEconomyClassInternet(80)
-                .withSoldTicketsFirstClassTravelOffice(90)
-                .withSoldTicketsEconomyClassTravelOffice(100)
-                .withSoldTicketsFirstClassCounter(500)
-                .withSoldTicketsEconomyClassCounter(100)
-                .withsoldTicketsBusinessClassStaff(13)
-                .withsoldTicketsBusinessClassCounter(41)
-                .withsoldTicketsBusinessClassTravelOffice(54)
-                .withSoldTicketsBusinessClassInternet(68)
-                .withsoldTicketsFirstClassStaff(24)
-                .withsoldTicketsEconomyClassStaff(17)
-                .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
-                .build();
-        revenueRepository.save(revenueSame);
     }
 
     @Override

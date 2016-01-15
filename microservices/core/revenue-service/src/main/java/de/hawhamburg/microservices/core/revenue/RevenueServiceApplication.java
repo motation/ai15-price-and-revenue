@@ -7,6 +7,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.util.TimeZone;
+
 /**
  * Created by unknown on 27.10.15.
  */
@@ -22,6 +24,12 @@ public class RevenueServiceApplication {
     }
 
     public static void main(String[] args) {
+        setupTimeZone();
         SpringApplication.run(RevenueServiceApplication.class,args);
+    }
+
+    private static void setupTimeZone(){
+        System.setProperty("user.timezone", "CET");
+        TimeZone.setDefault(TimeZone.getTimeZone("CET"));
     }
 }

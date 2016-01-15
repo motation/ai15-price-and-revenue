@@ -29,12 +29,13 @@ public class PriceServiceImpl implements PriceService {
                         .build();
                 priceRepository.save(price);
             }
+            Price priceSame = new Price.PriceBuilder()
+                    .withValue(2000.0)
+                    .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
+                    .build();
+            priceRepository.save(priceSame);
         }
-        Price priceSame = new Price.PriceBuilder()
-                .withValue(2000.0)
-                .withFlightId(UUID.fromString("9aacad96-6730-4443-b6f6-33325b00ce39"))
-                .build();
-        priceRepository.save(priceSame);
+
     }
 
     @Override

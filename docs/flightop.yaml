@@ -1,0 +1,654 @@
+swagger: '2.0'
+info:
+  title: Flight Operations API
+  description: ButtsButts
+  version: 1.0.0
+schemes:
+  - https
+basePath: /api
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /flight:
+    get:
+      summary: Gets all flights
+      description: >
+        This endpoint contains information about flights in the system, such as
+        where flights go from or to. Flights are associated to aircrafts and
+        airplanes.
+      parameters:
+        - name: page
+          in: query
+          description: The page of entries to show
+          required: false
+          type: number
+          format: int
+        - name: size
+          in: query
+          description: The amount of entries to show
+          required: false
+          type: number
+          format: int
+      responses:
+        '200':
+          description: An array of flights
+          schema:
+            type: object
+            title: _embedded
+            properties:
+              flights:
+                type: array
+                items:
+                  $ref: '#/definitions/Flight'
+        '503':
+          description: Service not available
+    post:
+      summary: Creates a flight
+      description: |
+        Creates a flight with provided query parameters.
+      parameters:
+        - in: body
+          required: true
+          name: Flight
+          schema:
+            $ref: '#/definitions/FlightCreate'
+      responses:
+        '201':
+          description: The flight was created
+        '404':
+          description: Aircaft or flightblueprint not found
+        '412':
+          description: 'One of the following not available -> crew and/or aircraft for the flight and/or starttime is in the past adn/or aircraftmodel does not match with the model in flightblueprint'
+        '503':
+          description: Service not available
+  '/flight/{id}':
+    get:
+      summary: Gets specific flight
+      description: |
+        Gets the specific flight with the provided flight uuid
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: flight found
+          schema:
+            $ref: '#/definitions/Flight'
+        '404':
+          description: flight with provided id not found
+  /flightblueprint:
+    get:
+      summary: Gets all flightblueprints
+      description: "This endpoint contains information about flightblueprints in the system \n"
+      parameters:
+        - name: page
+          in: query
+          description: The page of entries to show
+          required: false
+          type: number
+          format: int
+        - name: size
+          in: query
+          description: The amount of entries to show
+          required: false
+          type: number
+          format: int
+      responses:
+        '200':
+          description: A flight flightblueprint
+          schema:
+            $ref: '#/definitions/flightblueprint'
+    post:
+      summary: Creates a flightblueprint
+      description: |
+        Creates a flightblueprint.
+      parameters:
+        - in: body
+          required: true
+          name: flightblueprint
+          schema:
+            $ref: '#/definitions/flightblueprintCreate'
+      responses:
+        '201':
+          description: The flightblueprint was created
+        '404':
+          description: 'One of the following not available -> aircraftmodel, departure airport, destination airport'
+        '412':
+          description: Invalid flightnumber and/or negative duration and/or provided model can not be handled by departure or destination airport
+        '503':
+          description: Service not available
+  '/flightblueprint/{id}':
+    get:
+      summary: Gets the flightblueprint
+      description: "Gets the flightblueprint with the provided id \n"
+      parameters:
+        - name: id
+          in: path
+          description: The UUID of a flightblueprint
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: A flight flightblueprint
+          schema:
+            $ref: '#/definitions/flightblueprint'
+        '404':
+          description: flightblueprint not found
+  /aircraft:
+    get:
+      summary: Gets all aircrafts
+      description: >
+        This endpoint contains information about aircrafts in the system
+        including their type.
+      parameters:
+        - name: page
+          in: query
+          description: The page of entries to show
+          required: false
+          type: number
+          format: int
+        - name: size
+          in: query
+          description: The amount of entries to show
+          required: false
+          type: number
+          format: int
+      responses:
+        '200':
+          description: An array of aircrafts
+          schema:
+            type: object
+            title: _embedded
+            properties:
+              aircrafts:
+                type: array
+                items:
+                  $ref: '#/definitions/Aircraft'
+        '503':
+          description: Service not available
+    post:
+      summary: Creates an aircraft
+      description: |
+        Creates an aircraft.
+      parameters:
+        - in: body
+          required: true
+          name: Aircraft
+          schema:
+            $ref: '#/definitions/AircraftCreate'
+      responses:
+        '201':
+          description: The flight was created
+        '404':
+          description: Model not found
+        '412':
+          description: Invalid registration
+        '503':
+          description: Service not available
+  '/aircraft/{id}':
+    get:
+      summary: Gets aircraft with provided id
+      description: |
+        Gets aircraft.
+      parameters:
+        - name: id
+          in: path
+          description: The UUID of the aircraft
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Returns an aircraft
+          schema:
+            type: object
+            $ref: '#/definitions/Aircraft'
+        '404':
+          description: Aircraft not found
+        '503':
+          description: Service not available
+  /aircraftmodel:
+    get:
+      summary: Gets all aircraftmodels
+      description: >
+        This endpoint contains information about aircraftmodels in the system
+        including their type.
+      parameters:
+        - name: page
+          in: query
+          description: The page of entries to show
+          required: false
+          type: number
+          format: int
+        - name: size
+          in: query
+          description: The amount of entries to show
+          required: false
+          type: number
+          format: int
+      responses:
+        '200':
+          description: An array of aircraftmodels
+          schema:
+            type: object
+            title: _embedded
+            properties:
+              aircraftmodels:
+                type: array
+                items:
+                  $ref: '#/definitions/AircraftModel'
+        '503':
+          description: Service not available
+    post:
+      summary: Creates an aircraftmodel
+      description: |
+        Creates an aircraftmodel.
+      parameters:
+        - in: body
+          required: true
+          name: AircraftModel
+          schema:
+            $ref: '#/definitions/AircraftModelCreate'
+      responses:
+        '201':
+          description: The aircraftmodel was created
+        '412':
+          description: Invalid seatcount or requiredPilotCount or requiredStewardCount
+        '503':
+          description: Service not available
+  '/aircraftmodel/{id}':
+    get:
+      summary: Gets aircraftmodel with provided id
+      description: |
+        Gets aircraftmodel.
+      parameters:
+        - name: id
+          in: path
+          description: The UUID of the aircraftmodel
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Returns an aircraftmodel
+          schema:
+            type: object
+            $ref: '#/definitions/AircraftModel'
+        '404':
+          description: AircraftModel not found
+        '503':
+          description: Service not available
+  /airport:
+    get:
+      summary: Gets all airport
+      description: |
+        This endpoint contains information about airport in the system.
+      parameters:
+        - name: page
+          in: query
+          description: The page of entries to show
+          required: false
+          type: number
+          format: int
+        - name: size
+          in: query
+          description: The amount of entries to show
+          required: false
+          type: number
+          format: int
+      responses:
+        '200':
+          description: An array of airports
+          schema:
+            type: object
+            title: _embedded
+            properties:
+              airports:
+                type: array
+                items:
+                  $ref: '#/definitions/Airport'
+        '503':
+          description: Service not available
+    post:
+      summary: Creates an airport
+      description: |
+        Creates an airport
+      parameters:
+        - in: body
+          required: true
+          name: Aircraft
+          schema:
+            $ref: '#/definitions/AirportCreate'
+      responses:
+        '200':
+          description: Airport created
+          schema:
+            $ref: '#/definitions/Airport'
+        '412':
+          description: Tag already in use and/or minClearanceTime is negativ
+  '/airport/{id}':
+    get:
+      summary: Gets an airport
+      description: |
+        Gets an airport with the provided id
+      parameters:
+        - name: id
+          in: path
+          description: The UUID of a airport
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: An airport
+          schema:
+            type: object
+            $ref: '#/definitions/Airport'
+        '404':
+          description: Airport not found
+        '503':
+          description: Service not available
+  '/flight/search/flightblueprint/{id}':
+    get:
+      summary: Gets flights by this specific flightblueprint id
+      description: |
+        Returns an array of flights.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The flightblueprint
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Array of flights
+          schema:
+            type: object
+            title: _embedded
+            properties:
+              flights:
+                type: array
+                items:
+                  $ref: '#/definitions/Flight'
+        '404':
+          description: flightblueprint not found
+  /flight/search/time:
+    get:
+      summary: Gets all flights between a specific time
+      parameters:
+        - name: start
+          in: query
+          required: true
+          description: Start time for the search
+          type: string
+          format: 'yyyy-MM-dd HH:mm'
+        - name: end
+          in: query
+          required: true
+          description: End time for the search
+          type: string
+          format: 'yyyy-MM-dd HH:mm'
+        - name: departure
+          in: query
+          description: Departure Airport
+          required: false
+          type: string
+          format: Airport Id
+        - name: arrival
+          in: query
+          description: Arrival Airport
+          required: false
+          type: string
+          format: Airport Id
+      responses:
+        '200':
+          description: Array of flights
+          schema:
+            type: object
+            title: _embedded
+            properties:
+              flights:
+                type: array
+                items:
+                  $ref: '#/definitions/Flight'
+        '412':
+          description: Start or End time in wrong format
+definitions:
+  Flight:
+    type: object
+    properties:
+      delay:
+        type: string
+        description: Current delay of the flight on arrival.
+      startTime:
+        type: string
+        description: The time the aircraft will takeoff
+      aircraft:
+        type: string
+        description: The UUID of the aircraft that will do this flight
+      flightblueprint:
+        type: string
+        description: The UUID of the referencing flightblueprint
+      links:
+        description: Unique identifier representing a flight from X to Y at a certain time with a certain aircraft.
+        type: array
+        items:
+          $ref: '#/definitions/Selflink'
+  FlightCreate:
+    type: object
+    properties:
+      startTime:
+        type: string
+        description: The time the aircraft will takeoff
+      aircraft:
+        type: string
+        description: The UUID of the aircraft that will do this flight
+      flightblueprint:
+        type: string
+        description: The UUID of the referencing flightblueprint
+  flightblueprint:
+    type: object
+    properties:
+      flightnumber:
+        type: string
+        description: The flight number issued by air carrier.
+      aircraftmodel:
+        type: string
+        description: The model of a aircraft belonging to the flightblueprint
+      departure:
+        type: string
+        description: The departure airport belonging to the flightblueprint
+      destination:
+        type: string
+        description: The destination airport belonging to the flightblueprint
+      duration:
+        type: string
+        description: The normal duration of a flight having this flightblueprint. 
+        $ref: '#/definitions/Duration'
+      links:
+        description: Unique identifier representing a flight from X to Y at a certain time with a certain aircraft.
+        type: array
+        items:
+          $ref: '#/definitions/Selflink'
+  flightblueprintCreate:
+    type: object
+    properties:
+      flightnumber:
+        type: string
+        description: The flight number issued by air carrier.
+      aircraftmodel:
+        type: string
+        description: The model of a aircraft belonging to the flightblueprint
+      departure:
+        type: string
+        description: The departure airport belonging to the flightblueprint
+      destination:
+        type: string
+        description: The destination airport belonging to the flightblueprint
+      duration:
+        type: string
+        description: The normal duration of a flight having this flightblueprint
+        $ref: '#/definitions/Duration'
+  Aircraft:
+    type: object
+    properties:
+      registration:
+        type: string
+        description: The official registration sting issued by authorities for the airplane.
+      model:
+        type: object
+        description: Specification for the built model of the airplane
+        properties:
+          name:
+            type: string
+          manufacturer:
+            type: string
+          seatCount:
+            type: integer
+          links:
+            description: The link to the model.
+            type: array
+            items:
+              $ref: '#/definitions/Selflink'
+      links:
+        description: The link to the aircraft.
+        type: array
+        items:
+          $ref: '#/definitions/Selflink'
+  AircraftCreate:
+    type: object
+    properties:
+      registration:
+        type: string
+        description: The official registration sting issued by authorities for the airplane.
+      model:
+        description: Specification for the built model of the airplane
+        type: string
+        format: UUID
+  Airport:
+    type: object
+    properties:
+      tag:
+        type: string
+        description: The tag issued for this airport
+      name:
+        type: string
+        description: International name for the airport
+      minClearanceTime:
+        type: string
+        description: The minimum time required for a plan to stop in between start and stops
+      location:
+        description: The location of the airport
+        $ref: '#/definitions/LocationType'
+      links:
+        description: The link to the airport.
+        type: array
+        items:
+          $ref: '#/definitions/Selflink'
+  AirportCreate:
+    type: object
+    properties:
+      tag:
+        type: string
+        description: The tag issued for this airport
+      name:
+        type: string
+        description: International name for the airport
+      location:
+        description: The location of the airport
+        $ref: '#/definitions/LocationType'
+      minClearanceTime:
+        type: string
+        description: The minimum time required for a plan to stop in between start and stops
+  AircraftModel:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The name of the model
+      manufacturer:
+        type: string
+        description: The manufacturer of the model
+      seatCount:
+        type: string
+        format: int
+        description: The number of seats in the aircraft
+      requiredPilotCount:
+        type: string
+        format: int
+        description: The number of required pilots
+      requiredStewardCount:
+        type: string
+        format: int
+        description: The number of required stewards
+      links:
+        description: The link to the aircraftmodel.
+        type: array
+        items:
+          $ref: '#/definitions/Selflink'
+  AircraftModelCreate:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The name of the model
+      manufacturer:
+        type: string
+        description: The manufacturer of the model
+      seatCount:
+        type: string
+        format: int
+        description: The number of seats in the aircraft
+      requiredPilotCount:
+        type: string
+        format: int
+        description: The number of required pilots
+      requiredStewardCount:
+        type: string
+        description: The number of required stewards
+  LocationType:
+    type: object
+    properties:
+      latitude:
+        type: string
+        description: "The referenc of self. Returnvalue is at any time 'self'"
+      longitude:
+        type: string
+        description: "The referenc of self. Returnvalue is at any time 'self'"
+  Duration:
+    type: object
+    properties:
+      days:
+        type: number
+        format: int
+        description: The number of days
+      hours:
+        type: number
+        format: int
+        description: The numbers of hours
+      minutes:
+        type: number
+        format: int
+        description: The number of minutes
+      seconds:   
+        type: number
+        format: int
+        description: The number of seconds
+  Selflink:
+    type: object
+    properties:
+      ref:
+        type: string
+        description: "The referenc of self. Returnvalue is at any time 'self'"
+      href:
+        type: string
+        format: URI
+        description: "The URI of the object itself. Returnvalue examples -> '{Protocol}://{IP-Address}:{Port}/api/api/{Resource}/{UUID}'"
+        

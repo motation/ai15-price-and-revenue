@@ -1,0 +1,425 @@
+---
+swagger: "2.0"
+info:
+  version: "0.0.4"
+  title: "Crew Management API (Blue)"
+  description: "Book a Crew for Flight"
+basePath: "/crewmgmt/api/v1"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /employee/{employeeId}:
+    get:
+      description: "Gets `Employee` object with {employeeId}"
+      parameters:
+      - $ref: "#/parameters/employeeIdPathParam"
+      responses:
+        200:
+          description: "Successful: `Employee` found"
+          schema:
+            $ref: "#/definitions/employeeGet"
+        404:
+          description: "Error: `Employee` not found"
+        503:
+          description: "Error: employee service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "employee"
+    put:
+      description: "Update existing `Employee` with {employeeId}"
+      parameters:
+      - $ref: "#/parameters/employeeIdPathParam"
+      - $ref: "#/parameters/employeeUpdateParam"
+      responses:
+        200:
+          description: "Successful: `Employee` updated"
+          schema:
+            $ref: "#/definitions/employeeGet"
+        404:
+          description: "Error: `Employee` not found"
+        503:
+          description: "Error: employee service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "employee"
+    delete:
+      description: "Remove existing `Employee` with {allocationId}\n"
+      parameters:
+      - $ref: "#/parameters/employeeIdPathParam"
+      responses:
+        200:
+          description: "Successful: `Employee` deleted"
+          schema:
+            $ref: "#/definitions/employeeGet"
+        404:
+          description: "Error: `Employee` not found"
+        503:
+          description: "Error: employee service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "employee"
+  /employee:
+    get:
+      description: "Gets array of `Employee`\n"
+      parameters:
+      - $ref: "#/parameters/limitQueryParam"
+      - name: "job"
+        in: "query"
+        description: "filter job of `Employee`"
+        required: false
+        type: "string"
+      - name: "airport"
+        in: "query"
+        description: "filter airport (uid) of `Employee`"
+        required: false
+        type: "string"
+        format: "uid"
+      responses:
+        200:
+          description: "Successful: `Employee`s found"
+          schema:
+            description: "array of employeeObjects"
+            type: "array"
+            items:
+              $ref: "#/definitions/employeeGet"
+        204:
+          description: "No `Employee` found"
+        400:
+          description: "Error: Search parameters wrong"
+        503:
+          description: "Error: employee service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "employee"
+    post:
+      description: "Create new `Employee`"
+      parameters:
+      - $ref: "#/parameters/employeeCreateParam"
+      responses:
+        201:
+          description: "Successful: `Employee` was created"
+          schema:
+            $ref: "#/definitions/employeeGet"
+        400:
+          description: "Error: Wrong `Employee` parameters"
+        503:
+          description: "Error: employee service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "employee"
+  /allocation/{allocationId}:
+    get:
+      description: "Gets `Allocation` object with {allocationId}"
+      parameters:
+      - $ref: "#/parameters/allocationIdPathParam"
+      responses:
+        200:
+          description: "Successful: `Allocation` found"
+          schema:
+            $ref: "#/definitions/allocationGet"
+        404:
+          description: "Error: `Allocation` not found"
+        503:
+          description: "Error: allocation service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "allocation"
+    delete:
+      description: "Remove existing `Allocation` with {allocationId}"
+      parameters:
+      - $ref: "#/parameters/allocationIdPathParam"
+      responses:
+        200:
+          description: "Successful: `Allocation` deleted"
+          schema:
+            $ref: "#/definitions/allocationGet"
+        404:
+          description: "Error: `Allocation` not found"
+        503:
+          description: "Error: allocation service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "allocation"
+  /allocation:
+    get:
+      description: "Gets array of `Allocation`s matching the filter parameters"
+      parameters:
+      - $ref: "#/parameters/limitQueryParam"
+      - name: "startTime"
+        in: "query"
+        description: "filter startTime"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "endTime"
+        in: "query"
+        description: "filter endTime"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "employeeId"
+        in: "query"
+        description: "filter employeeId"
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "startAirport"
+        in: "query"
+        description: "filter startAirport"
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "targetAirport"
+        in: "query"
+        description: "filter targetAirport"
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful: `Allocation`s found"
+          schema:
+            description: "array of allocation Objects"
+            type: "array"
+            items:
+              $ref: "#/definitions/allocationGet"
+        204:
+          description: "No `Allocation` found"
+        400:
+          description: "Error: Search parameters wrong"
+        503:
+          description: "Error: allocation service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "employee"
+    post:
+      description: "Book `Employee`'s (=book a crew) in a time period\n"
+      parameters:
+      - $ref: "#/parameters/allocationCreateParam"
+      responses:
+        200:
+          description: "Successful query"
+          schema:
+            type: "boolean"
+            description: "true if crew is booked for the flight, else false"
+        400:
+          description: "Error: Wrong `Allocation` parameters"
+        503:
+          description: "Error: allocation service unrechable"
+        default:
+          $ref: "#/responses/unexpectedErrorResponse"
+      security:
+      - crewmgmt_auth:
+        - "allocation"
+securityDefinitions:
+  crewmgmt_auth:
+    type: "oauth2"
+    authorizationUrl: "https://192.168.99.100:9999/uaa/oauth/token?grant_type=password&client_id=acme&username=user&password=password"
+    flow: "implicit"
+    scopes:
+      employee: "ready/write employees"
+      allocation: "allocate a crew (employees)"
+definitions:
+  employeeGet:
+    type: "object"
+    required:
+    - "employeeId"
+    - "lastName"
+    - "firstName"
+    - "job"
+    - "airport"
+    properties:
+      employeeId:
+        type: "integer"
+        format: "int64"
+      lastName:
+        type: "string"
+      firstName:
+        type: "string"
+      job:
+        type: "string"
+        description: "job of this employee like pilot or steward"
+      airport:
+        type: "string"
+        format: "uid"
+        description: "current airport uid of employee"
+  employeeCreate:
+    type: "object"
+    required:
+    - "lastName"
+    - "firstName"
+    - "job"
+    - "airport"
+    properties:
+      lastName:
+        type: "string"
+      firstName:
+        type: "string"
+      job:
+        type: "string"
+        description: "job of this employee like pilot or steward"
+      airport:
+        type: "string"
+        format: "uid"
+        description: "current airport uid of employee"
+  employeeUpdate:
+    type: "object"
+    properties:
+      lastName:
+        type: "string"
+      firstName:
+        type: "string"
+      job:
+        type: "string"
+        description: "job of this employee like pilot or steward"
+      airport:
+        type: "string"
+        format: "uid"
+        description: "current airport uid of employee"
+  allocationGet:
+    type: "object"
+    required:
+    - "allocationId"
+    - "employeeIds"
+    - "startAirport"
+    - "targetAirport"
+    - "startTime"
+    - "endTime"
+    properties:
+      allocationId:
+        type: "integer"
+        format: "int64"
+      employeeIds:
+        type: "array"
+        description: "Employee ids who are booked in this allocation"
+        items:
+          type: "integer"
+          format: "int64"
+      startAirport:
+        type: "string"
+        format: "uid"
+        description: "departure airport where the flight start"
+      startTime:
+        type: "string"
+        format: "date-time"
+        description: "departure time when the flight start"
+      targetAirport:
+        type: "string"
+        format: "uid"
+        description: "arrival airport where the flight arrive"
+      endTime:
+        type: "string"
+        format: "date-time"
+        description: "arrival time when the flight arrive"
+  allocationCreate:
+    required:
+    - "numPilots"
+    - "numStewards"
+    - "startAirport"
+    - "startTime"
+    - "targetAirport"
+    - "endTime"
+    properties:
+      numPilots:
+        type: "integer"
+        format: "int64"
+        description: "number of pilots for this flight"
+      numStewards:
+        type: "integer"
+        format: "int64"
+        description: "number of stewards for this flight"
+      startAirport:
+        type: "string"
+        format: "uid"
+        description: "departure airport where the flight start"
+      startTime:
+        type: "string"
+        format: "date-time"
+        description: "departure time when the flight start"
+      targetAirport:
+        type: "string"
+        format: "uid"
+        description: "arrival airport where the flight arrive"
+      endTime:
+        type: "string"
+        format: "date-time"
+        description: "arrival time when the flight arrive"
+  errorModel:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int64"
+      message:
+        type: "string"
+parameters:
+  employeeIdPathParam:
+    name: "employeeId"
+    in: "path"
+    description: "employeeId of `Employee`"
+    required: true
+    type: "integer"
+    format: "int64"
+  employeeUpdateParam:
+    name: "employeeData"
+    in: "body"
+    required: true
+    description: "employeeData of `Employee` like job or name"
+    schema:
+      $ref: "#/definitions/employeeUpdate"
+  employeeCreateParam:
+    name: "employeeData"
+    in: "body"
+    description: "employeeData of `Employee`"
+    required: true
+    schema:
+      $ref: "#/definitions/employeeCreate"
+  allocationIdPathParam:
+    name: "allocationId"
+    in: "path"
+    description: "allocationId of `Allocation`"
+    required: true
+    type: "integer"
+    format: "int64"
+  allocationCreateParam:
+    name: "allocationData"
+    in: "body"
+    description: "allocationData for book a `Employee`"
+    required: true
+    schema:
+      $ref: "#/definitions/allocationCreate"
+  limitQueryParam:
+    name: "limit"
+    in: "query"
+    description: "max amount of return values"
+    required: false
+    type: "integer"
+    format: "int64"
+responses:
+  unexpectedErrorResponse:
+    description: "unexpected error"
+    schema:
+      $ref: "#/definitions/errorModel"

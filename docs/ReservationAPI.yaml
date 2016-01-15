@@ -1,0 +1,348 @@
+swagger: '2.0'
+info:
+  title: Reservation API
+  description: Describes the API for the Reservation Services.
+  version: 1.1.0
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /passenger:
+    post:
+      summary: Create a Passenger
+      produces:
+        - application/json
+      parameters:
+        - name: passengerName
+          in: query
+          description: Name of the Passenger
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Passenger Created
+          schema:
+            $ref: '#/definitions/Passenger'
+  '/passenger/{passengerId}':
+    get:
+      summary: Returns a Passenger
+      produces:
+        - application/json
+      parameters:
+        - name: passengerId
+          in: path
+          description: Id of Passengers
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Got the Passenger
+          schema:
+            $ref: '#/definitions/Passenger'
+  '/tickets/passenger/{passengerId}':
+    get:
+      summary: Resturns a List with all Tickets of a Passenger
+      description: Get all Tickets of a Passenger
+      produces:
+        - application/json
+      parameters:
+        - name: passengerId
+          in: path
+          description: Id of Passenger
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Got all Tickets of a Passenger
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Ticket'
+        '404':
+          description: Passenger not found
+          schema:
+            $ref: '#/definitions/Error'
+  '/tickets/ticket/{ticketId}':
+    get:
+      summary: Returns a Ticket
+      produces:
+        - application/json
+      parameters:
+        - name: ticketId
+          in: path
+          description: ID of the ticket
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Got the Ticket
+          schema:
+            $ref: '#/definitions/Ticket'
+        '404':
+          description: No ticket found for this ticketId
+          schema:
+            $ref: '#/definitions/Error'
+  '/tickets/flight/{flightId}':
+    get:
+      summary: Returns Tickets for Flight
+      produces:
+        - application/json
+      parameters:
+        - name: flightId
+          in: path
+          description: Id of Flight
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Got the Tickets
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Ticket'
+        '404':
+          description: Flight not found
+          schema:
+            $ref: '#/definitions/Error'
+  /book/flight:
+    post:
+      summary: book a flight for a passenger.
+      produces:
+        - application/json
+      parameters:
+        - name: bookerId
+          required: true
+          in: query
+          description: booker of the flight
+          type: string
+          format: UUID
+        - name: passengerIds
+          required: true
+          in: body
+          description: the passengers
+          schema:
+            type: array
+            items:
+              type: string
+              format: UUID
+        - name: flightId
+          required: true
+          in: query
+          description: ID of the flight
+          type: string
+          format: UUID
+        - name: bookingType
+          required: true
+          in: query
+          description: type of the book
+          type: string
+          enum:
+            - Internet
+            - Counter
+            - Agency
+        - name: classType
+          required: true
+          in: query
+          description: class of the book
+          type: string
+          enum:
+            - Economy
+            - Business
+            - First
+      responses:
+        '200':
+          description: Flight is booked
+          schema:
+            $ref: '#/definitions/Ticket'
+        '404':
+          description: booking not possible for this passengerId or flightId
+          schema:
+            $ref: '#/definitions/Error'
+  /book/flight/staff:
+    post:
+      summary: book a flight for staff.
+      produces:
+        - application/json
+      parameters:
+        - name: bookerId
+          required: true
+          in: query
+          description: booker of the flight
+          type: string
+          format: UUID
+        - name: passengerIds
+          required: true
+          in: body
+          description: the passengers
+          schema:
+            type: array
+            items:
+              type: string
+              format: UUID
+        - name: flightId
+          required: true
+          in: query
+          description: ID of the flight
+          type: string
+        - name: classType
+          required: true
+          in: query
+          description: class of the book
+          type: string
+          enum:
+            - Economy
+            - Business
+            - First
+      responses:
+        '200':
+          description: Flight is booked
+          schema:
+            $ref: '#/definitions/Ticket'
+        '404':
+          description: booking not possible for this passengerId or flightId
+          schema:
+            $ref: '#/definitions/Error'
+  /flights:
+    get:
+      summary: Returns all Flights
+      produces:
+        - application/json
+      parameters:
+        - name: departure
+          in: query
+          description: Departure of the Flights to search
+          required: true
+          type: string
+        - name: destination
+          in: query
+          description: Destination of the Flights to search
+          required: true
+          type: string
+        - name: date
+          in: query
+          description: Date of the Flights to search
+          required: false
+          type: string
+        - name: amount
+          in: query
+          description: Amount of the Flights to search
+          required: false
+          type: integer
+        - name: classType
+          in: query
+          description: Class of the Flights to search
+          required: false
+          type: string
+          enum:
+            - Economy
+            - Business
+            - First
+      responses:
+        '200':
+          description: Got all possible Flights
+          schema:
+            type: array
+            items:
+              properties:
+                flight:
+                  $ref: '#/definitions/Flight'
+                price:
+                  type: integer
+        '404':
+          description: Es wurden keine FlÃƒÂ¼ge gefunden
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Passenger:
+    type: object
+    properties:
+      passengerId:
+        type: string
+        format: UUID
+      passengerName:
+        type: string
+  Ticket:
+    type: object
+    properties:
+      ticketId:
+        type: string
+        format: UUID
+      passenger:
+        $ref: '#/definitions/Passenger'
+      reservations:
+        type: array
+        items:
+          type: array
+          $ref: '#/definitions/Reservation'
+      bookingType:
+        $ref: '#/definitions/BookingType'
+      ticketDate:
+        type: string
+        format: date-time
+  Reservation:
+    type: object
+    properties:
+      reservationId:
+        type: integer
+      checkedIn:
+        type: boolean
+      flugId:
+        type: integer
+      traveler:
+        $ref: '#/definitions/Passenger'
+      place:
+        type: object
+        $ref: '#/definitions/Place'
+      reservationType:
+        $ref: '#/definitions/ClassType'
+  Flight:
+    type: object
+    properties:
+      flightID:
+        type: string
+        format: UUID
+      checkInReady:
+        type: boolean
+  Place:
+    type: object
+    properties:
+      placeId:
+        type: string
+        format: UUID
+      floor:
+        type: integer
+      row:
+        type: integer
+      seat:
+        type: string
+      placeType:
+        $ref: '#/definitions/ClassType'
+  ClassType:
+    type: string
+    enum:
+      - Economy
+      - Business
+      - First
+  BookingType:
+    type: string
+    enum:
+      - Internet
+      - Counter
+      - Agency
+      - Staff
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

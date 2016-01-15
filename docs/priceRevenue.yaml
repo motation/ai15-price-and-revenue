@@ -1,0 +1,149 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: '<price-revenue-api>'
+paths:
+  /statistic:
+    get:
+      description: |
+        Gets revenue for required time period.
+      parameters:
+        - name: fromDate
+          in: query
+          description: Start date for time period
+          required: true
+          type: string
+          format: date-time
+        - name: toDate
+          in: query
+          description: End date for time period
+          required: true
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: array
+            items: 
+              title: statistic of flight
+              $ref: '#/definitions/calculatedRevenue'
+        '404':
+          description: Data not found
+        '204':
+          description: No content
+  /price/{flightId}:
+    get:
+      description: |
+        Gets Price object for required flight.
+      parameters:
+        - name: flightId
+          in: path
+          description: UUID of flight
+          required: true
+          type: string
+          format: UUID
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: prices for flights
+            type: array
+            items: 
+              title: price for flight
+              $ref: '#/definitions/calculatedPrice'
+        '404':
+          description: Data not found
+        '204':
+          description: No content
+definitions:
+  calculatedRevenue:
+    type: object
+    properties:
+      revenue:
+        type: number
+        format: double
+      flightId:
+        type: string
+        format: UUID
+	  starttime:
+	    type: number
+		format: long
+      soldTicketsFirstClassInternet:
+        type: number
+        format: double
+	  soldTicketsBusinessClassInternet:
+        type: number
+        format: double
+      soldTicketsEconomyClassInternet:
+        type: number
+        format: double
+      soldTicketsFirstClassTravelOffice:
+        type: number
+        format: double
+      soldTicketsEconomyClassTravelOffice:
+        type: number
+        format: double
+	  soldTicketsBusinessClassTravelOffice:
+        type: number
+        format: double
+      soldTicketsFirstClassCounter:
+        type: number
+        format: double
+      soldTicketsEconomyClassCounter:
+        type: number
+        format: double
+	  soldTicketsBusinessClassCounter:
+        type: number
+        format: double
+	  soldTicketsFirstClassStaff:
+        type: number
+        format: double
+      soldTicketsEconomyClassStaff:
+        type: number
+        format: double
+	  soldTicketsBusinessClassStaff:
+        type: number
+        format: double
+  calculatedPrice:
+    type: object
+    properties:
+      basicPrice:
+        type: number
+        format: double
+      firstClassPriceByInternet:
+        type: number
+        format: double
+      economyClassPriceByInternet:
+        type: number
+        format: double
+	  businessClassPriceByInternet:
+        type: number
+        format: double
+      firstClassPriceByTravelOffice:
+        type: number
+        format: double
+      economyClassPriceByTravelOffice:
+        type: number
+        format: double
+      businessClassPriceByTravelOffice:
+        type: number
+        format: double
+      firstClassPriceByCounter:
+        type: number
+        format: double
+      economyClassPriceByCounter:
+        type: number
+        format: double
+      businessClassPriceByCounter:
+        type: number
+        format: double
+      firstClassPriceByStaff:
+        type: number
+        format: double
+      economyClassPriceByStaff:
+        type: number
+        format: double
+      businessClassPriceByStaff:
+        type: number
+        format: double

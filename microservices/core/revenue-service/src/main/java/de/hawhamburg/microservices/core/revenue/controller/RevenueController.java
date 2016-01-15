@@ -88,8 +88,8 @@ public class RevenueController {
             pattern = "yyyy-MM-dd HH:mm:ss") final Date fromDate,
                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME,
                                          pattern = "yyyy-MM-dd HH:mm:ss") final Date toDate) {
-        System.out.println(fromDate.toString());
-        System.out.println(toDate.toString());
+        LOG.info("From Date: " + fromDate.toString());
+        LOG.info("To Date: " + toDate.toString());
         return revenueService.revenuesForTime(fromDate.getTime(),toDate.getTime());
     }
 
